@@ -11,6 +11,7 @@
         color: #fff;
         margin: 0;
         text-align: center;
+        overflow-x: hidden;
     }
     header {
         background: linear-gradient(90deg, #000, #222);
@@ -34,6 +35,7 @@
         box-shadow: 0 0 10px #000;
         transition: 0.3s;
         width: 220px;
+        cursor: pointer;
     }
     .product:hover { transform: scale(1.05); }
     img {
@@ -54,6 +56,37 @@
         font-size: 0.9em;
         color: #888;
     }
+
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+    }
+    .modal img {
+        width: 80%;
+        max-width: 400px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        transition: transform 0.3s;
+    }
+    .modal img:hover { transform: scale(1.05); }
+    .modal p { color: gold; font-size: 1.1em; }
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
@@ -61,6 +94,15 @@
 <header>REGALIA STYLE STORE</header>
 
 <section class="product-grid" id="productGrid"></section>
+
+<!-- Modal -->
+<div class="modal" id="productModal">
+    <span class="close-btn" id="closeModal">&times;</span>
+    <img id="modalImg" src="">
+    <p id="modalName"></p>
+    <p id="modalPrice"></p>
+    <p style="color:#ccc;">Please contact us for orders or customization.</p>
+</div>
 
 <footer>© 2025 Regalia Style. All Rights Reserved.</footer>
 
@@ -76,27 +118,32 @@ const products = [
     { name: "Heritage Hoodie", price: "R490", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
     { name: "Victory Shirt", price: "R280", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
     { name: "Black Royal Tee", price: "R270", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Street King Hoodie", price: "R510", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Revolution Jacket", price: "R700", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Freedom Hoodie", price: "R460", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Cultural Legend Tee", price: "R290", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Lion Pride Hoodie", price: "R540", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Unity Crewneck", price: "R430", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Royal Spirit Jacket", price: "R680", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Tribe Sweatshirt", price: "R390", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Classic Black Hoodie", price: "R450", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Golden King Hoodie", price: "R550", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
 ];
 
 const grid = document.getElementById("productGrid");
+const modal = document.getElementById("productModal");
+const modalImg = document.getElementById("modalImg");
+const modalName = document.getElementById("modalName");
+const modalPrice = document.getElementById("modalPrice");
+const closeModal = document.getElementById("closeModal");
+
 products.forEach(p => {
     const item = document.createElement("div");
     item.classList.add("product");
     item.innerHTML = `<img src="${p.img}" alt="${p.name}">
                       <p class="product-name">${p.name}</p>
                       <p class="price">${p.price}</p>`;
+    item.onclick = () => {
+        modal.style.display = "flex";
+        modalImg.src = p.img;
+        modalName.textContent = p.name;
+        modalPrice.textContent = p.price;
+    };
     grid.appendChild(item);
 });
+
+closeModal.onclick = () => modal.style.display = "none";
+window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
 </script>
 
 </body>
