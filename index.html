@@ -20,6 +20,7 @@
         font-size: 1.8em;
         font-weight: bold;
         letter-spacing: 2px;
+        animation: fadeIn 1.2s ease;
     }
     .product-grid {
         display: grid;
@@ -33,9 +34,12 @@
         border-radius: 15px;
         padding: 15px;
         box-shadow: 0 0 10px #000;
-        transition: 0.3s;
+        transition: 0.4s;
         width: 220px;
         cursor: pointer;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: slideUp 0.8s forwards;
     }
     .product:hover { transform: scale(1.05); }
     img {
@@ -55,9 +59,10 @@
         padding: 15px;
         font-size: 0.9em;
         color: #888;
+        animation: fadeIn 1.5s ease;
     }
 
-    /* Modal Styling */
+    /* Modal */
     .modal {
         display: none;
         position: fixed;
@@ -69,6 +74,7 @@
         align-items: center;
         flex-direction: column;
         padding: 20px;
+        animation: fadeIn 0.5s ease;
     }
     .modal img {
         width: 80%;
@@ -87,6 +93,10 @@
         font-size: 30px;
         cursor: pointer;
     }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes slideUp { from { opacity:0; transform:translateY(30px);} to { opacity:1; transform:translateY(0);} }
 </style>
 </head>
 <body>
@@ -104,20 +114,15 @@
     <p style="color:#ccc;">Please contact us for orders or customization.</p>
 </div>
 
-<footer>© 2025 Regalia Style. All Rights Reserved.</footer>
+<footer>© 2025 Regalia Style — All Rights Reserved.</footer>
 
 <script>
 const products = [
     { name: "Base Hoodie - Grey Melange", price: "R450", img: "https://github.com/abdulndayikaban-ctrl/REGALIA-STORE/blob/main/Base-Hoodie-Grey-Melange%20(1).png?raw=true" },
     { name: "Classic Regalia Tee", price: "R250", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
     { name: "Royal Heritage Jacket", price: "R650", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Cultural Hoodie", price: "R480", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Legacy Cap", price: "R150", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
     { name: "African Pride Tee", price: "R260", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
     { name: "Gold Crest Hoodie", price: "R520", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Heritage Hoodie", price: "R490", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Victory Shirt", price: "R280", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Black Royal Tee", price: "R270", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
 ];
 
 const grid = document.getElementById("productGrid");
@@ -127,9 +132,10 @@ const modalName = document.getElementById("modalName");
 const modalPrice = document.getElementById("modalPrice");
 const closeModal = document.getElementById("closeModal");
 
-products.forEach(p => {
+products.forEach((p, i) => {
     const item = document.createElement("div");
     item.classList.add("product");
+    item.style.animationDelay = `${i * 0.1}s`;
     item.innerHTML = `<img src="${p.img}" alt="${p.name}">
                       <p class="product-name">${p.name}</p>
                       <p class="price">${p.price}</p>`;
@@ -143,7 +149,12 @@ products.forEach(p => {
 });
 
 closeModal.onclick = () => modal.style.display = "none";
-window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+
+/* --- AI-ready hook (placeholder) ---
+   When you add serverless functions or AI API calls,
+   attach them here (e.g. fetch("/api/describeProduct", {...}))
+-------------------------------------- */
 </script>
 
 </body>
