@@ -1,39 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regalia Store</title>
-    <style>
-        body { font-family: Arial; background: #111; color: #fff; text-align: center; padding: 40px; }
-        h1 { color: gold; }
-        .product {
-            display: inline-block;
-            background: #222;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 10px;
-            box-shadow: 0 0 10px #000;
-            transition: 0.3s;
-        }
-        .product:hover { transform: scale(1.05); }
-        img {
-            width: 250px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        p { margin-top: 10px; color: #ccc; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regalia Store</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #0f0f0f;
+        color: #fff;
+        margin: 0;
+        text-align: center;
+    }
+    header {
+        background: linear-gradient(90deg, #000, #222);
+        padding: 20px;
+        color: gold;
+        font-size: 1.8em;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 30px;
+        justify-items: center;
+    }
+    .product {
+        background: #1a1a1a;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0 0 10px #000;
+        transition: 0.3s;
+        width: 250px;
+    }
+    .product:hover { transform: scale(1.05); }
+    img {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .product-name {
+        font-weight: bold;
+        margin-top: 10px;
+        color: gold;
+    }
+    .price {
+        color: #ccc;
+    }
+    footer {
+        background: #111;
+        padding: 15px;
+        font-size: 0.9em;
+        color: #888;
+    }
+</style>
 </head>
 <body>
-    <h1>Welcome to Regalia Store</h1>
-    <p>Explore our premium collection below</p>
 
+<header>REGALIA STYLE STORE</header>
+
+<section class="product-grid">
+
+    <!-- Product 1 -->
     <div class="product">
         <img src="https://github.com/abdulndayikaban-ctrl/REGALIA-STORE/blob/main/Base-Hoodie-Grey-Melange%20(1).png?raw=true" alt="Base Hoodie">
-        <p><strong>Base Hoodie - Grey Melange</strong></p>
-        <p>R450</p>
+        <p class="product-name">Base Hoodie - Grey Melange</p>
+        <p class="price">R450</p>
     </div>
+
+    <!-- Product 2 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/250x250?text=Coming+Soon" alt="Coming Soon">
+        <p class="product-name">Classic Regalia Tee</p>
+        <p class="price">R250</p>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/250x250?text=Coming+Soon" alt="Coming Soon">
+        <p class="product-name">Royal Heritage Jacket</p>
+        <p class="price">R650</p>
+    </div>
+
+</section>
+
+<footer>© 2025 Regalia Style. All Rights Reserved.</footer>
 
 </body>
 </html>
