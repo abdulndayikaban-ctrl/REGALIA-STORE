@@ -1,15 +1,16 @@
-const products = [
-  { name: "Base Hoodie Grey", image: "https://github.com/abdulndayikaban-ctrl/REGALIA-STORE/blob/main/Base-Hoodie-Grey-Melange%20(1).png?raw=true" },
-  // Add more below (up to 20)
-  { name: "Classic Black Tee", image: "https://via.placeholder.com/200x220?text=Black+Tee" },
-  { name: "Royal Green Hoodie", image: "https://via.placeholder.com/200x220?text=Green+Hoodie" },
-  { name: "Gold King T-Shirt", image: "https://via.placeholder.com/200x220?text=Gold+King" },
-  { name: "Brown Heritage Tee", image: "https://via.placeholder.com/200x220?text=Brown+Heritage" }
-];
-
 const container = document.getElementById("product-container");
 
-function renderProducts() {
+async function loadProducts() {
+  try {
+    const response = await fetch("products.json");
+    const products = await response.json();
+    renderProducts(products);
+  } catch (error) {
+    console.error("Error loading products:", error);
+  }
+}
+
+function renderProducts(products) {
   products.forEach(prod => {
     const div = document.createElement("div");
     div.classList.add("product");
@@ -27,8 +28,9 @@ function loopScroll() {
   }
 }
 
-renderProducts();
 setInterval(() => {
   container.scrollBy({ left: 220, behavior: "smooth" });
   loopScroll();
 }, 2000);
+
+loadProducts();
