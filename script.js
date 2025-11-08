@@ -1,4 +1,5 @@
 const container = document.getElementById("product-container");
+const syncStatus = document.getElementById("sync-status");
 
 // Paste your Google Sheet CSV link here
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-xxxxxxx/pub?output=csv";
@@ -7,6 +8,7 @@ let previousData = "";
 
 async function loadProducts() {
   try {
+    showSync(true);
     const response = await fetch(sheetURL + "&cacheBust=" + Date.now());
     const data = await response.text();
 
@@ -18,6 +20,8 @@ async function loadProducts() {
     }
   } catch (error) {
     console.error("Error loading products:", error);
+  } finally {
+    setTimeout(() => showSync(false), 2000);
   }
 }
 
@@ -45,6 +49,10 @@ function renderProducts(products) {
   });
 }
 
+function showSync(show) {
+  syncStatus.style.display = show ? "block" : "none";
+}
+
 function loopScroll() {
   if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
     container.scrollTo({ left: 0, behavior: "smooth" });
@@ -60,5 +68,5 @@ setInterval(() => {
 // auto-refresh every 60 seconds
 setInterval(loadProducts, 60000);
 
-// first load
+// initial load
 loadProducts();
