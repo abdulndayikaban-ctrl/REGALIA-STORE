@@ -7,20 +7,84 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>REGALIA STORE</h1>
-    <p>Authentic Prints & Styles</p>
-  </header>
+ <div id="product-gallery" class="gallery"></div>
 
-  <main id="product-container"></main>
-<div id="sync-status">Syncing latest products...</div>
+<div class="floating-buttons">
+  <button>Shop</button>
+  <button>Catalog</button>
+  <button>Contact</button>
+</div>
 
-  <div class="button-area">
-    <button id="btn1">Button One</button>
-    <button id="btn2">Button Two</button>
-    <button id="btn3">Button Three</button>
-  </div>
+<script>
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBUZvqm9yLPpid77Y_10uW7vft3-uSJxXMw7AnlbFjgRu9T4F3LN-reUnEhD3fnCOtFopwV7uls_0/pub?gid=0&single=true&output=csv";
 
-  <script src="script.js"></script>
+  fetch(sheetURL)
+    .then(res => res.text())
+    .then(csv => {
+      const rows = csv.split("\n").slice(1, 21); // First 20 products
+      const gallery = document.getElementById("product-gallery");
+
+      rows.forEach(row => {
+        const cols = row.split(",");
+        const img = cols[0].trim(); 
+        const name = cols[1] ? cols[1].trim() : "Product";
+        const price = cols[2] ? cols[2].trim() : "";
+
+        const item = document.createElement("div");
+        item.className = "product-item";
+        item.innerHTML = `
+          <img src="${img}" alt="${name}">
+          <h3>${name}</h3>
+          <p>${price}</p>
+        `;
+        gallery.appendChild(item);
+      });
+    });
+</script>
+
+<style>
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding-bottom: 80px;
+}
+.product-item {
+  width: 150px;
+  text-align: center;
+}
+.product-item img {
+  width: 100%;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+.product-item img:hover {
+  transform: scale(1.05);
+}
+.floating-buttons {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 999;
+}
+.floating-buttons button {
+  background: black;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.floating-buttons button:hover {
+  background: gold;
+  color: black;
+}
+</style>
+
 </body>
 </html>
