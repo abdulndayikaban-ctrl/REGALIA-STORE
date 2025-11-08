@@ -5,95 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Regalia Store</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding-bottom: 80px;
+    }
+    .card {
+      width: 150px;
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+    .card img:hover {
+      transform: scale(1.05);
+    }
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 999;
+    }
+    .floating-buttons button {
+      background: black;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .floating-buttons button:hover {
+      background: gold;
+      color: black;
+    }
+  </style>
 </head>
 <body>
- <div id="product-gallery" class="gallery"></div>
+  <div id="product-gallery" class="gallery"></div>
 
-<div class="floating-buttons">
-  <button>Shop</button>
-  <button>Catalog</button>
-  <button>Contact</button>
-</div>
+  <div class="floating-buttons">
+    <button>Shop</button>
+    <button>Catalog</button>
+    <button>Contact</button>
+  </div>
 
-<script>
- <script>
-const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBUZvqm9yLPpid77Y_10uW7vft3-uSJxXMw7AnlbFjgRu9T4F3LN-reUnEhD3fnCOtFopwV7uls_0/pub?gid=0&single=true&output=csv";
+  <script>
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBUZvqm9yLPpid77Y_10uW7vft3-uSJxXMw7AnlbFjgRu9T4F3LN-reUnEhD3fnCOtFopwV7uls_0/pub?gid=0&single=true&output=csv";
 
-async function loadProducts() {
-  const res = await fetch(sheetUrl);
-  const text = await res.text();
-  const rows = text.split(/\r?\n/).slice(1, 21); // first 20 rows
-  const gallery = document.getElementById("product-gallery");
-  gallery.innerHTML = "";
+    async function loadProducts() {
+      const res = await fetch(sheetUrl);
+      const text = await res.text();
+      const rows = text.split(/\r?\n/).slice(1, 21);
+      const gallery = document.getElementById("product-gallery");
+      gallery.innerHTML = "";
 
-  rows.forEach(row => {
-    // Properly split CSV and remove quotes
-    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-    const imgUrl = cols[0]?.replace(/"/g, '').trim();
-    const title = cols[1]?.replace(/"/g, '').trim() || "Untitled";
-    const price = cols[2]?.replace(/"/g, '').trim() || "";
+      rows.forEach(row => {
+        const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        const imgUrl = cols[0]?.replace(/"/g, '').trim();
+        const title = cols[1]?.replace(/"/g, '').trim() || "Untitled";
+        const price = cols[2]?.replace(/"/g, '').trim() || "";
 
-    if (imgUrl.startsWith("http")) {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${imgUrl}" alt="${title}" onerror="this.src='fallback.png'">
-        <h3>${title}</h3>
-        <p>${price}</p>
-      `;
-      gallery.appendChild(card);
+        if (imgUrl.startsWith("http")) {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${imgUrl}" alt="${title}" onerror="this.src='fallback.png'">
+            <h3>${title}</h3>
+            <p>${price}</p>
+          `;
+          gallery.appendChild(card);
+        }
+      });
     }
-  });
-}
 
-loadProducts();
-</script>
-
-</script>
-
-<style>
-.gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  padding-bottom: 80px;
-}
-.product-item {
-  width: 150px;
-  text-align: center;
-}
-.product-item img {
-  width: 100%;
-  border-radius: 10px;
-  transition: transform 0.3s ease;
-}
-.product-item img:hover {
-  transform: scale(1.05);
-}
-.floating-buttons {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 999;
-}
-.floating-buttons button {
-  background: black;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 30px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.floating-buttons button:hover {
-  background: gold;
-  color: black;
-}
-</style>
-
+    loadProducts();
+  </script>
 </body>
 </html>
