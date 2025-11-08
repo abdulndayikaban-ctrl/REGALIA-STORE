@@ -25,3 +25,16 @@
   background: #222;
   color: gold;
 }
+#sync-status {
+  display: none;
+  color: gold;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
