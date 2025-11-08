@@ -1,161 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Regalia Store</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #0f0f0f;
-        color: #fff;
-        margin: 0;
-        text-align: center;
-        overflow-x: hidden;
-    }
-    header {
-        background: linear-gradient(90deg, #000, #222);
-        padding: 20px;
-        color: gold;
-        font-size: 1.8em;
-        font-weight: bold;
-        letter-spacing: 2px;
-        animation: fadeIn 1.2s ease;
-    }
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        padding: 30px;
-        justify-items: center;
-    }
-    .product {
-        background: #1a1a1a;
-        border-radius: 15px;
-        padding: 15px;
-        box-shadow: 0 0 10px #000;
-        transition: 0.4s;
-        width: 220px;
-        cursor: pointer;
-        opacity: 0;
-        transform: translateY(30px);
-        animation: slideUp 0.8s forwards;
-    }
-    .product:hover { transform: scale(1.05); }
-    img {
-        width: 100%;
-        border-radius: 10px;
-    }
-    .product-name {
-        font-weight: bold;
-        margin-top: 10px;
-        color: gold;
-    }
-    .price {
-        color: #ccc;
-    }
-    footer {
-        background: #111;
-        padding: 15px;
-        font-size: 0.9em;
-        color: #888;
-        animation: fadeIn 1.5s ease;
-    }
-
-    /* Modal */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0; top: 0;
-        width: 100%; height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        padding: 20px;
-        animation: fadeIn 0.5s ease;
-    }
-    .modal img {
-        width: 80%;
-        max-width: 400px;
-        border-radius: 15px;
-        margin-bottom: 15px;
-        transition: transform 0.3s;
-    }
-    .modal img:hover { transform: scale(1.05); }
-    .modal p { color: gold; font-size: 1.1em; }
-    .close-btn {
-        position: absolute;
-        top: 15px;
-        right: 25px;
-        color: white;
-        font-size: 30px;
-        cursor: pointer;
-    }
-
-    /* Animations */
-    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-    @keyframes slideUp { from { opacity:0; transform:translateY(30px);} to { opacity:1; transform:translateY(0);} }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regalia Store</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <h1>REGALIA STORE</h1>
+    <p>Authentic Prints & Styles</p>
+  </header>
 
-<header>REGALIA STYLE STORE</header>
+  <main id="product-container"></main>
 
-<section class="product-grid" id="productGrid"></section>
-
-<!-- Modal -->
-<div class="modal" id="productModal">
-    <span class="close-btn" id="closeModal">&times;</span>
-    <img id="modalImg" src="">
-    <p id="modalName"></p>
-    <p id="modalPrice"></p>
-    <p style="color:#ccc;">Please contact us for orders or customization.</p>
-</div>
-
-<footer>© 2025 Regalia Style — All Rights Reserved.</footer>
-
-<script>
-const products = [
-    { name: "Base Hoodie - Grey Melange", price: "R450", img: "https://github.com/abdulndayikaban-ctrl/REGALIA-STORE/blob/main/Base-Hoodie-Grey-Melange%20(1).png?raw=true" },
-    { name: "Classic Regalia Tee", price: "R250", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Royal Heritage Jacket", price: "R650", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "African Pride Tee", price: "R260", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-    { name: "Gold Crest Hoodie", price: "R520", img: "https://via.placeholder.com/250x250?text=Coming+Soon" },
-];
-
-const grid = document.getElementById("productGrid");
-const modal = document.getElementById("productModal");
-const modalImg = document.getElementById("modalImg");
-const modalName = document.getElementById("modalName");
-const modalPrice = document.getElementById("modalPrice");
-const closeModal = document.getElementById("closeModal");
-
-products.forEach((p, i) => {
-    const item = document.createElement("div");
-    item.classList.add("product");
-    item.style.animationDelay = `${i * 0.1}s`;
-    item.innerHTML = `<img src="${p.img}" alt="${p.name}">
-                      <p class="product-name">${p.name}</p>
-                      <p class="price">${p.price}</p>`;
-    item.onclick = () => {
-        modal.style.display = "flex";
-        modalImg.src = p.img;
-        modalName.textContent = p.name;
-        modalPrice.textContent = p.price;
-    };
-    grid.appendChild(item);
-});
-
-closeModal.onclick = () => modal.style.display = "none";
-window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
-
-/* --- AI-ready hook (placeholder) ---
-   When you add serverless functions or AI API calls,
-   attach them here (e.g. fetch("/api/describeProduct", {...}))
--------------------------------------- */
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
