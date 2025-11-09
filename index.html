@@ -146,15 +146,13 @@ async function loadProducts() {
   const res = await fetch(sheetUrl);
   const text = await res.text();
   const rows = text.split(/\r?\n/).slice(1);
-  const gallery = document.getElementById("product-gallery");
   allProducts = [];
 
   rows.forEach(row => {
     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
     const [img, name, normal, sale, desc, features, category] = cols.map(x => x?.replace(/"/g, '').trim());
     if (!img || !img.startsWith("http")) return;
-
-    allProducts.push({img, name, normal, sale, desc, features, category});
+    allProducts.push({ img, name, normal, sale, desc, features, category });
   });
 
   displayProducts("All");
@@ -163,19 +161,62 @@ async function loadProducts() {
 function displayProducts(filterCat) {
   const gallery = document.getElementById("product-gallery");
   gallery.innerHTML = "";
+  allProducts
+    .filter(p => filterCat === "All" || p.category === filterCat)
+    .slice(0, 20)
+    .forEach((p, i) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        <h3>${p.name}</h3>
+        <p><s>${p.normal}</s> <b>${p.sale}</b></p>
+      `;
+      card.onclick = () => openPopup(p);
+      document.getElementById("product-gallery").appendChild(card);
+      setTimeout(() => card.classList.add("visible"), 80 * i);
+    });
+}
 
-  allProducts.filter(p => filterCat === "All" || p.category === filterCat)
-  .forEach((p, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${p.img}" alt="${p.name}" loading="lazy">
+function openPopup(p) {
+  const popup = document.createElement("div");
+  popup.className = "popup";
+  popup.innerHTML = `
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <img src="${p.img}" alt="${p.name}" class="zoomed">
+      <p class="note">Colours displayed serve as an indication only and may not represent the exact colour of the garment.</p>
       <h3>${p.name}</h3>
-      <p><s>${p.normal}</s> <b>${p.sale}</b></p>
-    `;
-    gallery.appendChild(card);
-    setTimeout(() => card.classList.add("visible"), 80 * i);
-  });
+      <div class="color-select">
+        <span class="color" style="background:red"></span>
+        <span class="color" style="background:grey"></span>
+        <span class="color" style="background:black"></span>
+      </div>
+      <div class="size-select">
+        ${["XS","S","M","L","XL","2XL","3XL","4XL","5XL"].map(s=>`<span>${s}</span>`).join("")}
+      </div>
+      <p>Available stock: <b>24</b></p>
+      <div class="qty">
+        <button class="minus">−</button>
+        <span class="count">1</span>
+        <button class="plus">+</button>
+      </div>
+      <div class="btn-row">
+        <button class="view">View Details</button>
+        <button class="add">Add to Cart</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(popup);
+  document.querySelector(".close").onclick = () => popup.remove();
+  popup.querySelector(".plus").onclick = () => {
+    const c = popup.querySelector(".count");
+    c.textContent = Number(c.textContent) + 1;
+  };
+  popup.querySelector(".minus").onclick = () => {
+    const c = popup.querySelector(".count");
+    if (Number(c.textContent) > 1) c.textContent = Number(c.textContent) - 1;
+  };
 }
 
 document.querySelectorAll(".category-btn").forEach(btn=>{
@@ -187,6 +228,116 @@ document.querySelectorAll(".category-btn").forEach(btn=>{
 });
 
 loadProducts();
+</script>
+
+<style>
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.popup-content {
+  background: #111;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  border: 2px solid #d4af37;
+  color: white;
+}
+.popup-content img.zoomed {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.popup-content .note {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+.popup-content h3 {
+  color: #d4af37;
+  margin-bottom: 8px;
+}
+.color-select {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.color-select .color {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #d4af37;
+}
+.size-select {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.size-select span {
+  background: #222;
+  border: 1px solid #444;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 10px 0;
+}
+.qty button {
+  background: #d4af37;
+  color: black;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.btn-row {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+.btn-row button {
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.view {
+  background: transparent;
+  border: 2px solid #d4af37;
+  color: #d4af37;
+}
+.add {
+  background: #d4af37;
+  color: black;
+}
+.close {
+  position: absolute;
+  right: 20px; top: 10px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #d4af37;
+}
+</style>
+
 </script>
 </body>
 </html>
