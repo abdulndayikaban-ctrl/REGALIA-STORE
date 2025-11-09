@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Regalia Store — Product</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="logo-wrap"><img src="https://raw.githubusercontent.com/abdulndayikaban-ctrl/REGALIA-STORE/main/logo.png" alt="logo"></div>
+    <div class="header-text">Product</div>
+  </header>
+
+  <main class="container">
+    <section id="productArea"></section>
+  </main>
+
+  <div class="floating-buttons">
+    <button onclick="history.back()">Back</button>
+    <button onclick="window.location.href='guest.html'">All Products</button>
+    <button onclick="window.location.href='index.html'">Home</button>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    (async function(){
+      await initShared();
+      const params = new URLSearchParams(location.search);
+      const id = parseInt(params.get('id') || '0', 10);
+      const products = await fetchProducts();
+      const p = products[id];
+      if (!p) {
+        document.getElementById('productArea').innerHTML = '<p>Product not found.</p>';
+        return;
+      }
+
+      // render product detail
+      const area = document.getElementById('productArea');
+      const colorBoxes = (p.colorImages || []).map(ci => `<div class="color-box" title="${ci.color}" style="background:${ci.color};" data-url="${ci.url}"></div>`).join('');
+      area.innerHTML = `
+        <div class="product-detail-grid">
+          <div class="pd-image">
+            <img id="mainImg" src="${(p.colorImages && p.colorImages[0] && p.colorImages[0].url) || p.image}" alt="${p.name}">
+          </div>
+          <div class="pd-info">
+            <p class="note">Colours displayed serve as an indication only and may not represent the exact colour of the garment.</p>
+            <h1>${p.name}</h1>
+            <p class="desc">${p.description || ''}</p>
+            <p><strong>Features:</strong> ${p.features || ''}</p>
+            <div style="margin-top:12px;"><strong>Available Colors</strong><div id="colorRow" class="colors">${colorBoxes || '<em>No alternate colors provided</em>'}</div></div>
+            <div style="margin-top:10px;"><strong>Sizes</strong><div id="sizeRow" class="sizes">${['XS','S','M','L','XL','2XL','3XL','4XL','5XL'].map(s=>`<div class="size-box">${s}</div>`).join('')}</div></div>
+            <p style="margin-top:12px;">Available stock: <strong id="stockCount">25</strong></p>
+
+            <div class="quantity">
+              <button id="qminus">-</button>
+              <span id="qty">1</span>
+              <button id="qplus">+</button>
+            </div>
+
+            <div class="action-buttons">
+              <button id="btnView" class="view-details">View Details</button>
+              <button id="btnCart" class="add-to-cart">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // wire up color boxes
+      document.querySelectorAll('#colorRow .color-box').forEach(el => {
+        el.addEventListener('click', () => {
+          const url = el.dataset.url;
+          if (url) document.getElementById('mainImg').src = url;
+          // highlight selected
+          document.querySelectorAll('#colorRow .color-box').forEach(x=>x.classList.remove('selected'));
+          el.classList.add('selected');
+        });
+      });
+
+      // qty control
+      document.getElementById('qminus').onclick = () => {
+        const el = document.getElementById('qty');
+        let v = parseInt(el.textContent||'1',10); v = Math.max(1, v-1); el.textContent = v;
+      };
+      document.getElementById('qplus').onclick = () => {
+        const el = document.getElementById('qty');
+        let v = parseInt(el.textContent||'1',10); v = v+1; el.textContent = v;
+      };
+
+      // sizes select
+      document.querySelectorAll('#sizeRow .size-box').forEach(s=>{
+        s.onclick = () => {
+          document.querySelectorAll('#sizeRow .size-box').forEach(x=>x.classList.remove('selected'));
+          s.classList.add('selected');
+        };
+      });
+
+      // stub actions
+      document.getElementById('btnCart').onclick = () => alert('Added to cart (demo).');
+      document.getElementById('btnView').onclick = () => alert('View details (demo).');
+    })();
+  </script>
+</body>
+</html>
