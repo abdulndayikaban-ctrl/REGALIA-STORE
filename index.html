@@ -1,205 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Regalia Store</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #fafafa;
-  }
-  .gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px 10px 100px;
-  }
-  .card {
-    width: 170px;
-    text-align: center;
-    background: #fff;
-    border-radius: 15px;
-    padding: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: transform .25s ease;
-    cursor: pointer;
-  }
-  .card:hover { transform: scale(1.04); }
-  .card img {
-    width: 100%;
-    border-radius: 10px;
-    display: none;
-  }
-  .card.loaded img { display: block; }
-  .floating-buttons {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    z-index: 999;
-  }
-  .floating-buttons button {
-    background: black;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  .floating-buttons button:hover { background: gold; color: black; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regalia Store</title>
 
-  /* Modal */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-  }
-  .modal-content {
-    background: #fff;
-    border-radius: 15px;
-    max-width: 400px;
-    width: 90%;
-    padding: 20px;
-    text-align: center;
-    position: relative;
-  }
-  .modal img {
-    width: 100%;
-    border-radius: 10px;
-  }
-  .close {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 24px; cursor: pointer;
-  }
-  .colors { display: flex; justify-content: center; gap: 8px; margin: 10px 0; }
-  .color-box {
-    width: 22px; height: 22px; border-radius: 50%;
-    cursor: pointer; border: 2px solid #ccc;
-  }
-  .sizes { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
-  .size {
-    border: 1px solid #aaa;
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .quantity {
-    display: flex; justify-content: center; align-items: center;
-    margin: 10px 0;
-  }
-  .quantity button {
-    width: 30px; height: 30px;
-    border: none; background: black; color: white;
-    cursor: pointer; font-size: 18px;
-  }
-  .quantity span {
-    width: 40px; text-align: center; display: inline-block;
-  }
-  .modal button.action {
-    width: 48%;
-    padding: 10px;
-    margin: 5px 1%;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .view { background: #eee; }
-  .cart { background: gold; }
-</style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      width: 170px;
+      text-align: center;
+      cursor: pointer;
+      background: #f7f7f7;
+      border-radius: 12px;
+      padding: 10px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.04);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 0.4s ease-in;
+    }
+
+    .card img.loaded {
+      opacity: 1;
+    }
+
+    .card h3 {
+      font-size: 15px;
+      margin: 8px 0 2px 0;
+    }
+
+    .card p {
+      margin: 2px 0;
+    }
+
+    .price {
+      text-decoration: line-through;
+      color: gray;
+      font-size: 13px;
+    }
+
+    .sale-price {
+      color: red;
+      font-weight: bold;
+    }
+
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 999;
+    }
+
+    .floating-buttons button {
+      background: black;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .floating-buttons button:hover {
+      background: gold;
+      color: black;
+    }
+
+    /* Product Modal */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    .modal img {
+      width: 100%;
+      border-radius: 10px;
+      cursor: zoom-in;
+    }
+
+    .note {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .colors {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .color-box {
+      width: 25px;
+      height: 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+    }
+
+    .sizes {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .size-box {
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .size-box.selected {
+      background: black;
+      color: white;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .quantity button {
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 5px;
+      background: #ddd;
+      cursor: pointer;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+      margin: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    .view-details { background: #ddd; }
+    .add-to-cart { background: gold; }
+
+  </style>
 </head>
+
 <body>
   <div id="product-gallery" class="gallery"></div>
 
   <div class="floating-buttons">
-    <button>Shop</button>
-    <button>Catalog</button>
-    <button>Contact</button>
+    <button>All Collection</button>
+    <button>Apparel</button>
+    <button>Head Wear</button>
   </div>
 
-  <div id="productModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <img id="modal-img" src="" alt="">
-      <p style="font-size: 12px; margin-top:4px;">Colours displayed serve as an indication only and may not represent the exact colour of the garment.</p>
-      <h3 id="modal-name"></h3>
-      <div class="colors">
-        <div class="color-box" style="background:red"></div>
-        <div class="color-box" style="background:blue"></div>
-        <div class="color-box" style="background:black"></div>
-        <div class="color-box" style="background:green"></div>
-      </div>
-      <div class="sizes"></div>
-      <p id="stock"></p>
-      <div class="quantity">
-        <button id="minus">-</button>
-        <span id="qty">1</span>
-        <button id="plus">+</button>
-      </div>
-      <button class="action view">View Details</button>
-      <button class="action cart">Add to Cart</button>
-    </div>
+  <div class="modal" id="productModal">
+    <div class="modal-content" id="modalContent"></div>
   </div>
 
   <script>
-  const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBUZvqm9yLPpid77Y_10uW7vft3-uSJxXMw7AnlbFjgRu9T4F3LN-reUnEhD3fnCOtFopwV7uls_0/pub?gid=0&single=true&output=csv";
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBUZvqm9yLPpid77Y_10uW7vft3-uSJxXMw7AnlbFjgRu9T4F3LN-reUnEhD3fnCOtFopwV7uls_0/pub?gid=0&single=true&output=csv";
 
-  async function loadProducts() {
-    const res = await fetch(sheetUrl);
-    const text = await res.text();
-    const rows = text.split(/\r?\n/).slice(1, 21);
-    const gallery = document.getElementById("product-gallery");
-    gallery.innerHTML = "";
+    async function loadProducts() {
+      const res = await fetch(sheetUrl);
+      const text = await res.text();
+      const rows = text.split(/\r?\n/).slice(1);
+      const gallery = document.getElementById("product-gallery");
+      gallery.innerHTML = "";
 
-    rows.forEach(row => {
-      const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-      const [imgUrl, title, price, sale, desc, category, stock] = cols.map(c=>c?.replace(/"/g,"").trim());
-      if (!imgUrl.startsWith("http")) return;
+      rows.forEach(row => {
+        const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        const [imgUrl, name, normalPrice, salePrice, description, features, category] =
+          cols.map(c => c.replace(/"/g, '').trim());
 
-      const card = document.createElement("div");
-      card.className = "card";
-      const img = new Image();
-      img.src = imgUrl;
-      img.onload = () => card.classList.add("loaded");
-      img.onerror = () => img.src='fallback.png';
-      card.innerHTML = `
-        <img src="${imgUrl}" alt="${title}">
-        <h4>${title}</h4>
-        <p>${category||''}</p>
-        <p><s>${price||''}</s> <strong style="color:red">${sale||''}</strong></p>
-        <small>${desc||''}</small>
+        if (imgUrl.startsWith("http")) {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${imgUrl}" alt="${name}" loading="lazy">
+            <h3>${name}</h3>
+            <p><span class="price">R${normalPrice}</span> <span class="sale-price">R${salePrice}</span></p>
+            <p>${category}</p>
+          `;
+
+          const img = card.querySelector("img");
+          img.onload = () => img.classList.add("loaded");
+
+          card.addEventListener("click", () => openModal(imgUrl, name, description, features, normalPrice, salePrice));
+          gallery.appendChild(card);
+        }
+      });
+    }
+
+    function openModal(img, name, desc, features, normal, sale) {
+      const modal = document.getElementById("productModal");
+      const content = document.getElementById("modalContent");
+      content.innerHTML = `
+        <img src="${img}" alt="${name}">
+        <p class="note">Colours displayed serve as an indication only and may not represent the exact colour of the garment.</p>
+        <h2>${name}</h2>
+        <p>${desc}</p>
+        <p><strong>Features:</strong> ${features}</p>
+        <div class="colors">
+          <div class="color-box" style="background:red;"></div>
+          <div class="color-box" style="background:blue;"></div>
+          <div class="color-box" style="background:black;"></div>
+        </div>
+        <div class="sizes">
+          ${["XS","S","M","L","XL","2XL","3XL","4XL","5XL"].map(size => `<div class='size-box'>${size}</div>`).join('')}
+        </div>
+        <p>Available stock: <strong>25</strong></p>
+        <div class="quantity">
+          <button onclick="changeQty(-1)">-</button>
+          <span id="qty">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+        <div class="action-buttons">
+          <button class="view-details">View Details</button>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
       `;
-      img.onload = () => card.classList.add("loaded");
-      card.addEventListener("click",()=>openModal(imgUrl,title,stock||"50"));
-      gallery.appendChild(card);
-    });
-  }
+      modal.style.display = "flex";
+      modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    }
 
-  function openModal(img,name,stock){
-    document.getElementById("modal-img").src = img;
-    document.getElementById("modal-name").textContent = name;
-    document.getElementById("stock").textContent = "Available stock: " + stock;
-    document.querySelector(".sizes").innerHTML = ["XS","S","M","L","XL","2XL","3XL","4XL","5XL"]
-      .map(s=>`<div class='size'>${s}</div>`).join("");
-    document.getElementById("productModal").style.display = "flex";
-  }
-  document.querySelector(".close").onclick=()=>document.getElementById("productModal").style.display="none";
-  document.getElementById("minus").onclick=()=>{let q=parseInt(qty.textContent);if(q>1)qty.textContent=q-1;}
-  document.getElementById("plus").onclick=()=>{let q=parseInt(qty.textContent);qty.textContent=q+1;}
+    function changeQty(change) {
+      const qty = document.getElementById("qty");
+      let val = parseInt(qty.textContent);
+      val = Math.max(1, val + change);
+      qty.textContent = val;
+    }
 
-  loadProducts();
-  </script>
-</body>
-</html>
+    loa
