@@ -1,72 +1,91 @@
-const container = document.getElementById("product-container");
-const syncStatus = document.getElementById("sync-status");
+/* ====== SHARED PRODUCT LOADER & UTILITIES ======
+   Expects Google Sheet published as CSV. The sheet header may be:
+   name,image,normalPrice,salePrice,description,features,category,color_images
+   color_images (optional) should be: color1|url1;color2|url2;...
+   Example row:
+   "Base Hoodie","https://.../hoodie.png","450","400","240gsm Brushed Fleece...","Cotton | 40% Polyester",Apparel,"brown|https://.../brown.png;black|https://.../black.png"
+=================================================*/
 
-// Paste your Google Sheet CSV link here
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-xxxxxxx/pub?output=csv";
+let SHARED_CONFIG = { sheetUrl: null, cached: null };
 
-let previousData = "";
+async function initShared(config = {}) {
+  if (config.sheetUrl) SHARED_CONFIG.sheetUrl = config.sheetUrl;
+  if (!SHARED_CONFIG.sheetUrl) {
+    console.error('No sheetUrl configured. Call initShared({sheetUrl: "..."}) first.');
+  }
+  // preload small assets if needed (logo fallback)
+}
 
-async function loadProducts() {
+async function fetchProducts() {
+  if (!SHARED_CONFIG.sheetUrl) {
+    console.error('fetchProducts called before initShared() with sheetUrl.');
+    return [];
+  }
+  // cache for this session
+  if (SHARED_CONFIG.cached) return SHARED_CONFIG.cached;
+
   try {
-    showSync(true);
-    const response = await fetch(sheetURL + "&cacheBust=" + Date.now());
-    const data = await response.text();
+    const res = await fetch(SHARED_CONFIG.sheetUrl + '&cacheBust=' + Date.now());
+    const text = await res.text();
+    const rows = text.split(/\r?\n/).map(r => r.trim()).filter(Boolean);
+    if (rows.length <= 1) return [];
 
-    if (data !== previousData) {
-      previousData = data;
-      const products = csvToJson(data);
-      renderProducts(products);
-      console.log("Updated product list loaded");
-    }
-  } catch (error) {
-    console.error("Error loading products:", error);
-  } finally {
-    setTimeout(() => showSync(false), 2000);
+    // detect header and map columns by name
+    const header = rows.shift();
+    const headerCols = splitCsvRow(header).map(h => h.toLowerCase().trim());
+
+    const data = rows.map(row => {
+      const cols = splitCsvRow(row);
+      const obj = {};
+      headerCols.forEach((colName, i) => {
+        obj[colName] = (cols[i] || '').replace(/^"|"$/g, '').trim();
+      });
+      // normalize field names
+      const product = {
+        name: obj.name || obj.title || '',
+        image: obj.image || obj.img || '',
+        normalPrice: obj['normal price'] || obj.normalprice || obj.price || '',
+        salePrice: obj['sale price'] || obj.saleprice || '',
+        description: obj.description || '',
+        features: obj.features || '',
+        category: obj.category || '',
+        rawColorImages: obj['color_images'] || obj['color images'] || obj.color_images || ''
+      };
+      // parse color images if present: format color|url;color2|url2
+      product.colorImages = [];
+      if (product.rawColorImages) {
+        product.rawColorImages.split(';').map(s => s.trim()).filter(Boolean).forEach(pair => {
+          const [color, url] = pair.split('|').map(x => x && x.trim());
+          if (url) product.colorImages.push({ color: color || '', url });
+        });
+      }
+      return product;
+    });
+
+    SHARED_CONFIG.cached = data;
+    return data;
+  } catch (e) {
+    console.error('Error fetching products:', e);
+    return [];
   }
 }
 
-function csvToJson(csv) {
-  const rows = csv.split("\n").map(r => r.trim()).filter(Boolean);
-  const headers = rows.shift().split(",");
-  return rows.map(row => {
-    const values = row.split(",");
-    let obj = {};
-    headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
-    return obj;
-  });
+// Robust CSV row splitter that respects quoted commas
+function splitCsvRow(row) {
+  // split on commas not inside quotes
+  return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s.replace(/^"|"$/g,'').trim());
 }
 
-function renderProducts(products) {
-  container.innerHTML = "";
-  products.forEach(prod => {
-    const div = document.createElement("div");
-    div.classList.add("product");
-    div.innerHTML = `
-      <img src="${prod.image}" alt="${prod.name}">
-      <p>${prod.name} - R${prod.price}</p>
-    `;
-    container.appendChild(div);
-  });
+/* Optional small helper: preload images for a product */
+function preloadImages(product) {
+  const urls = [];
+  if (product.image) urls.push(product.image);
+  (product.colorImages || []).forEach(ci => urls.push(ci.url));
+  urls.forEach(u => { const i = new Image(); i.src = u; });
 }
 
-function showSync(show) {
-  syncStatus.style.display = show ? "block" : "none";
-}
-
-function loopScroll() {
-  if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
-    container.scrollTo({ left: 0, behavior: "smooth" });
-  }
-}
-
-// smooth auto-scroll
-setInterval(() => {
-  container.scrollBy({ left: 220, behavior: "smooth" });
-  loopScroll();
-}, 2000);
-
-// auto-refresh every 60 seconds
-setInterval(loadProducts, 60000);
-
-// initial load
-loadProducts();
+/* Expose functions for pages */
+window.initShared = initShared;
+window.fetchProducts = fetchProducts;
+window.splitCsvRow = splitCsvRow;
+window.preloadImages = preloadImages;
