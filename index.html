@@ -1,84 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Regalia Store — Home</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regalia Style — Wear Your Heritage</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="logo-wrap">
-      <img id="brandLogo" src="https://raw.githubusercontent.com/abdulndayikaban-ctrl/REGALIA-STORE/main/logo.png" alt="Regalia Style" />
+  <header class="hero">
+    <img src="assets/logo.png" alt="Regalia Style Logo" class="logo" />
+    <h1>Welcome to Regalia Style</h1>
+    <p class="tagline">Authentic prints, premium materials — Wear Your Heritage</p>
+    <div class="button-group">
+      <button class="guest">Log as Guest</button>
+      <button class="brand">Choose Brand</button>
+      <button class="plans">Buy Plans</button>
     </div>
-    <div class="header-text">Welcome to Regalia Style</div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <h1 class="hero-title">Wear Your Heritage</h1>
-      <p class="hero-sub">Authentic prints, premium materials — Regalia Style</p>
+  <section class="featured">
+    <h2>Featured</h2>
+    <div id="product-gallery" class="gallery"></div>
+  </section>
 
-      <div class="top-buttons">
-        <button id="btnGuest">Log as Guest</button>
-        <button id="btnChooseBrand">Choose Brand</button>
-        <button id="btnBuyPlains">Buy Plains</button>
-      </div>
-    </section>
-
-    <section class="carousel-section">
-      <h2>Featured</h2>
-      <div id="carousel" class="carousel"></div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div>Contact: hello@regaliastyle.co.za</div>
-    <div>Address: Johannesburg, South Africa</div>
+  <footer class="footer">
+    <p>Contact: hello@regaliastyle.co.za</p>
+    <p>Address: Johannesburg, South Africa</p>
   </footer>
 
-  <script src="script.js"></script>
   <script>
-    (async function(){
-      await initShared({
-        sheetUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBUZvqm9yLPpid77Y_10uW7vft3-uSJxXMw7AnlbFjgRu9T4F3LN-reUnEhD3fnCOtFopwV7uls_0/pub?gid=0&single=true&output=csv"
+    const sheetUrl =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlBUZvqm9yLPpid77Y_10uW7vft3-uSJxXMw7AnlbFjgRu9T4F3LN-reUnEhD3fnCOtFopwV7uls_0/pub?gid=0&single=true&output=csv";
+
+    async function loadProducts() {
+      const res = await fetch(sheetUrl);
+      const text = await res.text();
+      const rows = text.split(/\r?\n/).slice(1, 5);
+      const gallery = document.getElementById("product-gallery");
+      gallery.innerHTML = "";
+
+      rows.forEach(row => {
+        const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        const imgUrl = cols[0]?.replace(/"/g, "").trim();
+        const title = cols[1]?.replace(/"/g, "").trim() || "Untitled";
+        const price = cols[2]?.replace(/"/g, "").trim() || "";
+
+        if (imgUrl.startsWith("http")) {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${imgUrl}" alt="${title}" onerror="this.src='assets/fallback.png'">
+            <h3>${title}</h3>
+            <p class="price">${price}</p>
+          `;
+          gallery.appendChild(card);
+        }
       });
+    }
 
-      // populate carousel with first 8 products
-      const products = await fetchProducts();
-      const carousel = document.getElementById('carousel');
-      carousel.innerHTML = '';
-      const featured = products.slice(0, 8);
-      featured.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'carousel-card';
-        el.innerHTML = `
-          <img src="${(p.colorImages && p.colorImages[0]) || p.image || ''}" alt="${p.name}">
-          <div class="cc-name">${p.name}</div>
-        `;
-        el.onclick = () => {
-          // go to product page by index
-          const idx = products.indexOf(p);
-          window.location.href = `product.html?id=${idx}`;
-        };
-        carousel.appendChild(el);
-      });
-
-      // auto-slide
-      let scrollX = 0;
-      setInterval(() => {
-        if (!carousel) return;
-        const cardWidth = carousel.querySelector('.carousel-card')?.clientWidth || 220;
-        scrollX += cardWidth + 16;
-        if (scrollX >= carousel.scrollWidth - carousel.clientWidth) scrollX = 0;
-        carousel.scrollTo({ left: scrollX, behavior: 'smooth' });
-      }, 2200);
-
-      // buttons
-      document.getElementById('btnGuest').onclick = () => { window.location.href = 'guest.html'; };
-      document.getElementById('btnChooseBrand').onclick = () => { alert('Choose Brand - will implement brand picker.'); };
-      document.getElementById('btnBuyPlains').onclick = () => { window.location.href = 'guest.html'; };
-    })();
+    loadProducts();
   </script>
 </body>
 </html>
