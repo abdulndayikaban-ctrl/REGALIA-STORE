@@ -1,1 +1,0 @@
-# REGALIA-STORE
