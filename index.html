@@ -5,46 +5,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Regalia Store</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+    body { font-family: "Poppins", sans-serif; margin: 0; padding: 20px; background: #000; color: #fff; }
+    h1 { text-align: center; color: #d4af37; margin-bottom: 20px; }
     .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-    .product { background: #fff; padding: 10px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
-    .product img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; }
-    .product h3 { font-size: 16px; margin: 5px 0; }
-    .product p { font-size: 14px; color: #555; }
-    .product a { text-decoration: none; color: #fff; background: #000; padding: 6px 12px; border-radius: 5px; display: inline-block; margin-top: 5px; }
+    .product { background: #111; border: 1px solid #333; border-radius: 12px; padding: 10px; text-align: center; transition: transform 0.3s; }
+    .product:hover { transform: scale(1.03); }
+    .main-img { width: 100%; height: 200px; object-fit: contain; border-radius: 8px; background: #222; margin-bottom: 8px; }
+    .product h3 { color: #d4af37; font-size: 1rem; margin: 5px 0; }
+    .product p { color: #bbb; font-size: 0.9rem; margin: 0 0 8px; }
+    .product a { text-decoration: none; color: #000; background: #d4af37; padding: 6px 14px; border-radius: 25px; font-weight: bold; }
+    .variations { display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+    .variations img { width: 32px; height: 32px; object-fit: cover; border-radius: 5px; cursor: pointer; border: 2px solid transparent; }
+    .variations img:hover { border-color: #d4af37; }
   </style>
 </head>
 <body>
 
-  <h1>Regalia Store</h1>
+  <h1>REGALIA STORE</h1>
   <div class="products" id="product-container"></div>
 
   <script>
-    fetch('products.json')
-      .then(response => response.json())
-      .then(data => {
+    async function loadProducts() {
+      try {
+        const res = await fetch('products.json');
+        const data = await res.json();
         const container = document.getElementById('product-container');
-        data.forEach(product => {
-          // Use first variation image if featuredImage is missing
-          let imgUrl = product.images && product.images.length > 0 
-                        ? product.images[0] 
-                        : product.variationImageURL || product.featuredImage?.large || '';
+        container.innerHTML = '';
 
-          // Skip products with no image
-          if(!imgUrl) return;
+        data.forEach(product => {
+          // Try several possible image locations
+          let mainImg =
+            product.featuredImage?.large ||
+            product.featuredImage?.thumbnail ||
+            product.variationImageURL ||
+            (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : "");
+
+          if (!mainImg) return; // skip if no image
 
           const div = document.createElement('div');
           div.className = 'product';
+
           div.innerHTML = `
-            <img src="${imgUrl}" alt="${product.name}">
+            <img class="main-img" src="${mainImg}" alt="${product.name}">
             <h3>${product.name}</h3>
-            <p>${product.price}</p>
-            <a href="${product.url}" target="_blank">View Product</a>
+            <p>${product.price ? "R" + product.price : ""}</p>
+            <a href="${product.url || "#"}" target="_blank">View Product</a>
+            <div class="variations"></div>
           `;
+
+          // Add variation images if available
+          const varBox = div.querySelector('.variations');
+          if (Array.isArray(product.variations) && product.variations.length > 0) {
+            product.variations.slice(0, 5).forEach(v => {
+              if (v.variationImageURL) {
+                const thumb = document.createElement('img');
+                thumb.src = v.variationImageURL;
+                thumb.alt = v.name;
+                thumb.onclick = () => div.querySelector('.main-img').src = v.variationImageURL;
+                varBox.appendChild(thumb);
+              }
+            });
+          }
+
           container.appendChild(div);
         });
-      })
-      .catch(err => console.error('Error loading products:', err));
+      } catch (err) {
+        console.error("Error loading products:", err);
+      }
+    }
+
+    loadProducts();
   </script>
 
 </body>
