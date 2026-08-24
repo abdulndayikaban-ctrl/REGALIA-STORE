@@ -1,6 +1,128 @@
 {
-  "shops": [{"shopId": "regalia_main", "name": "Regalia Main"}],
-  "products": [],
-  "services": [],
-  "note": "Lesson 1 will fill"
-} 123
+  "shops": [
+    {
+      "shopId": "regalia_main",
+      "name": "REGALIA STYLE",
+      "owner": "Abdul Divad Kabika",
+      "logoText": "R",
+      "logoImage": "",
+      "desc": "Main Shop - ANC Clothing & Custom Wear Specialists",
+      "location": "East London, Eastern Cape, South Africa",
+      "whatsapp": "+27...",
+      "profileType": "main",
+      "isOpen": true
+    }
+  ],
+  "rented_shops": [],
+  "products": [
+    {
+      "id": "regalia-buy-anc-cap-001",
+      "name": "ANC Cap Example - Will be replaced by Captivity scraper",
+      "image": "https://via.placeholder.com/300x300?text=BUY+REGALIA+ANC",
+      "price": 100,
+      "price_50": 150,
+      "category": "BUY",
+      "subCategory": "Buy Regalia - ANC Clothing",
+      "shopId": "regalia_main",
+      "status": "example"
+    },
+    {
+      "id": "regalia-buy-custom-001",
+      "name": "Custom My Cloth - Example Service",
+      "image": "https://via.placeholder.com/300x300?text=CUSTOM+MY+CLOTH",
+      "price": 0,
+      "price_50": 0,
+      "category": "BUY",
+      "subCategory": "Custom My Cloth",
+      "shopId": "regalia_main",
+      "status": "service-placeholder",
+      "note": "Customer uploads design - we quote later"
+    },
+    {
+      "id": "regalia-sell-rent-example",
+      "name": "Rent Shop With Products - Example",
+      "image": "https://via.placeholder.com/300x300?text=RENT+SHOP+WITH+PRODUCTS",
+      "price": 0,
+      "price_50": 0,
+      "category": "SELL",
+      "subCategory": "Rent Shop With Products",
+      "shopId": "regalia_main",
+      "status": "info",
+      "note": "When someone rents, we create profile like main shop but different logo/details"
+    },
+    {
+      "id": "regalia-sell-own-pdf-example",
+      "name": "Own Products - Upload PDF Example",
+      "image": "https://via.placeholder.com/300x300?text=OWN+PRODUCT+PDF",
+      "price": 250,
+      "price_50": 250,
+      "category": "SELL",
+      "subCategory": "Own Products - Upload PDF",
+      "shopId": "regalia_main",
+      "status": "example",
+      "note": "User uploads PDF, platform makes it look same as other products"
+    },
+    {
+      "id": "service-embroidery-001",
+      "name": "Embroidery Service - Per Logo",
+      "image": "https://via.placeholder.com/300x300?text=EMBROIDERY",
+      "price": 50,
+      "price_50": 50,
+      "category": "SERVICES",
+      "subCategory": "Embroidery",
+      "shopId": "regalia_main"
+    },
+    {
+      "id": "service-dtf-001",
+      "name": "DTF Printing - Per Print",
+      "image": "https://via.placeholder.com/300x300?text=DTF",
+      "price": 40,
+      "price_50": 40,
+      "category": "SERVICES",
+      "subCategory": "DTF Printing",
+      "shopId": "regalia_main"
+    },
+    {
+      "id": "service-sublimation-001",
+      "name": "Sublimation - Full Print",
+      "image": "https://via.placeholder.com/300x300?text=SUBLIMATION",
+      "price": 60,
+      "price_50": 60,
+      "category": "SERVICES",
+      "subCategory": "Sublimation",
+      "shopId": "regalia_main"
+    },
+    {
+      "id": "plains-buy-blanks-001",
+      "name": "Buy Blanks - Plain White T-Shirt",
+      "image": "https://via.placeholder.com/300x300?text=BUY+BLANKS",
+      "price": 80,
+      "price_50": 120,
+      "category": "PLAINS",
+      "subCategory": "Buy Blanks",
+      "shopId": "regalia_main"
+    },
+    {
+      "id": "plains-customize-blanks-001",
+      "name": "Customize Blanks - Add Your Logo to Blank",
+      "image": "https://via.placeholder.com/300x300?text=CUSTOMIZE+BLANKS",
+      "price": 0,
+      "price_50": 0,
+      "category": "PLAINS",
+      "subCategory": "Customize Blanks",
+      "shopId": "regalia_main",
+      "note": "Choose blank then upload logo"
+    },
+    {
+      "id": "plains-custom-sublimation-001",
+      "name": "Custom Sublimation - All Over Print Blank",
+      "image": "https://via.placeholder.com/300x300?text=CUSTOM+SUBLIMATION",
+      "price": 0,
+      "price_50": 0,
+      "category": "PLAINS",
+      "subCategory": "Custom Sublimation",
+      "shopId": "regalia_main"
+    }
+  ],
+  "note": "Master DB - 4 cats intact, 10 sub-options, Main shop only. Scraper will fill BUY > Buy Regalia"
+}
