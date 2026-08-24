@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REGALIA STYLE</title>
+<style>
+body{margin:0;font-family:Arial;background:#111;color:#fff}
+header{padding:20px;text-align:center;background:linear-gradient(90deg,#000,#4a3b00,#1a4d2e);border-bottom:3px solid gold}
+nav{display:flex;gap:10px;justify-content:center;padding:15px;flex-wrap:wrap}
+nav button{padding:12px 18px;border:2px solid gold;background:#000;color:gold;font-weight:bold;cursor:pointer}
+nav button.active{background:gold;color:#000}
+#products{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:15px;padding:20px}
+.card{background:#222;border:1px solid #444;padding:10px;text-align:center}
+.card img{width:100%;height:180px;object-fit:contain;background:#fff}
+</style>
+</head>
+<body>
+<header><h1>REGALIA STYLE</h1><p>SELL | BUY | SERVICES | PLAINS & CUSTOM</p></header>
+<nav>
+<button class="active" onclick="filterCat('ALL',this)">ALL</button>
+<button onclick="filterCat('BUY',this)">1.BUY</button>
+<button onclick="filterCat('SELL',this)">2.SELL</button>
+<button onclick="filterCat('SERVICES',this)">3.SERVICES</button>
+<button onclick="filterCat('PLAINS',this)">4.PLAINS</button>
+</nav>
+<div id="products">Loading...</div>
+<script src="app.js"></script>
+</body>
+</html>
