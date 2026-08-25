@@ -1,27 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>REGALIA STYLE - Mall</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REGALIA MALL V2 - House Structure</title>
 <style>
-body{margin:0;font-family:Arial;background:#111;color:#fff}
-header{padding:15px;text-align:center;background:linear-gradient(90deg,#000,#4a3b00,#1a4d2e);border-bottom:3px solid gold;cursor:pointer}
-#breadcrumb{padding:10px 20px;background:#222;color:gold}
-#breadcrumb span{cursor:pointer;text-decoration:underline;margin:0 5px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px;padding:20px}
-.card{background:#222;border:1px solid #444;padding:15px;text-align:center;cursor:pointer;border-radius:8px}
-.card:hover{border-color:gold}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}
+body{background:#0a0a0a;color:#fff}
+header{background:#111;border-bottom:2px solid gold;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.logo{color:gold;font-weight:bold;font-size:20px}
+nav button{background:#222;color:#fff;border:1px solid #333;padding:10px 15px;margin:0 3px;cursor:pointer}
+nav button.active{background:gold;color:#000;font-weight:bold}
+#breadcrumb{padding:10px 15px;color:#888;background:#151515}
+#breadcrumb span{cursor:pointer;color:gold}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px;padding:15px}
+.card{background:#1a1a1a;border:1px solid #333;padding:15px;cursor:pointer;border-radius:8px;transition:0.2s}
+.card:hover{border-color:gold;transform:translateY(-2px)}
 .card img{width:100%;height:160px;object-fit:contain;background:#fff;border-radius:4px}
-.btn{padding:12px 18px;border:2px solid gold;background:#000;color:gold;font-weight:bold;cursor:pointer;margin:5px;border-radius:5px}
-.btn.active,.btn:hover{background:gold;color:#000}
-.shop-logo{width:80px;height:80px;border-radius:50%;background:#fff;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#000;font-weight:bold}
+.shop-badge{background:gold;color:#000;font-size:10px;padding:2px 6px;border-radius:10px;display:inline-block;margin-top:5px}
+.shop-top{display:flex;align-items:center;gap:10px;background:#111;padding:10px;border:1px solid gold;border-radius:6px;margin-bottom:15px;cursor:pointer}
+.shop-top .logo-circle{width:40px;height:40px;background:gold;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.btn{background:gold;color:#000;border:none;padding:10px 20px;font-weight:bold;cursor:pointer;border-radius:4px;margin:5px}
+.btn2{background:#222;color:#fff;border:1px solid #555;padding:10px 20px;cursor:pointer;border-radius:4px;margin:5px}
+.form-box{background:#1a1a1a;padding:20px;border:1px solid #333;border-radius:8px;max-width:600px}
+.form-box input,.form-box select,.form-box textarea{width:100%;padding:10px;margin:6px 0;background:#000;color:#fff;border:1px solid #444}
+.size-opt{display:inline-block;border:1px solid #555;padding:8px 12px;margin:4px;cursor:pointer;border-radius:4px}
+.size-opt.active{border-color:gold;background:gold;color:#000}
+.toggle{display:flex;gap:10px;padding:15px;overflow-x:auto}
+.toggle button{white-space:nowrap;padding:8px 14px;border:1px solid #555;background:#222;color:#fff;border-radius:20px;cursor:pointer}
+.toggle button.active{background:gold;color:#000}
 </style>
 </head>
 <body>
-<header onclick="goHome()"><h1>REGALIA STYLE MALL</h1><p>ANC REGALIA STYLE - Main & Only Shop for now</p></header>
-<div id="breadcrumb">Home</div>
-<div id="content" class="grid">Loading...</div>
+<header>
+<div class="logo">REGALIA MALL V2</div>
+<nav>
+<button onclick="go('BUY')" id="btn-BUY" class="active">1. BUY</button>
+<button onclick="go('RENT')" id="btn-RENT">2. RENT SHOP</button>
+<button onclick="go('BRANDING')" id="btn-BRANDING">3. BRANDING</button>
+<button onclick="go('PLAINS')" id="btn-PLAINS">4. BUY PLAINS</button>
+</nav>
+</header>
+<div id="breadcrumb">Home > BUY</div>
+<div id="content"></div>
 <script src="app.js"></script>
 </body>
 </html>
