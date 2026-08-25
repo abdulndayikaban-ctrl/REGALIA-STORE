@@ -1,210 +1,152 @@
+/** REGALIA MALL V2 - Professional Code - House Logic Locked */
 const SHOPS = [
-  {shopId:"anc_regalia", name:"ANC REGALIA STYLE", owner:"Abdul Divad Kabika", logo:"ANC", location:"East London, EC", phone:"277...", desc:"Main Shop - ANC Clothing & Regalia"}
+  {shopId:"anc_regalia", name:"ANC REGALIA STYLE", owner:"Abdul Divad Kabika", logo:"ANC", location:"East London, EC", phone:"27700000000", verified:true, size:36}
 ];
 
 const PRODUCTS = [
-  {id:"p1", name:"ANC Cap - Yellow", image:"https://via.placeholder.com/300?text=ANC+Cap", price:250, category:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"100% Cotton Twill, 6 panel, Embroidered logo"},
-  {id:"p2", name:"ANC Hoodie Black", image:"https://via.placeholder.com/300?text=Hoodie", price:550, category:"BUY", sub:"Hoodies", shopId:"anc_regalia", fabric:"Fleece 240gsm, Brushed inside, DTF front"},
-  {id:"p3", name:"Golf Shirt - Green", image:"https://via.placeholder.com/300?text=Golf+Shirt", price:450, category:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Pique Golf 180gsm, Collar, Sublimation ready"},
-  {id:"p4", name:"ANC Jacket", image:"https://via.placeholder.com/300?text=Jacket", price:750, category:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Softshell, Water resistant, Embroidery chest"},
-  {id:"p5", name:"Round Neck - DTF", image:"https://via.placeholder.com/300?text=Round+Neck", price:300, category:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Cotton 160gsm, DTF 28x28cm"},
-  {id:"p6", name:"Plain Blank - Black", image:"https://via.placeholder.com/300?text=Plain+Blank", price:120, category:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain - 100% Cotton"},
+  {id:"1", name:"ANC Cap - Yellow/Green", img:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400", price:250, cat:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"100% Cotton Twill, 6 Panel, Embroidered, Adjustable strap"},
+  {id:"2", name:"ANC Hoodie - Black", img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400", price:550, cat:"BUY", sub:"Hoodies", shopId:"anc_regalia", fabric:"Fleece 240gsm, Brushed inside, DTF print 28cm"},
+  {id:"3", name:"Golf Shirt - ANC Green", img:"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400", price:450, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Pique 180gsm, Collar, 3 button, Sublimation ready"},
+  {id:"4", name:"ANC Jacket - Winter", img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400", price:750, cat:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Softshell, Water resistant, Embroidery chest"},
+  {id:"5", name:"Round Neck - DTF Print", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:300, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Cotton 160gsm, DTF 28x28cm front, Sizes S-3XL"},
+  {id:"6", name:"ANC Beanie - Winter", img:"https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400", price:180, cat:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"Acrylic knit, Embroidered logo"},
+  {id:"7", name:"Plain Blank - Black", img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm, 100% Cotton, Bulk"},
+  {id:"8", name:"Plain Blank - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm"},
 ];
 
-let state = {view:"BUY", filter:"All", selected:null, rentStep:"options", branding:"options"};
+const BRANDING_CATS = [
+  {id:"embroidery", name:"Embroidery", desc:"Drop off / Collect / Courier"},
+  {id:"dtf", name:"DTF Printing", desc:"Width 58cm x meters"},
+  {id:"sub", name:"Sublimation", desc:"Width 145cm x meters"},
+  {id:"outdoors", name:"Outdoors", desc:"Banners, Flags, Gazebo"}
+];
 
-function go(view){
-  state.view=view;
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-  document.getElementById('btn-'+view)?.classList.add('active');
+let S = {view:"BUY", filter:"All", product:null, rent:"options", branding:"options", size:null};
+
+function router(v){
+  S.view=v; S.filter="All";
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('n-'+v).classList.add('active');
+  document.getElementById('crumb').innerText="HOME / "+v;
   render();
 }
 
 function render(){
-  const bc=document.getElementById('breadcrumb');
-  const ct=document.getElementById('content');
-  bc.innerHTML=`Home > ${state.view}`;
-  if(state.view==="BUY") renderBuy(ct);
-  if(state.view==="PLAINS") renderPlains(ct);
-  if(state.view==="RENT") renderRent(ct);
-  if(state.view==="BRANDING") renderBranding(ct);
-  if(state.view==="PRODUCT") renderProduct(ct);
+  const app=document.getElementById('app');
+  const sub=document.getElementById('subbar');
+  sub.innerHTML="";
+  if(S.view==="BUY"){
+    const cats=["All","Headwear","Apparel","Jackets","Hoodies"];
+    sub.innerHTML=cats.map(c=>`<button class="${S.filter===c?'active':''}" onclick="setF('${c}')">${c}</button>`).join('');
+    let list=PRODUCTS.filter(p=>p.cat==="BUY"); if(S.filter!=="All") list=list.filter(p=>p.sub===S.filter);
+    app.innerHTML=`<div class="grid">${list.map(card).join('')}</div>`;
+  } else if(S.view==="PLAINS"){
+    sub.innerHTML=`<span style="color:#666;font-size:12px">Captivity Blanks - Scraper will auto-fill here - Buy at cost +50% markup</span>`;
+    let list=PRODUCTS.filter(p=>p.cat==="PLAINS");
+    app.innerHTML=`<h3 style="margin-bottom:12px">BUY PLAINS - Blanks</h3><div class="grid">${list.map(card).join('')}</div>`;
+  } else if(S.view==="RENT"){
+    sub.innerHTML=`<span style="color:#666;font-size:12px">Shop sizes: 9 | 18 | 36 | 72 | 81 items - Choose after profile</span>`;
+    renderRent(app);
+  } else if(S.view==="BRANDING"){
+    sub.innerHTML=BRANDING_CATS.map(b=>`<button class="${S.branding===b.id?'active':''}" onclick="openB('${b.id}')">${b.name}</button>`).join('');
+    if(S.branding==="options"){
+      app.innerHTML=`<div class="hero">${BRANDING_CATS.map(b=>`<div class="hcard" onclick="openB('${b.id}')"><h2>${b.name}</h2><p>${b.desc}</p></div>`).join('')}</div>`;
+    } else {
+      renderBrand(app);
+    }
+  }
 }
 
-function renderBuy(ct){
-  const subs=["All","Headwear","Apparel","Jackets","Hoodies","Caps"];
-  let html=`<div class="toggle">${subs.map(s=>`<button class="${state.filter===s?'active':''}" onclick="setFilter('${s}')">${s}</button>`).join('')}</div>`;
-  let list = PRODUCTS.filter(p=>p.category==="BUY");
-  if(state.filter!=="All") list=list.filter(p=>p.sub===state.filter);
-  html+=`<div class="grid">${list.map(p=>`
-    <div class="card" onclick="openProduct('${p.id}')">
-      <img src="${p.image}">
-      <h4>${p.name}</h4>
-      <p style="color:gold">R${p.price}</p>
-      <span class="shop-badge">${SHOPS.find(s=>s.shopId===p.shopId)?.name||'ANC'}</span>
-    </div>`).join('')}</div>`;
-  ct.innerHTML=html;
+function card(p){
+  const sh=SHOPS.find(s=>s.shopId===p.shopId);
+  return `<div class="card" onclick="openP('${p.id}')"><div class="img"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(p.name)}'"></div><div class="info"><h3>${p.name}</h3><div class="price">R${p.price}</div><div class="shop-badge">● ${sh.name}</div></div></div>`;
 }
-
-function renderPlains(ct){
-  let list=PRODUCTS.filter(p=>p.category==="PLAINS");
-  ct.innerHTML=`<div style="padding:15px"><h2>BUY PLAINS - Captivity Blanks (Scraper will fill here)</h2><p>All blanks mixed, same as BUY but from Captivity</p></div><div class="grid">${list.map(p=>`
-    <div class="card" onclick="openProduct('${p.id}')">
-      <img src="${p.image}"><h4>${p.name}</h4><p style="color:gold">R${p.price} + 50%</p>
-      <span class="shop-badge">Captivity Blank</span>
-    </div>`).join('')}</div>`;
-}
-
-function openProduct(id){
-  state.selected=PRODUCTS.find(p=>p.id===id);
-  state.view="PRODUCT";
-  render();
-}
-
-function renderProduct(ct){
-  const p=state.selected;
-  const shop=SHOPS.find(s=>s.shopId===p.shopId);
-  ct.innerHTML=`
-    <div style="padding:15px;max-width:900px;margin:auto">
-      <button class="btn2" onclick="go('BUY')">← Back to All Products</button>
-      <div class="shop-top" onclick="alert('Shop Profile:\\n${shop.name}\\nOwner: ${shop.owner}\\nLocation: ${shop.location}\\nPhone: ${shop.phone}\\n\\nVerification: Verified\\nShop Size: 36 items')">
-        <div class="logo-circle">${shop.logo}</div>
-        <div><strong>${shop.name}</strong><br><small>${shop.location} - Tap for profile</small></div>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:20px;background:#1a1a1a;padding:20px;border-radius:8px">
-        <img src="${p.image}" style="width:320px;height:320px;object-fit:contain;background:#fff;border-radius:6px">
-        <div style="flex:1">
-          <h2>${p.name}</h2>
-          <h3 style="color:gold;margin:10px 0">R${p.price}</h3>
-          <p>Category: ${p.sub}</p>
-          <br>
-          <button class="btn2" onclick="alert('Added to Cart - upgrade later')">Add to Cart</button>
+function setF(f){S.filter=f;render();}
+function openP(id){
+  S.product=PRODUCTS.find(p=>p.id===id);
+  const p=S.product; const sh=SHOPS.find(s=>s.shopId===p.shopId);
+  document.getElementById('modalInner').innerHTML=`
+    <div class="shop-head" onclick="alert('Shop Profile:\\n${sh.name}\\nOwner: ${sh.owner}\\nLocation: ${sh.location}\\nVerified: ${sh.verified?'Yes':''}\\nSize: ${sh.size} items')">
+      <div class="av">${sh.logo}</div>
+      <div><strong style="font-size:14px">${sh.name}</strong><br><small style="color:#888">${sh.location} • Tap for full profile</small></div>
+      <div style="margin-left:auto;color:gold;font-size:11px">VERIFIED</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;padding:18px">
+      <img src="${p.img}" style="width:340px;height:340px;object-fit:contain;background:#fff;border-radius:10px">
+      <div style="flex:1;min-width:260px">
+        <h2>${p.name}</h2>
+        <div style="color:gold;font-weight:800;font-size:22px;margin:10px 0">R${p.price}</div>
+        <div style="color:#888;font-size:13px">Category: ${p.sub} | Stock: In Stock</div>
+        <div style="margin:16px 0;display:flex;gap:8px">
+          <button class="btn2" onclick="alert('Added to cart - upgrade later with quantities')">Add to Cart</button>
           <button class="btn" onclick="buyNow()">Buy Now → WhatsApp</button>
-          <hr style="margin:20px 0;border:0;border-top:1px solid #333">
-          <h4>Fabric / Features</h4>
-          <p style="color:#aaa;margin-top:8px;line-height:1.5">${p.fabric}</p>
-          <ul style="color:#aaa;margin:10px 0 0 20px">
+        </div>
+        <div style="margin-top:18px;border-top:1px solid #222;padding-top:14px">
+          <h4 style="font-size:13px;margin-bottom:8px">Fabric / Features</h4>
+          <p style="color:#aaa;font-size:13px;line-height:1.6">${p.fabric}</p>
+          <ul style="color:#666;font-size:12px;margin:10px 0 0 18px;line-height:1.8">
             <li>Sizes: S, M, L, XL, 2XL, 3XL</li>
-            <li>Wash: Cold, Do not bleach</li>
-            <li>Delivery: East London + Courier</li>
+            <li>Print: ${p.cat==='BUY'?'ANC Regalia':'Blank for branding'}</li>
+            <li>Delivery: Drop off / Collect / Courier (East London)</li>
           </ul>
         </div>
       </div>
     </div>`;
+  document.getElementById('modal').style.display='grid';
 }
-
+function closeModal(){document.getElementById('modal').style.display='none';}
 function buyNow(){
-  const p=state.selected;
-  const shop=SHOPS.find(s=>s.shopId===p.shopId);
-  const msg=`Hi, I want to order:%0AProduct: ${p.name}%0APrice: R${p.price}%0AShop: ${shop.name}%0ALocation: ${shop.location}%0AFabric: ${p.fabric}`;
-  window.open(`https://wa.me/27700000000?text=${msg}`,'_blank');
+  const p=S.product; const sh=SHOPS.find(s=>s.shopId===p.shopId);
+  const txt=`Hi REGALIA MALL, I want to order:%0A%0A*Product:* ${p.name}%0A*Price:* R${p.price}%0A*Shop:* ${sh.name} (${sh.location})%0A*Fabric:* ${p.fabric}%0A%0ASizes needed: ?%0AQty: ?`;
+  window.open(`https://wa.me/27700000000?text=${txt}`,'_blank');
 }
 
-function setFilter(f){state.filter=f;render();}
-
-function renderRent(ct){
-  if(state.rentStep==="options"){
-    ct.innerHTML=`
-      <div style="padding:20px">
-        <h2>RENT SHOP - Create Your Shop</h2>
-        <div class="grid" style="margin-top:20px">
-          <div class="card" onclick="rentOption('have')"><h3>I have products</h3><p>You have your own stock. Register shop + verification + choose size 9,18,36,72,81</p></div>
-          <div class="card" onclick="rentOption('nohave')"><h3>I don't have products</h3><p>We supply from Captivity blanks. Still create profile + shop size</p></div>
-        </div>
-      </div>`;
-  } else if(state.rentStep==="form"){
-    ct.innerHTML=`
-      <div style="padding:20px">
-        <button class="btn2" onclick="state.rentStep='options';render()">← Back</button>
-        <h2>Register Shop Profile - ${state.rentHave==='have'?'I have products':'I don\\'t have products'}</h2>
-        <div class="form-box" style="margin-top:15px">
-          <input placeholder="Shop Name (e.g ANC REGALIA STYLE)">
-          <input placeholder="Owner Name">
-          <input placeholder="Phone (WhatsApp)">
-          <input placeholder="Location">
-          <input placeholder="Logo URL or upload later">
-          <label><input type="checkbox"> ID Verification</label><br>
-          <label><input type="checkbox"> Business Registration (optional)</label><br><br>
-          <p>Choose Shop Size (items you can list):</p>
-          <div id="sizes">${[9,18,36,72,81].map(n=>`<span class="size-opt" onclick="pickSize(${n})" id="size-${n}">${n} items</span>`).join('')}</div>
-          <br><br>
-          <button class="btn" onclick="createShop()">Create Shop</button>
-        </div>
-      </div>`;
+function renderRent(app){
+  if(S.rent==="options"){
+    app.innerHTML=`<div class="hero"><div class="hcard" onclick="S.rent='form';S.rentType='have';render()"><h2>I have products</h2><p>You have stock. Create full profile + verification + shop size 9,18,36,72,81</p></div><div class="hcard" onclick="S.rent='form';S.rentType='nohave';render()"><h2>I don't have products</h2><p>We supply from Captivity blanks. Still need profile + size</p></div></div>`;
+  } else if(S.rent==="form"){
+    app.innerHTML=`<div style="display:flex;gap:20px;flex-wrap:wrap"><div class="form"><h3>Shop Profile - ${S.rentType==='have'?'Have Products':'No Products'}</h3>
+      <input id="sn" placeholder="Shop Name (e.g ANC REGALIA STYLE)">
+      <input id="on" placeholder="Owner Full Name">
+      <input id="ph" placeholder="WhatsApp Phone">
+      <input id="lc" placeholder="Location (e.g East London, EC)">
+      <input placeholder="Logo URL (or upload later)">
+      <div style="margin:10px 0"><label><input type="checkbox"> ID Verification</label><br><label><input type="checkbox"> Business Reg (optional)</label></div>
+      <p style="font-size:12px;margin:8px 0;color:#888">Shop Size - max items you can list:</p>
+      <div>${[9,18,36,72,81].map(n=>`<span class="size" onclick="pick(${n})" id="sz-${n}">${n} items</span>`).join('')}</div>
+      <br><button class="btn" onclick="createShop()">Create Shop → Success</button> <button class="btn2" onclick="S.rent='options';render()">Back</button>
+    </div><div style="flex:1;min-width:260px;color:#666;font-size:12px;line-height:1.7"><h4 style="color:#fff">How it works</h4><p>After profile creation, you get seller dashboard where you add products. Buyers see your products mixed in BUY mall view. Small logo at top links to your profile.</p></div></div>`;
   } else {
-    ct.innerHTML=`<div style="padding:40px;text-align:center"><h1 style="color:gold">✓ Shop Successfully Created!</h1><p style="margin:15px">Your shop is now live in BUY - mall view</p><button class="btn" onclick="state.rentStep='options';go('BUY')">Go to BUY - See your shop</button></div>`;
+    app.innerHTML=`<div class="success"><h1>✓ Shop Successfully Created!</h1><p style="color:#888;margin:12px">Your shop is live in BUY - House Full Condition 2 Met</p><br><button class="btn" onclick="S.rent='options';router('BUY')">Go to BUY Mall</button></div>`;
   }
 }
-
-function rentOption(h){state.rentHave=h;state.rentStep='form';render();}
-function pickSize(n){
-  document.querySelectorAll('.size-opt').forEach(e=>e.classList.remove('active'));
-  document.getElementById('size-'+n).classList.add('active');
-  state.pickedSize=n;
-}
+function pick(n){S.size=n;document.querySelectorAll('.size').forEach(e=>e.classList.remove('active'));document.getElementById('sz-'+n).classList.add('active');}
 function createShop(){
-  if(!state.pickedSize) return alert('Pick shop size: 9,18,36,72,81');
-  state.rentStep='success';
-  render();
+  const name=document.getElementById('sn')?.value||"New Shop";
+  if(!S.size) return alert("Pick shop size: 9, 18, 36, 72, 81");
+  // simulate add
+  SHOPS.push({shopId:name.toLowerCase().replace(/\s/g,'_'), name:name, owner:document.getElementById('on').value, logo:name[0], location:document.getElementById('lc').value, verified:false, size:S.size});
+  S.rent="success"; render();
 }
 
-function renderBranding(ct){
-  if(state.branding==="options"){
-    ct.innerHTML=`
-      <div style="padding:20px">
-        <h2>BRANDING - 4 Services</h2>
-        <div class="grid" style="margin-top:20px">
-          <div class="card" onclick="openBrand('embroidery')"><h3>Embroidery</h3><p>Drop off / Collect / Courier + logo + setup fee</p></div>
-          <div class="card" onclick="openBrand('dtf')"><h3>DTF Printing</h3><p>Width 58cm x meters, artwork upload</p></div>
-          <div class="card" onclick="openBrand('sub')"><h3>Sublimation</h3><p>Width 145cm x meters</p></div>
-          <div class="card" onclick="openBrand('outdoors')"><h3>Outdoors</h3><p>Banners, Flags, Gazebo etc</p></div>
-        </div>
-      </div>`;
-  } else {
-    let html=`<div style="padding:20px"><button class="btn2" onclick="state.branding='options';render()">← Back</button>`;
-    if(state.branding==='embroidery'){
-      html+=`<h2>Embroidery Order</h2><div class="form-box" style="margin-top:15px">
-        <select><option>Drop off</option><option>Collect</option><option>Courier</option></select>
-        <input placeholder="Upload Logo PNG / PDF - Is this first time? (setup fee)">
-        <textarea placeholder="Position: cut paper + needle where logo should be + size cm"></textarea>
-        <input placeholder="Quantity">
-        <button class="btn" onclick="alert('Embroidery order sent to WhatsApp')">Send to WhatsApp</button>
-      </div>`;
-    }
-    if(state.branding==='dtf'){
-      html+=`<h2>DTF Printing - Width 58cm</h2><div class="form-box" style="margin-top:15px">
-        <select id="art" onchange="toggleArt()"><option value="yes">I have artwork</option><option value="no">Require Graphic Design</option></select>
-        <div id="art-yes"><input placeholder="Upload PDF / PNG - Width 58cm, length in meters"><input placeholder="Length meters required"></div>
-        <div id="art-no" style="display:none"><textarea placeholder="Describe design needed"></textarea></div>
-        <button class="btn" onclick="alert('DTF order sent')">Send to WhatsApp</button>
-      </div>`;
-    }
-    if(state.branding==='sub'){
-      html+=`<h2>Sublimation - Width 145cm</h2><div class="form-box" style="margin-top:15px">
-        <select><option>I have artwork</option><option>Require Graphic Design</option></select>
-        <input placeholder="Upload PDF / PNG - Width 145cm x meters">
-        <input placeholder="Length meters">
-        <button class="btn" onclick="alert('Sublimation order sent')">Send to WhatsApp</button>
-      </div>`;
-    }
-    if(state.branding==='outdoors'){
-      html+=`<h2>Outdoors - Products & Categories</h2><div class="grid" style="margin-top:15px">
-        <div class="card"><img src="https://via.placeholder.com/200?text=Banner"><h4>Banners</h4></div>
-        <div class="card"><img src="https://via.placeholder.com/200?text=Flag"><h4>Flags</h4></div>
-        <div class="card"><img src="https://via.placeholder.com/200?text=Gazebo"><h4>Gazebo</h4></div>
-        <div class="card"><img src="https://via.placeholder.com/200?text=Board"><h4>Boards</h4></div>
-      </div>`;
-    }
-    html+=`</div>`;
-    ct.innerHTML=html;
+function openB(id){S.branding=id; document.getElementById('crumb').innerText="HOME / BRANDING / "+id.toUpperCase(); render();}
+function renderBrand(app){
+  let h=`<button class="btn2" onclick="S.branding='options';router('BRANDING')">← Back to Branding</button><div style="margin-top:14px">`;
+  if(S.branding==="embroidery"){
+    h+=`<div class="form"><h3>Embroidery Order</h3><select><option>Drop off at shop</option><option>Collect from client</option><option>Courier (Paxi/Aramex)</option></select><input placeholder="Logo file - PNG/PDF - First time = setup fee R150"><textarea placeholder="Position: Cut paper + pin/needle where logo should be - include size cm (e.g Left chest 10cm)"></textarea><input placeholder="Quantity"><input placeholder="Garment to embroider on"><button class="btn" onclick="alert('Order sent to WhatsApp - house full 1')">Send to WhatsApp</button></div>`;
   }
+  if(S.branding==="dtf"){
+    h+=`<div class="form"><h3>DTF Printing - Width 58cm</h3><select id="dtfArt" onchange="dtfT()"><option value="yes">I have artwork</option><option value="no">Need Graphic Design</option></select><div id="dtfYes"><input placeholder="Upload PDF/PNG - Artwork"><input placeholder="Length meters required (e.g 2m)"><p style="color:#666;font-size:11px">Fixed width 58cm x your meters - we print roll</p></div><div id="dtfNo" style="display:none"><textarea placeholder="Describe design - colors, text, logo idea"></textarea></div><button class="btn" onclick="alert('DTF order to WhatsApp')">Send</button></div>`;
+  }
+  if(S.branding==="sub"){
+    h+=`<div class="form"><h3>Sublimation - Width 145cm</h3><input placeholder="Upload PDF/PNG - Width 145cm"><input placeholder="Length meters"><p style="color:#666;font-size:11px">Full sublimation - all over print - 145cm roll</p><button class="btn" onclick="alert('Sub order to WhatsApp')">Send</button></div>`;
+  }
+  if(S.branding==="outdoors"){
+    h+=`<h3>Outdoors - Banners, Flags, Gazebo</h3><div class="grid" style="margin-top:12px"><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Banner"></div><div class="info"><h3>Vinyl Banners</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Flag"></div><div class="info"><h3>Flags</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Gazebo"></div><div class="info"><h3>Gazebo 3x3</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Board"></div><div class="info"><h3>Correx Boards</h3></div></div></div>`;
+  }
+  h+=`</div>`;
+  app.innerHTML=h;
 }
-
-function openBrand(b){state.branding=b;render();}
-function toggleArt(){
-  const v=document.getElementById('art').value;
-  document.getElementById('art-yes').style.display=v==='yes'?'block':'none';
-  document.getElementById('art-no').style.display=v==='no'?'block':'none';
-}
+function dtfT(){const v=document.getElementById('dtfArt').value;document.getElementById('dtfYes').style.display=v==='yes'?'block':'none';document.getElementById('dtfNo').style.display=v==='no'?'block':'none';}
 
 render();
