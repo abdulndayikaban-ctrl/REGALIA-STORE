@@ -1,277 +1,476 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REGALIA MALL | ANC REGALIA STYLE</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REGALIA MALL V2 HOUSE • EST 2024 - PURE HTML EXACT</title>
 <style>
-:root{--gold:#FFC300;--black:#0B0B0B;--card:#151515;--border:#232323}
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',Arial}
-body{background:linear-gradient(135deg,#0b0b0b 0%,#1b1209 24%,#0d1c1f 52%,#120d1a 100%);background-size:200% 200%;animation:gradientShift 18s ease infinite;color:#fff;min-height:100vh}
-@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-header{background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:14px 22px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
-.brand{display:flex;gap:10px;align-items:center}
-.brand .dot{width:32px;height:32px;background:var(--gold);color:#000;border-radius:50%;display:grid;place-items:center;font-weight:800;box-shadow:0 0 22px rgba(255,195,0,.45)}
-.brand h1{font-size:16px;letter-spacing:1px}
-.brand h1 span{color:var(--gold)}
-.nav{display:flex;gap:8px;flex-wrap:wrap}
-.nav button{background:var(--card);border:1px solid var(--border);color:#aaa;padding:9px 16px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
-.nav button.active,.nav button:hover{background:linear-gradient(135deg,#f8cd40,#ffc300);color:#000;border-color:var(--gold);box-shadow:0 8px 18px rgba(255,195,0,.18)}
-#subbar{background:rgba(16,16,16,.75);border-bottom:1px solid var(--border);padding:10px 22px;display:flex;gap:8px;overflow-x:auto;align-items:center}
-#subbar button{background:#1C1C1C;border:1px solid #2a2a2a;color:#bbb;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:12px;white-space:nowrap}
-#subbar button.active{background:#fff;color:#000}
-#crumb{padding:10px 22px;color:#555;font-size:11px;letter-spacing:.5px}
-#app{padding:18px 22px;padding-bottom:40px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}
-.card:hover{transform:translateY(-3px);border-color:var(--gold)}
-.card .img{height:200px;background:#fff;display:grid;place-items:center;overflow:hidden}
-.card .img img{width:100%;height:100%;object-fit:contain}
-.card .info{padding:12px}
-.card .info h3{font-size:13px;line-height:1.3;height:34px;overflow:hidden}
-.card .info .price{color:var(--gold);font-weight:800;margin-top:6px}
-.shop-badge{display:inline-flex;align-items:center;gap:4px;margin-top:8px;background:#222;border-radius:12px;padding:3px 8px;font-size:10px;color:#aaa}
-.hero{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
-.hero .hcard{flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer}
-.hero .hcard h2{font-size:18px}
-.hero .hcard p{color:#888;font-size:12px;margin-top:6px}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;place-items:center;z-index:200;padding:20px}
-.modal{background:#151515;border:1px solid #2a2a2a;border-radius:14px;max-width:900px;width:100%;overflow:hidden}
-.shop-head{display:flex;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid #222;background:#111;cursor:pointer}
-.shop-head .av{width:42px;height:42px;background:var(--gold);color:#000;border-radius:50%;display:grid;place-items:center;font-weight:800}
-.btn{background:var(--gold);color:#000;border:0;padding:11px 18px;border-radius:8px;font-weight:700;cursor:pointer}
-.btn2{background:#222;color:#fff;border:1px solid #333;padding:11px 18px;border-radius:8px;cursor:pointer}
-.form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;max-width:560px}
-.form input,.form select,.form textarea{width:100%;padding:11px;background:#0a0a0a;border:1px solid #2a2a2a;color:#fff;border-radius:8px;margin:6px 0}
-.size{display:inline-block;padding:8px 14px;border:1px solid #333;border-radius:20px;margin:4px;cursor:pointer;font-size:12px}
-.size.active{background:var(--gold);color:#000;border-color:var(--gold)}
-.success{text-align:center;padding:60px 20px}
-.success h1{color:var(--gold);font-size:32px}
-#load-more{display:inline-flex;align-items:center;justify-content:center;margin:18px auto 0;padding:12px 22px;border:none;border-radius:999px;background:linear-gradient(135deg,#ffe08a,#ffc300);color:#111;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 10px 24px rgba(255,195,0,.2)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0A0A0A;color:#fff;font-family:Inter,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+.top-line{height:3px;background:linear-gradient(90deg,#FFD700,#FDB931,#FFD700,#FFE55C,#FFD700);background-size:200% 100%;animation:flow 2.8s linear infinite}
+@keyframes flow{0%{background-position:-200% 0}100%{background-position:200% 0}}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:
+ radial-gradient(130% 90% at 15% 12%, rgba(255,215,0,0.14) 0%, rgba(26,21,0,0.5) 18%, rgba(10,10,10,0) 56%),
+ radial-gradient(110% 80% at 85% 85%, rgba(255,215,0,0.10) 0%, rgba(31,26,0,0.42) 20%, rgba(10,10,10,0) 62%),
+ linear-gradient(120deg, #0A0A0A 0%, #0f0e08 22%, #1a1500 48%, #111009 78%, #0A0A0A 100%);
+ background-size:200% 200%,200% 200%,320% 320%;animation:gradientShift 18s ease-in-out infinite}
+@keyframes gradientShift{0%{background-position:0% 50%,100% 50%,0% 50%}50%{background-position:100% 30%,0% 70%,100% 50%}100%{background-position:0% 50%,100% 50%,0% 50%}}
+.header{position:sticky;top:0;z-index:30;background:rgba(10,10,10,0.9);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.1)}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 16px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo-circle{width:36px;height:36px;border-radius:9999px;background:#FFD700;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;letter-spacing:0.1em}
+.doors{max-width:1280px;margin:0 auto;padding:8px 16px 12px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:768px){.doors{grid-template-columns:repeat(4,1fr)}}
+.door{border-radius:14px;border:1px solid rgba(255,255,255,0.1);padding:14px 16px;text-align:left;cursor:pointer;transition:all .3s;background:#151515;color:#fff}
+.door.active{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 0 2px #FFD700}
+.door:hover{border-color:rgba(255,215,0,0.4);background:#1C1C1C}
+.door.active:hover{background:#fff}
+.door-title{font-weight:900;font-size:13px;letter-spacing:0.02em}
+.door-desc{font-size:11px;opacity:0.6;margin-top:2px}
+.main{max-width:1280px;margin:0 auto;padding:24px 16px;position:relative;z-index:10}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.filter{padding:6px 14px;border-radius:9999px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.7);font-size:12px;font-weight:700;cursor:pointer}
+.filter.active{background:#FFD700;color:#000;border-color:#FFD700}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:768px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:#fff;border-radius:18px;overflow:hidden;cursor:pointer;transition:transform .3s,box-shadow .3s,border-color .3s;border:1px solid rgba(255,255,255,0.1)}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 32px -16px rgba(255,215,0,0.28);border-color:rgba(255,215,0,0.6)}
+.card-img{aspect-ratio:1/1;background:#F5F5F5;position:relative;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .card-img img{transform:scale(1.03)}
+.badge-shop{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);border-radius:9999px;padding:4px 8px;display:flex;align-items:center;gap:6px}
+.badge-logo{width:20px;height:20px;border-radius:9999px;background:#FFD700;color:#000;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900}
+.badge-text{font-size:10px;font-weight:700;color:#fff}
+.type-badge{position:absolute;bottom:8px;left:8px;background:rgba(255,255,255,0.9);backdrop-filter:blur(4px);border-radius:9999px;padding:2px 8px;font-size:10px;font-weight:700;color:#000}
+.card-body{padding:14px}
+.card-name{font-size:13px;font-weight:700;color:#000;line-height:1.25;min-height:32px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-price{margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+.price{font-size:14px;font-weight:900;color:#000}
+.loc{font-size:10px;color:rgba(0,0,0,0.5);display:flex;align-items:center;gap:2px}
+.house-card{transition:transform .3s,box-shadow .3s,border-color .3s}
+.house-card:hover{transform:translateY(-2px)}
+.house-btn{transition:transform .15s,background .2s,border-color .2s}
+.house-btn:active{transform:scale(0.97)}
+.product-detail{display:grid;gap:24px}
+@media(min-width:768px){.product-detail{grid-template-columns:1.1fr 0.9fr}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:60;background:#fff;color:#000;padding:8px 16px;border-radius:9999px;font-size:12px;font-weight:700;border:1px solid rgba(255,215,0,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+.hidden{display:none !important}
 </style>
 </head>
 <body>
-<header>
-<div class="brand"><div class="dot">R</div><h1>REGALIA <span>MALL</span></h1></div>
-<div class="nav">
-<button onclick="router('BUY')" id="n-BUY" class="active">BUY</button>
-<button onclick="router('RENT')" id="n-RENT">RENT SHOP</button>
-<button onclick="router('BRANDING')" id="n-BRANDING">BRANDING</button>
-<button onclick="router('PLAINS')" id="n-PLAINS">BUY PLAINS</button>
-</div>
-</header>
-<div id="subbar"></div>
-<div id="crumb">HOME / BUY</div>
-<div id="app">Loading...</div>
-<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
-<div class="modal" id="modalInner"></div>
-</div>
-<script>
-/** REGALIA MALL V2 - Professional Code - House Logic Locked */
-const SHOPS = [
-  {shopId:"anc_regalia", name:"ANC REGALIA STYLE", owner:"Abdul Divad Kabika", logo:"ANC", location:"East London, EC", phone:"27700000000", verified:true, size:36}
-];
-
-const PRODUCTS = [
-  {id:"1", name:"ANC Cap - Yellow/Green", img:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400", price:250, cat:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"100% Cotton Twill, 6 Panel, Embroidered, Adjustable strap"},
-  {id:"2", name:"ANC Hoodie - Black", img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400", price:550, cat:"BUY", sub:"Hoodies", shopId:"anc_regalia", fabric:"Fleece 240gsm, Brushed inside, DTF print 28cm"},
-  {id:"3", name:"Golf Shirt - ANC Green", img:"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400", price:450, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Pique 180gsm, Collar, 3 button, Sublimation ready"},
-  {id:"4", name:"ANC Jacket - Winter", img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400", price:750, cat:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Softshell, Water resistant, Embroidery chest"},
-  {id:"5", name:"Round Neck - DTF Print", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:300, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Cotton 160gsm, DTF 28x28cm front, Sizes S-3XL"},
-  {id:"6", name:"ANC Beanie - Winter", img:"https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400", price:180, cat:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"Acrylic knit, Embroidered logo"},
-  {id:"7", name:"ANC Tee - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:240, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Premium cotton jersey, soft-touch finish, every-day staple"},
-  {id:"8", name:"Luxury Overshirt - Black", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:680, cat:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Structured overshirt, brushed lining, smart layering piece"},
-  {id:"9", name:"Plain Blank - Black", img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm, 100% Cotton, Bulk"},
-  {id:"10", name:"Plain Blank - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm"},
-];
-
-const BRANDING_CATS = [
-  {id:"embroidery", name:"Embroidery", desc:"Drop off / Collect / Courier"},
-  {id:"dtf", name:"DTF Printing", desc:"Width 58cm x meters"},
-  {id:"sub", name:"Sublimation", desc:"Width 145cm x meters"},
-  {id:"outdoors", name:"Outdoors", desc:"Banners, Flags, Gazebo"}
-];
-
-let S = {view:"BUY", filter:"All", product:null, rent:"options", branding:"options", size:null};
-
-function router(v){
-  S.view=v; S.filter="All";
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-  document.getElementById('n-'+v).classList.add('active');
-  document.getElementById('crumb').innerText="HOME / "+v;
-  render();
-}
-
-function render(){
-  const app=document.getElementById('app');
-  const sub=document.getElementById('subbar');
-  sub.innerHTML="";
-  if(S.view==="BUY"){
-    const cats=["All","Headwear","Apparel","Jackets","Hoodies"];
-    sub.innerHTML=cats.map(c=>`<button class="${S.filter===c?'active':''}" onclick="setF('${c}')">${c}</button>`).join('');
-    let list=PRODUCTS.filter(p=>p.cat==="BUY"); if(S.filter!=="All") list=list.filter(p=>p.sub===S.filter);
-    app.innerHTML=`<div class="grid">${list.map(card).join('')}</div>`;
-  } else if(S.view==="PLAINS"){
-    sub.innerHTML=`<span style="color:#666;font-size:12px">Captivity Blanks - Scraper will auto-fill here - Buy at cost +50% markup</span>`;
-    let list=PRODUCTS.filter(p=>p.cat==="PLAINS");
-    app.innerHTML=`<h3 style="margin-bottom:12px">BUY PLAINS - Blanks</h3><div class="grid">${list.map(card).join('')}</div>`;
-  } else if(S.view==="RENT"){
-    sub.innerHTML=`<span style="color:#666;font-size:12px">Shop sizes: 9 | 18 | 36 | 72 | 81 items - Choose after profile</span>`;
-    renderRent(app);
-  } else if(S.view==="BRANDING"){
-    sub.innerHTML=BRANDING_CATS.map(b=>`<button class="${S.branding===b.id?'active':''}" onclick="openB('${b.id}')">${b.name}</button>`).join('');
-    if(S.branding==="options"){
-      app.innerHTML=`<div class="hero">${BRANDING_CATS.map(b=>`<div class="hcard" onclick="openB('${b.id}')"><h2>${b.name}</h2><p>${b.desc}</p></div>`).join('')}</div>`;
-    } else {
-      renderBrand(app);
-    }
-  }
-}
-
-function card(p){
-  const sh=SHOPS.find(s=>s.shopId===p.shopId);
-  return `<div class="card" onclick="openP('${p.id}')"><div class="img"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(p.name)}'"></div><div class="info"><h3>${p.name}</h3><div class="price">R${p.price}</div><div class="shop-badge">● ${sh.name}</div></div></div>`;
-}
-function setF(f){S.filter=f;render();}
-function openP(id){
-  S.product=PRODUCTS.find(p=>p.id===id);
-  const p=S.product; const sh=SHOPS.find(s=>s.shopId===p.shopId);
-  document.getElementById('modalInner').innerHTML=`
-    <div class="shop-head" onclick="alert('Shop Profile:\\n${sh.name}\\nOwner: ${sh.owner}\\nLocation: ${sh.location}\\nVerified: ${sh.verified?'Yes':''}\\nSize: ${sh.size} items')">
-      <div class="av">${sh.logo}</div>
-      <div><strong style="font-size:14px">${sh.name}</strong><br><small style="color:#888">${sh.location} • Tap for full profile</small></div>
-      <div style="margin-left:auto;color:gold;font-size:11px">VERIFIED</div>
+<div class="top-line"></div>
+<div class="header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-circle">RM</div>
+      <div>
+        <div style="font-weight:900;letter-spacing:0.18em;font-size:14px;line-height:1">REGALIA MALL V2 HOUSE</div>
+        <div style="font-size:10px;letter-spacing:0.3em;color:#FFD700;margin-top:2px">EST 2024</div>
+      </div>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:20px;padding:18px">
-      <img src="${p.img}" style="width:340px;height:340px;object-fit:contain;background:#fff;border-radius:10px">
-      <div style="flex:1;min-width:260px">
-        <h2>${p.name}</h2>
-        <div style="color:gold;font-weight:800;font-size:22px;margin:10px 0">R${p.price}</div>
-        <div style="color:#888;font-size:13px">Category: ${p.sub} | Stock: In Stock</div>
-        <div style="margin:16px 0;display:flex;gap:8px">
-          <button class="btn2" onclick="alert('Added to cart - upgrade later with quantities')">Add to Cart</button>
-          <button class="btn" onclick="buyNow()">Buy Now → WhatsApp</button>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div id="shopCount" style="display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,0.6)" class="hidden md:flex"><span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block;animation:pulse 2s infinite"></span>HOUSE: 3 SHOPS LIVE</div>
+      <button id="cartBtn" class="house-btn" style="width:36px;height:36px;border-radius:9999px;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;position:relative;border:none;cursor:pointer">🛍<span id="cartNum" style="position:absolute;top:-4px;right:-4px;width:20px;height:20px;background:#FFD700;border-radius:9999px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span></button>
+    </div>
+  </div>
+  <div class="doors">
+    <button class="door active" data-door="BUY"><div class="door-title">1. BUY</div><div class="door-desc">Curated Products</div></button>
+    <button class="door" data-door="RENT_SHOP"><div class="door-title">2. RENT SHOP</div><div class="door-desc">Sell With Us</div></button>
+    <button class="door" data-door="BRANDING"><div class="door-title">3. BRANDING</div><div class="door-desc">Print & Stitch</div></button>
+    <button class="door" data-door="BUY_PLAINS"><div class="door-title">4. BUY PLAINS</div><div class="door-desc">Blanks Bulk</div></button>
+  </div>
+</div>
+
+<div class="main">
+  <!-- BUY -->
+  <div id="buySection">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px">
+      <h1 style="font-size:22px;font-weight:900;letter-spacing:-0.02em">SHOP THE HOUSE <span style="color:#FFD700">— BUY</span></h1>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div style="text-align:center;padding:24px"><button id="loadMore" class="house-btn" style="padding:12px 28px;background:#FFD700;color:#000;border:none;font-weight:900;letter-spacing:0.1em;cursor:pointer;border-radius:9999px">LOAD MORE 20 (READY FOR 8100)</button></div>
+  </div>
+
+  <!-- BUY PLAINS -->
+  <div id="plainsSection" class="hidden">
+    <div class="house-card" style="margin-bottom:24px;border-radius:16px;background:#FFD700;color:#000;padding:16px 20px;display:flex;flex-direction:column;gap:4px">
+      <div style="font-weight:900;font-size:14px">BUY PLAINS — BLANKS FROM CAPTIVITY</div>
+      <div style="font-size:12px;opacity:0.7">Unbranded, ready for your logo. Bulk pricing on WhatsApp. Products from scraper will appear here.</div>
+    </div>
+    <div class="grid" id="plainsGrid"></div>
+  </div>
+
+  <!-- RENT SHOP -->
+  <div id="rentSection" class="hidden" style="max-width:900px;margin:0 auto">
+    <div id="rentOptions">
+      <h2 style="font-size:24px;font-weight:900">RENT A SHOP — <span style="color:#FFD700">HOUSE 2</span></h2>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin:8px 0 24px;max-width:60ch">Choose your entry path. Both lead to same profile creation. Shop sizes from 9 to 81 items. When shop is successfully created, house count increases — that's when house is full.</p>
+      <div style="display:grid;gap:16px;grid-template-columns:1fr 1fr">
+        <button class="house-card house-btn" data-rent="have" style="text-align:left;border-radius:20px;background:#151515;border:1px solid rgba(255,255,255,0.1);padding:24px;color:#fff;cursor:pointer">
+          <div style="width:48px;height:48px;border-radius:9999px;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;margin-bottom:16px">📦</div>
+          <div style="font-weight:900;font-size:18px">I have products</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;line-height:1.4">You have ready stock, photos and prices. We list instantly.</div>
+          <div style="margin-top:20px;font-size:12px;font-weight:700;color:#FFD700;display:flex;align-items:center;gap:8px">CREATE PROFILE →</div>
+        </button>
+        <button class="house-card house-btn" data-rent="dont" style="text-align:left;border-radius:20px;background:#151515;border:1px solid rgba(255,255,255,0.1);padding:24px;color:#fff;cursor:pointer">
+          <div style="width:48px;height:48px;border-radius:9999px;background:#FFD700;color:#000;display:flex;align-items:center;justify-content:center;margin-bottom:16px">✨</div>
+          <div style="font-weight:900;font-size:18px">I don't have products</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;line-height:1.4">We help source blanks from Buy Plains + branding.</div>
+          <div style="margin-top:20px;font-size:12px;font-weight:700;color:#FFD700;display:flex;align-items:center;gap:8px">CREATE PROFILE →</div>
+        </button>
+      </div>
+    </div>
+    <div id="rentForm" class="hidden">
+      <button id="backToOptions" class="house-btn" style="margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);background:transparent;border:none;cursor:pointer">← BACK</button>
+      <div class="house-card" style="border-radius:22px;background:#fff;color:#000;padding:20px">
+        <div style="display:flex;justify-content:space-between;gap:16px;margin-bottom:24px"><div><h3 style="font-size:20px;font-weight:900">SHOP PROFILE</h3><div id="rentSubtitle" style="font-size:12px;color:rgba(0,0,0,0.6);margin-top:4px"></div></div><div style="width:48px;height:48px;border-radius:9999px;background:#000;color:#FFD700;display:flex;align-items:center;justify-content:center;font-weight:900">RM</div></div>
+        <div style="display:grid;gap:16px;grid-template-columns:1fr 1fr">
+          <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">SHOP NAME</span><input id="shopName" placeholder="e.g. ANC REGALIA STYLE" style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px;font-size:13px"></label>
+          <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">OWNER NAME</span><input id="ownerName" placeholder="Abdul Divad Kabika" style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px;font-size:13px"></label>
+          <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">PHONE (WhatsApp)</span><input id="phone" placeholder="277..." style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px;font-size:13px"></label>
+          <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">LOCATION</span><input id="location" placeholder="East London" style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px;font-size:13px"></label>
         </div>
-        <div style="margin-top:18px;border-top:1px solid #222;padding-top:14px">
-          <h4 style="font-size:13px;margin-bottom:8px">Fabric / Features</h4>
-          <p style="color:#aaa;font-size:13px;line-height:1.6">${p.fabric}</p>
-          <ul style="color:#666;font-size:12px;margin:10px 0 0 18px;line-height:1.8">
-            <li>Sizes: S, M, L, XL, 2XL, 3XL</li>
-            <li>Print: ${p.cat==='BUY'?'ANC Regalia':'Blank for branding'}</li>
-            <li>Delivery: Drop off / Collect / Courier (East London)</li>
-          </ul>
+        <div style="margin-top:24px;display:grid;gap:16px;grid-template-columns:1fr 1fr">
+          <div style="border-radius:16px;border:1px dashed rgba(0,0,0,0.2);padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(0,0,0,0.02)"><div>📤</div><div style="font-size:12px;font-weight:700">Logo Upload</div><div style="font-size:11px;color:rgba(0,0,0,0.5)">PNG / JPG — 400x400 circle (placeholder)</div><button style="margin-top:8px;height:32px;padding:0 12px;border-radius:9999px;background:#000;color:#fff;font-size:11px;font-weight:700;border:none">Choose File</button></div>
+          <label style="border-radius:16px;border:1px solid rgba(0,0,0,0.1);padding:16px;display:flex;gap:12px;cursor:pointer"><input type="checkbox" id="verified" style="margin-top:4px"><div><div style="font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px">✔ Verification</div><div style="font-size:11px;color:rgba(0,0,0,0.6);margin-top:4px;line-height:1.4">ID, Business registration, Proof of address — tick when ready for review.</div></div></label>
+        </div>
+        <div style="margin-top:32px"><div style="font-size:11px;font-weight:900;letter-spacing:0.15em">SHOP SIZE — ITEM LIMIT</div><div id="sizeGrid" style="margin-top:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:8px"></div></div>
+        <button id="createShop" style="margin-top:32px;width:100%;height:52px;border-radius:9999px;background:#000;color:#FFD700;font-weight:900;font-size:13px;letter-spacing:0.05em;border:none;cursor:pointer">CREATE SHOP</button>
+        <div style="margin-top:12px;text-align:center;font-size:11px;color:rgba(0,0,0,0.5)">On create, shop added to mock list. End condition for house full.</div>
+      </div>
+    </div>
+    <div id="rentSuccess" class="hidden">
+      <div class="house-card" style="border-radius:24px;background:#fff;color:#000;padding:32px;text-align:center">
+        <div style="width:64px;height:64px;border-radius:9999px;background:#FFD700;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:28px">✔</div>
+        <h3 style="margin-top:20px;font-size:26px;font-weight:900">Shop Successfully Created</h3>
+        <p style="margin-top:8px;font-size:13px;color:rgba(0,0,0,0.6);max-width:50ch;margin-left:auto;margin-right:auto;line-height:1.5">Your shop is now live in House V2. Customers will see your products and order via WhatsApp. House count: <span id="successCount">4</span> shops.</p>
+        <div id="successBadge" style="margin-top:24px;display:inline-flex;align-items:center;gap:8px;border-radius:9999px;background:#000;color:#fff;padding:10px 20px;font-size:12px;font-weight:700"></div>
+        <div style="margin-top:32px;display:flex;flex-direction:column;gap:8px;justify-content:center" class="sm:flex-row"><button id="goBuy" style="height:44px;padding:0 24px;border-radius:9999px;background:#000;color:#FFD700;font-weight:700;font-size:12px;border:none;cursor:pointer">GO TO BUY HOUSE</button><button id="createAnother" style="height:44px;padding:0 24px;border-radius:9999px;border:1px solid rgba(0,0,0,0.15);font-weight:700;font-size:12px;background:#fff;cursor:pointer">CREATE ANOTHER</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANDING -->
+  <div id="brandingSection" class="hidden" style="max-width:1000px;margin:0 auto">
+    <div id="brandingList">
+      <h2 style="font-size:24px;font-weight:900">BRANDING <span style="color:#FFD700">HOUSE</span></h2>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:24px">Choose a service. All orders arrive on WhatsApp chat with order details.</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px" class="md:grid-cols-4">
+        <button class="door" data-brand="Outdoors"><div class="door-title">Outdoors</div><div class="door-desc">Banners, Flags, Gazebos</div></button>
+        <button class="door" data-brand="Embroidery"><div class="door-title">Embroidery</div><div class="door-desc">Caps, Jackets, Logos</div></button>
+        <button class="door" data-brand="DTF Printing"><div class="door-title">DTF Printing</div><div class="door-desc">Transfers 58cm wide</div></button>
+        <button class="door" data-brand="Sublimation"><div class="door-title">Sublimation</div><div class="door-desc">All-over 145cm wide</div></button>
+      </div>
+    </div>
+    <div id="brandingDetail" class="hidden">
+      <button id="backToBranding" class="house-btn" style="margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);background:transparent;border:none;cursor:pointer">← BACK TO BRANDING</button>
+      <div id="outdoorsCategories" class="hidden">
+        <h3 style="font-size:20px;font-weight:900;margin-bottom:16px">OUTDOORS — CATEGORIES</h3>
+        <div id="outdoorsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px"></div>
+      </div>
+      <div id="outdoorsProducts" class="hidden">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><button id="backToCategories" style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.6);background:transparent;border:none;cursor:pointer">← Categories</button><span style="color:rgba(255,255,255,0.2)">/</span><span id="outdoorTitle" style="font-size:13px;font-weight:900"></span></div>
+        <div id="outdoorProductsGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px"></div>
+      </div>
+      <div id="embroideryForm" class="hidden">
+        <div class="house-card" style="border-radius:22px;background:#fff;color:#000;padding:24px;max-width:720px">
+          <h3 style="font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px">✂ Embroidery Setup</h3>
+          <div style="margin-top:24px;display:grid;gap:16px;grid-template-columns:1fr 1fr">
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">DELIVERY METHOD</span><select style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px"><option>Drop off</option><option>Collect</option><option>Courier</option></select></label>
+            <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">IS FIRST TIME?</span><div style="display:flex;gap:8px"><button class="firstTimeBtn active" data-val="Yes" style="flex:1;height:44px;border-radius:9999px;border:1px solid #000;background:#000;color:#FFD700;font-size:12px;font-weight:700">Yes</button><button class="firstTimeBtn" data-val="No" style="flex:1;height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.15);font-size:12px;font-weight:700">No</button></div><div id="setupFee" style="font-size:11px;color:#b45309;background:#fffbeb;border:1px solid #fde68a;border-radius:9999px;padding:6px 12px;margin-top:4px">Setup fee: R150 digitizing once-off</div></div>
+            <div style="grid-column:span 2;border-radius:14px;border:1px dashed rgba(0,0,0,0.2);padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(0,0,0,0.02)"><div>📤</div><div style="font-size:12px;font-weight:700">Upload Logo PNG/PDF</div><div style="font-size:11px;color:rgba(0,0,0,0.5)">Transparent background preferred</div></div>
+            <label style="grid-column:span 2;display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">INSTRUCTIONS: Cut paper with needle where logo positioned + size field</span><textarea placeholder="e.g. Left chest, 10cm wide, needle: red/black, cap front..." style="min-height:90px;border-radius:16px;border:1px solid rgba(0,0,0,0.1);padding:12px;font-size:13px"></textarea></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">SIZE (cm)</span><input placeholder="e.g. 10 x 10" style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px"></label>
+            <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">QUANTITY</span><input type="number" placeholder="24" style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px"></label>
+          </div>
+          <button onclick="window.open('https://wa.me/27731234567?text='+encodeURIComponent('Embroidery Order: see details'),'_blank')" style="margin-top:24px;width:100%;height:48px;border-radius:9999px;background:#000;color:#FFD700;font-weight:900;font-size:12px;border:none;cursor:pointer">SEND TO WHATSAPP</button>
         </div>
       </div>
-    </div>`;
-  document.getElementById('modal').style.display='grid';
-}
-function closeModal(){document.getElementById('modal').style.display='none';}
-function buyNow(){
-  const p=S.product; const sh=SHOPS.find(s=>s.shopId===p.shopId);
-  const txt=`Hi REGALIA MALL, I want to order:%0A%0A*Product:* ${p.name}%0A*Price:* R${p.price}%0A*Shop:* ${sh.name} (${sh.location})%0A*Fabric:* ${p.fabric}%0A%0ASizes needed: ?%0AQty: ?`;
-  window.open(`https://wa.me/27700000000?text=${txt}`,'_blank');
-}
+      <div id="dtfForm" class="hidden">
+        <div class="house-card" style="border-radius:22px;background:#fff;color:#000;padding:24px;max-width:720px">
+          <h3 id="dtfTitle" style="font-size:18px;font-weight:900"></h3>
+          <div style="margin-top:8px;font-size:12px;background:#000;color:#FFD700;display:inline-block;padding:4px 12px;border-radius:9999px;font-weight:700" id="dtfWidth"></div>
+          <div style="margin-top:24px"><div style="font-size:11px;font-weight:700;letter-spacing:0.05em;margin-bottom:8px">HAVE ARTWORK?</div><div style="display:flex;gap:8px"><button class="artBtn active" data-val="Yes" style="flex:1;height:44px;border-radius:9999px;border:1px solid #000;background:#000;color:#fff;font-weight:700">Yes</button><button class="artBtn" data-val="No" style="flex:1;height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.15);font-weight:700">No</button></div></div>
+          <div id="artYes" style="margin-top:24px;display:flex;flex-direction:column;gap:16px"><div style="border-radius:14px;border:1px dashed rgba(0,0,0,0.2);padding:16px;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(0,0,0,0.02)"><div>📤</div><div style="font-size:12px;font-weight:700">Upload PDF/PNG (300dpi)</div><div style="font-size:11px;color:rgba(0,0,0,0.5)">We print as is</div></div><label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">LENGTH — meters input (width fixed)</span><input placeholder="e.g. 5 meters" style="height:44px;border-radius:9999px;border:1px solid rgba(0,0,0,0.1);padding:0 16px"></label></div>
+          <div id="artNo" class="hidden" style="margin-top:24px;display:flex;flex-direction:column;gap:16px"><div style="border-radius:14px;background:#fffbeb;border:1px solid #fde68a;padding:16px;font-size:12px">Graphic Design Required — R120 per design. Include brief below.</div><label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;font-weight:700">BRIEF</span><textarea placeholder="Describe design, colors, text..." style="min-height:100px;border-radius:16px;border:1px solid rgba(0,0,0,0.1);padding:12px"></textarea></label></div>
+          <button id="dtfWa" style="margin-top:24px;width:100%;height:48px;border-radius:9999px;background:#000;color:#FFD700;font-weight:900;font-size:12px;border:none;cursor:pointer">SEND TO WHATSAPP</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-function renderRent(app){
-  if(S.rent==="options"){
-    app.innerHTML=`<div class="hero"><div class="hcard" onclick="S.rent='form';S.rentType='have';render()"><h2>I have products</h2><p>You have stock. Create full profile + verification + shop size 9,18,36,72,81</p></div><div class="hcard" onclick="S.rent='form';S.rentType='nohave';render()"><h2>I don't have products</h2><p>We supply from Captivity blanks. Still need profile + size</p></div></div>`;
-  } else if(S.rent==="form"){
-    app.innerHTML=`<div style="display:flex;gap:20px;flex-wrap:wrap"><div class="form"><h3>Shop Profile - ${S.rentType==='have'?'Have Products':'No Products'}</h3>
-      <input id="sn" placeholder="Shop Name (e.g ANC REGALIA STYLE)">
-      <input id="on" placeholder="Owner Full Name">
-      <input id="ph" placeholder="WhatsApp Phone">
-      <input id="lc" placeholder="Location (e.g East London, EC)">
-      <input placeholder="Logo URL (or upload later)">
-      <div style="margin:10px 0"><label><input type="checkbox"> ID Verification</label><br><label><input type="checkbox"> Business Reg (optional)</label></div>
-      <p style="font-size:12px;margin:8px 0;color:#888">Shop Size - max items you can list:</p>
-      <div>${[9,18,36,72,81].map(n=>`<span class="size" onclick="pick(${n})" id="sz-${n}">${n} items</span>`).join('')}</div>
-      <br><button class="btn" onclick="createShop()">Create Shop → Success</button> <button class="btn2" onclick="S.rent='options';render()">Back</button>
-    </div><div style="flex:1;min-width:260px;color:#666;font-size:12px;line-height:1.7"><h4 style="color:#fff">How it works</h4><p>After profile creation, you get seller dashboard where you add products. Buyers see your products mixed in BUY mall view. Small logo at top links to your profile.</p></div></div>`;
-  } else {
-    app.innerHTML=`<div class="success"><h1>✓ Shop Successfully Created!</h1><p style="color:#888;margin:12px">Your shop is live in BUY - House Full Condition 2 Met</p><br><button class="btn" onclick="S.rent='options';router('BUY')">Go to BUY Mall</button></div>`;
-  }
-}
-function pick(n){S.size=n;document.querySelectorAll('.size').forEach(e=>e.classList.remove('active'));document.getElementById('sz-'+n).classList.add('active');}
-function createShop(){
-  const name=document.getElementById('sn')?.value||"New Shop";
-  if(!S.size) return alert("Pick shop size: 9, 18, 36, 72, 81");
-  // simulate add
-  SHOPS.push({shopId:name.toLowerCase().replace(/\s/g,'_'), name:name, owner:document.getElementById('on').value, logo:name[0], location:document.getElementById('lc').value, verified:false, size:S.size});
-  S.rent="success"; render();
-}
+  <!-- PRODUCT DETAIL -->
+  <div id="productDetail" class="hidden">
+    <button id="backToProducts" class="house-btn" style="margin-bottom:16px;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);background:transparent;border:none;cursor:pointer">← BACK TO PRODUCTS</button>
+    <div class="product-detail">
+      <div><div style="background:#fff;border-radius:22px;padding:8px"><div style="border-radius:16px;overflow:hidden;background:#F6F6F6;aspect-ratio:1/1"><img id="detailImg" style="width:100%;height:100%;object-fit:cover"></div></div></div>
+      <div>
+        <button id="detailShopBtn" style="width:100%;display:flex;align-items:center;gap:12px;background:#151515;border:1px solid rgba(255,255,255,0.1);border-radius:9999px;padding:8px 12px;color:#fff;text-align:left;cursor:pointer"><div id="detailShopLogo" style="width:40px;height:40px;border-radius:9999px;background:#FFD700;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px"></div><div style="flex:1"><div id="detailShopName" style="font-size:12px;font-weight:900;letter-spacing:0.05em"></div><div id="detailShopLoc" style="font-size:11px;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:4px"></div></div><div>→</div></button>
+        <div style="margin-top:16px"><div id="detailType" style="font-size:10px;letter-spacing:0.2em;color:#FFD700;font-weight:700;margin-bottom:8px"></div><h1 id="detailName" style="font-size:28px;font-weight:900;line-height:0.95;letter-spacing:-0.02em"></h1><div id="detailPrice" style="margin-top:12px;font-size:26px;font-weight:900"></div></div>
+        <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px"><button id="addCart" style="height:48px;border-radius:9999px;background:#fff;color:#000;font-weight:900;font-size:13px;letter-spacing:0.05em;border:1px solid #fff;cursor:pointer">ADD TO CART</button><button id="buyNow" style="height:48px;border-radius:9999px;background:#FFD700;color:#000;font-weight:900;font-size:13px;letter-spacing:0.05em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">BUY NOW <span style="font-size:10px;background:#000;color:#FFD700;padding:2px 6px;border-radius:9999px">WA</span></button></div>
+        <div style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.6">On Buy Now, open WhatsApp with order details: <span id="waPreview" style="color:rgba(255,255,255,0.8)"></span></div>
+        <div style="margin-top:16px;border-radius:18px;background:#151515;border:1px solid rgba(255,255,255,0.1);padding:20px"><div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;letter-spacing:0.05em">📏 FABRIC / FEATURES</div><p id="detailFabric" style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6"></p><div id="detailFeatures" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px"></div></div>
+      </div>
+    </div>
+  </div>
 
-function openB(id){S.branding=id; document.getElementById('crumb').innerText="HOME / BRANDING / "+id.toUpperCase(); render();}
-function renderBrand(app){
-  let h=`<button class="btn2" onclick="S.branding='options';router('BRANDING')">← Back to Branding</button><div style="margin-top:14px">`;
-  if(S.branding==="embroidery"){
-    h+=`<div class="form"><h3>Embroidery Order</h3><select><option>Drop off at shop</option><option>Collect from client</option><option>Courier (Paxi/Aramex)</option></select><input placeholder="Logo file - PNG/PDF - First time = setup fee R150"><textarea placeholder="Position: Cut paper + pin/needle where logo should be - include size cm (e.g Left chest 10cm)"></textarea><input placeholder="Quantity"><input placeholder="Garment to embroider on"><button class="btn" onclick="alert('Order sent to WhatsApp - house full 1')">Send to WhatsApp</button></div>`;
-  }
-  if(S.branding==="dtf"){
-    h+=`<div class="form"><h3>DTF Printing - Width 58cm</h3><select id="dtfArt" onchange="dtfT()"><option value="yes">I have artwork</option><option value="no">Need Graphic Design</option></select><div id="dtfYes"><input placeholder="Upload PDF/PNG - Artwork"><input placeholder="Length meters required (e.g 2m)"><p style="color:#666;font-size:11px">Fixed width 58cm x your meters - we print roll</p></div><div id="dtfNo" style="display:none"><textarea placeholder="Describe design - colors, text, logo idea"></textarea></div><button class="btn" onclick="alert('DTF order to WhatsApp')">Send</button></div>`;
-  }
-  if(S.branding==="sub"){
-    h+=`<div class="form"><h3>Sublimation - Width 145cm</h3><input placeholder="Upload PDF/PNG - Width 145cm"><input placeholder="Length meters"><p style="color:#666;font-size:11px">Full sublimation - all over print - 145cm roll</p><button class="btn" onclick="alert('Sub order to WhatsApp')">Send</button></div>`;
-  }
-  if(S.branding==="outdoors"){
-    h+=`<h3>Outdoors - Banners, Flags, Gazebo</h3><div class="grid" style="margin-top:12px"><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Banner"></div><div class="info"><h3>Vinyl Banners</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Flag"></div><div class="info"><h3>Flags</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Gazebo"></div><div class="info"><h3>Gazebo 3x3</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Board"></div><div class="info"><h3>Correx Boards</h3></div></div></div>`;
-  }
-  h+=`</div>`;
-  app.innerHTML=h;
-}
-function dtfT(){const v=document.getElementById('dtfArt').value;document.getElementById('dtfYes').style.display=v==='yes'?'block':'none';document.getElementById('dtfNo').style.display=v==='no'?'block':'none';}
+  <div class="house-card" style="margin-top:40px;border-radius:16px;background:#151515;border:1px solid rgba(255,255,255,0.1);padding:16px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:12px"><div style="width:32px;height:32px;border-radius:9999px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center">🏠</div><div><div style="font-size:11px;font-weight:700;letter-spacing:0.15em;color:rgba(255,255,255,0.6)">HOUSE STATUS</div><div style="font-size:12px;color:rgba(255,255,255,0.9)">All doors clicked except WA orders = house filling. Sell = shop successfully created = full.</div></div></div>
+    <div style="display:flex;gap:8px"><span id="statusShops" style="padding:4px 12px;border-radius:9999px;background:#fff;color:#000;font-weight:700;font-size:11px">3 Shops</span><span id="statusItems" style="padding:4px 12px;border-radius:9999px;background:#FFD700;color:#000;font-weight:700;font-size:11px">12 Items</span></div>
+  </div>
+</div>
 
-render();
+<div id="shopModal" class="hidden" style="position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;padding:0"><div id="modalBg" style="position:absolute;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px)"></div><div style="position:relative;width:100%;max-width:420px;background:#fff;color:#000;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow:auto"><button id="closeModal" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:9999px;background:rgba(0,0,0,0.1);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</button><div style="display:flex;align-items:center;gap:16px"><div id="modalLogo" style="width:56px;height:56px;border-radius:9999px;background:#000;color:#FFD700;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px"></div><div><div id="modalName" style="font-weight:900;font-size:16px"></div><div id="modalOwner" style="font-size:12px;color:rgba(0,0,0,0.6);display:flex;align-items:center;gap:4px"></div></div></div><div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;font-size:13px"><div id="modalLoc" style="display:flex;align-items:center;gap:8px"></div><div id="modalPhone" style="display:flex;align-items:center;gap:8px"></div><div id="modalVerified" style="display:flex;align-items:center;gap:8px"></div></div><button id="modalWa" style="margin-top:24px;width:100%;height:44px;border-radius:9999px;background:#000;color:#FFD700;font-weight:700;font-size:12px;border:none;cursor:pointer">CHAT SHOP ON WHATSAPP</button></div></div>
 
-</script>
+<footer style="position:relative;z-index:10;border-top:1px solid rgba(255,255,255,0.1);margin-top:48px;padding:24px 0;text-align:center;font-size:10px;letter-spacing:0.2em;color:rgba(255,255,255,0.3)">HOUSE V2 - Gradient Animated • BLACK • GOLD #FFD700 • WHITE CARDS • PURE HTML EXACT • ALL BUTTONS WORKING</footer>
+
 <script>
-(function(){
-  const originalRender = window.render;
-  function attachLoadMore(){
-    const app = document.getElementById('app');
-    const state = typeof S !== 'undefined' ? S : null;
-    if(!app || !state || state.view !== 'BUY') return;
-    const grid = app.querySelector('.grid');
-    if(!grid) return;
-    const items = Array.from(grid.children);
-    if(items.length <= 6){
-      const btn = document.getElementById('load-more');
-      if(btn) btn.remove();
-      return;
-    }
-    const visibleCount = Number(grid.dataset.visibleCount || 6);
-    items.forEach((item, index) => {
-      item.style.display = index < visibleCount ? 'block' : 'none';
+const shops=[
+{shopId:"anc_regalia",name:"ANC REGALIA STYLE",owner:"Abdul Divad Kabika",logoText:"ANC",location:"East London, Eastern Cape",phone:"27731234567",verified:true},
+{shopId:"cape_culture",name:"CAPE CULTURE CO",owner:"Nomsa Dlamini",logoText:"CCC",location:"Cape Town, WC",phone:"27769871234",verified:true},
+{shopId:"jozi_street",name:"JOZI STREETWEAR",owner:"Thabo Molefe",logoText:"JSW",location:"Johannesburg, GP",phone:"27744556677",verified:false}
+];
+const fallbackProducts=[
+{id:"p1",name:"Heritage Black Dad Cap",price:249,image:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY",type:"Caps",fabric:"100% Brushed Cotton Twill, 6-panel unstructured, adjustable brass buckle",features:["Embroidered front logo","Breathable eyelets","One size fits all"]},
+{id:"p2",name:"ANC Tri-Color Track Jacket",price:899,image:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY",type:"Jackets",fabric:"Polyester tricot with mesh lining, water-resistant coating",features:["Full zip","Side pockets","Ribbed cuffs"]},
+{id:"p3",name:"Gold Emblem Heavy Hoodie",price:650,image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY",type:"Hoodies",fabric:"320gsm Brushed fleece, 80% cotton 20% polyester",features:["Kangaroo pocket","Drawcord hood","DTF chest print"]},
+{id:"p4",name:"Vintage Washed Hoodie - Cream",price:599,image:"https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&h=600&fit=crop",shopId:"jozi_street",category:"BUY",type:"Hoodies",fabric:"280gsm French terry, garment washed",features:["Drop shoulder","Soft hand feel","Pre-shrunk"]},
+{id:"p5",name:"Trucker Mesh Cap - Gold/Black",price:279,image:"https://images.unsplash.com/photo-1534217461336-aed54af6bb0c?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY",type:"Caps",fabric:"Front foam + rear polyester mesh, snapback",features:["High crown","Curved brim"]},
+{id:"p6",name:"Varsity Jacket - Black Wool",price:1250,image:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=600&fit=crop",shopId:"jozi_street",category:"BUY",type:"Jackets",fabric:"24oz wool body + genuine leather sleeves, quilted lining",features:["Chenille patches","Snap buttons"]},
+{id:"p7",name:"Essential Oversized Tee",price:320,image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY",type:"Apparel",fabric:"200gsm 100% combed cotton, oversized fit",features:["Crew neck","Side seamed"]},
+{id:"p8",name:"Bucket Hat - Sable",price:199,image:"https://images.unsplash.com/photo-1529391409740-59f1cea3f4c2?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY",type:"Headwear",fabric:"Washed canvas cotton, 57cm",features:["Embroidered eyelets","Reversible option"]},
+{id:"p9",name:"Plain Black Hoodie Blank - 280gsm",price:180,image:"https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY_PLAINS",type:"Blanks",fabric:"280gsm unbranded fleece blank for branding",features:["Ready for DTF/Screen","No tags"]},
+{id:"p10",name:"Plain White Tee Blank - 180gsm",price:85,image:"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY_PLAINS",type:"T-Shirt",fabric:"180gsm Captivity blank, 100% cotton",features:["Tubular","Bulk packs"]},
+{id:"p11",name:"Plain Grey Sweat Crew Blank",price:165,image:"https://images.unsplash.com/photo-1618354691792-d1d42acfd860?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY_PLAINS",type:"Sweat",fabric:"240gsm grey melange crew",features:["Brushed inside"]},
+{id:"p12",name:"Plain Cap Blank - 5 Panel",price:65,image:"https://images.unsplash.com/photo-1556306535-38febf6782e7?w=600&h=600&fit=crop",shopId:"jozi_street",category:"BUY_PLAINS",type:"Blanks",fabric:"Unbranded 5-panel cap blank",features:["For embroidery"]}
+];
+const sizes=[{items:9,price:"R350 / month",label:"Starter"},{items:18,price:"R650 / month",label:"Growth"},{items:36,price:"R1,200 / month",label:"Standard"},{items:72,price:"R2,200 / month",label:"Mall"},{items:81,price:"R2,500 / month",label:"Mansion"}];
+const outdoors=[{name:"Banners",image:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400"},{name:"Flags",image:"https://images.unsplash.com/photo-1516331138075-f3adc1e149cd?w=400"},{name:"Gazebo",image:"https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=400"},{name:"Pull-up Banners",image:"https://images.unsplash.com/photo-1558655146-d09347e92766?w=400"},{name:"X-Banners",image:"https://images.unsplash.com/photo-1586714647609-aef50d86039a?w=400"},{name:"Table Cloths",image:"https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400"}];
+
+let currentDoor="BUY", currentFilter="All", visible=20, cart=2, selectedProduct=null, currentShop=null, selectedSize=9, hasProducts=true;
+let allProducts=[];
+
+function normalizeProduct(product, index) {
+const category = String(product && product.category ? product.category : "BUY").toUpperCase();
+const type = product && product.type ? product.type : (category === "BUY_PLAINS" ? "Blanks" : "Apparel");
+return {
+  id: String(product && product.id !== undefined ? product.id : index + 1),
+  name: product && product.name ? product.name : `Product ${index + 1}`,
+  price: Number(product && product.price !== undefined ? product.price : 0),
+  image: product && product.image ? product.image : "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop",
+  shopId: product && product.shopId ? product.shopId : "anc_regalia",
+  category,
+  type,
+  fabric: product && product.fabric ? product.fabric : "Premium quality product material",
+  features: Array.isArray(product && product.features) ? product.features : ["Premium quality","Ready to order"]
+};
+}
+
+function buildFallbackProducts() {
+return fallbackProducts.map((product, index) => normalizeProduct(product, index));
+}
+
+function expandProducts(sourceProducts) {
+const baseProducts = sourceProducts && sourceProducts.length ? sourceProducts : buildFallbackProducts();
+const expanded = [];
+for (let i = 0; i < 20; i++) {
+  baseProducts.forEach((p) => {
+    expanded.push({
+      ...p,
+      id: i === 0 ? String(p.id) : String(p.id) + "_" + i,
+      name: i === 0 ? p.name : p.name + " #" + (i + 1)
     });
-    let button = document.getElementById('load-more');
-    if(!button){
-      button = document.createElement('button');
-      button.id='load-more';
-      button.type='button';
-      button.textContent='LOAD MORE';
-      button.addEventListener('click', function(){
-        const nextCount = Math.min(visibleCount + 6, items.length);
-        grid.dataset.visibleCount = String(nextCount);
-        items.forEach((item, index) => {
-          item.style.display = index < nextCount ? 'block' : 'none';
-        });
-        if(nextCount >= items.length){ button.remove(); }
-      });
-      app.appendChild(button);
-    }
-    grid.dataset.visibleCount = String(visibleCount);
-  }
-  if(typeof originalRender === 'function'){
-    window.render = function(){
-      originalRender();
-      requestAnimationFrame(attachLoadMore);
-    };
-  }
-  attachLoadMore();
-  window.addEventListener('DOMContentLoaded', function(){
-    setTimeout(attachLoadMore, 50);
   });
-})();
+}
+return expanded;
+}
+
+function loadProducts() {
+fetch('/api/products')
+  .then((response) => {
+    if (!response.ok) throw new Error('Fetch failed');
+    return response.json();
+  })
+  .then((products) => {
+    const source = Array.isArray(products) ? products : [];
+    allProducts = expandProducts(source.map((product, index) => normalizeProduct(product, index)));
+    renderFilters();
+    renderBuy();
+    renderPlains();
+  })
+  .catch(() => {
+    allProducts = expandProducts(buildFallbackProducts());
+    renderFilters();
+    renderBuy();
+    renderPlains();
+    toast('Using local fallback products');
+  });
+}
+function getShop(id){ return shops.find(s=>s.shopId===id)||shops[0]; }
+function toast(msg){ let t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2200); }
+function renderFilters(){
+  const cats=["All","Headwear","Apparel","Jackets","Hoodies","Caps"];
+  document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${currentFilter===c?'active':''}" data-cat="${c}">${c}</button>`).join('');
+  document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{ currentFilter=b.dataset.cat; visible=20; renderBuy(); renderFilters(); });
+}
+function renderBuy(){
+  const filtered=currentDoor==="BUY" ? allProducts.filter(p=>p.category==="BUY").filter(p=>{
+    if(currentFilter==="All") return true;
+    if(currentFilter==="Headwear") return ["Headwear","Caps"].includes(p.type);
+    return p.type===currentFilter || (currentFilter==="Apparel" && p.type==="Apparel");
+  }) : [];
+  const slice=filtered.slice(0,visible);
+  document.getElementById("grid").innerHTML=slice.map(p=>{
+    const shop=getShop(p.shopId);
+    return `<div class="card" data-id="${p.id}"><div class="card-img"><img src="${p.image}" loading="lazy"><div class="badge-shop"><div class="badge-logo">${shop.logoText}</div><div class="badge-text">${shop.logoText}</div></div><div class="type-badge">${p.type}</div></div><div class="card-body"><div class="card-name">${p.name}</div><div class="card-price"><div class="price">R${p.price}</div><div class="loc">📍${shop.location.split(",")[0]}</div></div></div></div>`;
+  }).join('');
+  document.getElementById("loadMore").style.display=filtered.length>visible?'inline-block':'none';
+  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>openProduct(c.dataset.id));
+  document.getElementById("statusItems").textContent=filtered.length+" Items";
+}
+function renderPlains(){
+  const list=allProducts.filter(p=>p.category==="BUY_PLAINS");
+  document.getElementById("plainsGrid").innerHTML=list.map(p=>{
+    const shop=getShop(p.shopId);
+    return `<div class="card" data-id="${p.id}"><div class="card-img"><img src="${p.image}"><div style="position:absolute;top:8px;left:8px;background:#000;color:#fff;font-size:10px;padding:2px 8px;border-radius:9999px;font-weight:700">BLANK</div></div><div class="card-body"><div class="card-name">${p.name}</div><div style="font-size:11px;color:rgba(0,0,0,0.6);margin-top:4px">${p.fabric.split(",")[0]}</div><div class="price" style="margin-top:8px">R${p.price}</div><div style="font-size:10px;color:rgba(0,0,0,0.5);margin-top:2px">${shop.name}</div></div></div>`;
+  }).join('');
+  document.querySelectorAll("#plainsGrid .card").forEach(c=>c.onclick=()=>openProduct(c.dataset.id));
+}
+function openProduct(id){
+  const p=allProducts.find(x=>x.id===id); if(!p) return;
+  selectedProduct=p; const shop=getShop(p.shopId); currentShop=shop;
+  document.getElementById("buySection").classList.add("hidden");
+  document.getElementById("plainsSection").classList.add("hidden");
+  document.getElementById("rentSection").classList.add("hidden");
+  document.getElementById("brandingSection").classList.add("hidden");
+  document.getElementById("productDetail").classList.remove("hidden");
+  document.getElementById("detailImg").src=p.image;
+  document.getElementById("detailShopLogo").textContent=shop.logoText;
+  document.getElementById("detailShopName").textContent=shop.name;
+  document.getElementById("detailShopLoc").textContent="📍"+shop.location;
+  document.getElementById("detailType").textContent=p.type.toUpperCase()+" • "+p.category;
+  document.getElementById("detailName").textContent=p.name;
+  document.getElementById("detailPrice").textContent="R"+p.price;
+  document.getElementById("waPreview").textContent=`Order: ${p.name} - R${p.price} from ${shop.name}`;
+  document.getElementById("detailFabric").textContent=p.fabric;
+  document.getElementById("detailFeatures").innerHTML=p.features.map(f=>`<span style="padding:4px 10px;border-radius:9999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.7)">${f}</span>`).join('');
+}
+function closeProduct(){
+  document.getElementById("productDetail").classList.add("hidden");
+  if(currentDoor==="BUY") document.getElementById("buySection").classList.remove("hidden");
+  if(currentDoor==="BUY_PLAINS") document.getElementById("plainsSection").classList.remove("hidden");
+  if(currentDoor==="RENT_SHOP") document.getElementById("rentSection").classList.remove("hidden");
+  if(currentDoor==="BRANDING") document.getElementById("brandingSection").classList.remove("hidden");
+}
+function switchDoor(door){
+  currentDoor=door;
+  document.querySelectorAll(".door").forEach(d=>d.classList.toggle("active", d.dataset.door===door));
+  document.getElementById("buySection").classList.toggle("hidden", door!=="BUY");
+  document.getElementById("plainsSection").classList.toggle("hidden", door!=="BUY_PLAINS");
+  document.getElementById("rentSection").classList.toggle("hidden", door!=="RENT_SHOP");
+  document.getElementById("brandingSection").classList.toggle("hidden", door!=="BRANDING");
+  document.getElementById("productDetail").classList.add("hidden");
+  toast(`House V2 • ${door.replace("_"," ")} active`);
+}
+function renderSizeGrid(){
+  document.getElementById("sizeGrid").innerHTML=sizes.map(s=>`<button class="house-btn" data-size="${s.items}" style="border-radius:14px;border:1px solid ${selectedSize===s.items?'#000':'rgba(0,0,0,0.1)'};padding:12px;text-align:left;background:${selectedSize===s.items?'#000':'#fff'};color:${selectedSize===s.items?'#FFD700':'#000'};cursor:pointer"><div style="font-size:18px;font-weight:900">${s.items}</div><div style="font-size:10px;font-weight:700;opacity:0.7">${s.label}</div><div style="margin-top:8px;font-size:11px;font-weight:700;color:${selectedSize===s.items?'#FFD700':'rgba(0,0,0,0.6)'}">${s.price}</div></button>`).join('');
+  document.querySelectorAll("[data-size]").forEach(b=>b.onclick=()=>{ selectedSize=parseInt(b.dataset.size); renderSizeGrid(); });
+}
+function renderOutdoors(){
+  document.getElementById("outdoorsGrid").innerHTML=outdoors.map(o=>`<button class="house-card house-btn" data-out="${o.name}" style="text-align:left;border-radius:18px;overflow:hidden;background:#fff;border:none;cursor:pointer"><div style="aspect-ratio:16/10;background:#F0F0F0;position:relative;overflow:hidden"><img src="${o.image}" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;top:8px;left:8px;background:#000;color:#fff;font-size:10px;padding:2px 8px;border-radius:9999px;font-weight:700">${o.name}</div></div><div style="padding:12px"><div style="font-weight:700;color:#000;font-size:13px">${o.name}</div><div style="font-size:11px;color:rgba(0,0,0,0.5)">Click to view mock products</div></div></button>`).join('');
+  document.querySelectorAll("[data-out]").forEach(b=>b.onclick=()=>openOutdoorProducts(b.dataset.out));
+}
+function openOutdoorProducts(name){
+  document.getElementById("outdoorsCategories").classList.add("hidden");
+  document.getElementById("outdoorsProducts").classList.remove("hidden");
+  document.getElementById("outdoorTitle").textContent=name;
+  document.getElementById("outdoorProductsGrid").innerHTML=[1,2,3].map(i=>`<div class="house-card" style="border-radius:16px;background:#fff;padding:12px"><div style="aspect-ratio:4/3;border-radius:12px;background:#F5F5F5;overflow:hidden"><img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=400&h=300&fit=crop&random=${i}" style="width:100%;height:100%;object-fit:cover"></div><div style="margin-top:12px;color:#000;font-weight:700;font-size:12px">${name} - ${i===1?'3x2m':i===2?'Premium':'Eco'} Option</div><div style="font-size:12px;font-weight:900;color:#000;margin-top:4px">R${450+i*120}</div><button onclick="window.open('https://wa.me/27731234567?text='+encodeURIComponent('Order: ${name} ${i} - outdoor branding'),'_blank')" style="margin-top:8px;width:100%;height:32px;border-radius:9999px;background:#000;color:#FFD700;font-size:11px;font-weight:700;border:none;cursor:pointer">Order via WhatsApp</button></div>`).join('');
+}
+document.querySelectorAll(".door").forEach(d=>d.onclick=()=>switchDoor(d.dataset.door));
+document.getElementById("loadMore").onclick=()=>{ visible+=20; renderBuy(); };
+document.getElementById("backToProducts").onclick=closeProduct;
+document.getElementById("cartBtn").onclick=()=>toast(`${cart} items in cart • Checkout via WhatsApp`);
+document.getElementById("addCart").onclick=()=>{ cart++; document.getElementById("cartNum").textContent=cart; toast("Added to cart"); };
+document.getElementById("buyNow").onclick=()=>{
+  if(!selectedProduct) return;
+  const shop=getShop(selectedProduct.shopId);
+  const msg=`Order: ${selectedProduct.name} - R${selectedProduct.price} from ${shop.name}\nShop: ${shop.location}\nPlease confirm availability.`;
+  window.open(`https://wa.me/${shop.phone}?text=${encodeURIComponent(msg)}`,'_blank');
+};
+document.getElementById("detailShopBtn").onclick=()=>openShopModal(currentShop);
+function openShopModal(shop){
+  document.getElementById("shopModal").classList.remove("hidden");
+  document.getElementById("modalLogo").textContent=shop.logoText;
+  document.getElementById("modalName").textContent=shop.name;
+  document.getElementById("modalOwner").textContent="👤"+shop.owner;
+  document.getElementById("modalLoc").textContent="📍"+shop.location;
+  document.getElementById("modalPhone").textContent="📞"+shop.phone;
+  document.getElementById("modalVerified").textContent=shop.verified?"✔ Verified Shop":"Unverified";
+  document.getElementById("modalWa").onclick=()=>window.open(`https://wa.me/${shop.phone}?text=${encodeURIComponent(`Hi ${shop.name}, I'm interested in your shop.`)}`,'_blank');
+}
+document.getElementById("closeModal").onclick=()=>document.getElementById("shopModal").classList.add("hidden");
+document.getElementById("modalBg").onclick=()=>document.getElementById("shopModal").classList.add("hidden");
+
+// Rent Shop
+document.querySelectorAll("[data-rent]").forEach(b=>b.onclick=()=>{
+  hasProducts=b.dataset.rent==="have";
+  document.getElementById("rentOptions").classList.add("hidden");
+  document.getElementById("rentForm").classList.remove("hidden");
+  document.getElementById("rentSubtitle").textContent=hasProducts?"You have products — fast track":"No products — we will source blanks";
+  renderSizeGrid();
+});
+document.getElementById("backToOptions").onclick=()=>{
+  document.getElementById("rentForm").classList.add("hidden");
+  document.getElementById("rentOptions").classList.remove("hidden");
+};
+document.getElementById("createShop").onclick=()=>{
+  const name=document.getElementById("shopName").value||"NEW SHOP";
+  const owner=document.getElementById("ownerName").value||"Owner";
+  const phone=document.getElementById("phone").value||"27700000000";
+  const loc=document.getElementById("location").value||"South Africa";
+  const verified=document.getElementById("verified").checked;
+  const newShop={shopId:`shop_${Date.now()}`,name,owner,logoText:name.substring(0,3).toUpperCase(),location:loc,phone,verified};
+  shops.push(newShop);
+  document.getElementById("rentForm").classList.add("hidden");
+  document.getElementById("rentSuccess").classList.remove("hidden");
+  document.getElementById("successCount").textContent=shops.length;
+  document.getElementById("successBadge").textContent=`${name} • ${selectedSize} ITEMS • ${loc}`;
+  document.getElementById("shopCount").innerHTML=`<span style="width:8px;height:8px;border-radius:9999px;background:#34d399;display:inline-block"></span>HOUSE: ${shops.length} SHOPS LIVE`;
+  document.getElementById("statusShops").textContent=shops.length+" Shops";
+};
+document.getElementById("goBuy").onclick=()=>{ document.getElementById("rentSuccess").classList.add("hidden"); document.getElementById("rentOptions").classList.remove("hidden"); switchDoor("BUY"); };
+document.getElementById("createAnother").onclick=()=>{ document.getElementById("rentSuccess").classList.add("hidden"); document.getElementById("rentOptions").classList.remove("hidden"); };
+
+// Branding
+document.querySelectorAll("[data-brand]").forEach(b=>b.onclick=()=>{
+  const name=b.dataset.brand;
+  document.getElementById("brandingList").classList.add("hidden");
+  document.getElementById("brandingDetail").classList.remove("hidden");
+  document.getElementById("outdoorsCategories").classList.add("hidden");
+  document.getElementById("outdoorsProducts").classList.add("hidden");
+  document.getElementById("embroideryForm").classList.add("hidden");
+  document.getElementById("dtfForm").classList.add("hidden");
+  if(name==="Outdoors"){ document.getElementById("outdoorsCategories").classList.remove("hidden"); renderOutdoors(); }
+  if(name==="Embroidery"){ document.getElementById("embroideryForm").classList.remove("hidden"); }
+  if(name==="DTF Printing"||name==="Sublimation"){ document.getElementById("dtfForm").classList.remove("hidden"); document.getElementById("dtfTitle").textContent=name; document.getElementById("dtfWidth").textContent=`Width fixed ${name==="DTF Printing"?"58cm":"145cm"} note`; document.getElementById("dtfWa").onclick=()=>window.open(`https://wa.me/27731234567?text=${encodeURIComponent(`${name} Order - artwork`)}`,'_blank'); }
+});
+document.getElementById("backToBranding").onclick=()=>{ document.getElementById("brandingDetail").classList.add("hidden"); document.getElementById("brandingList").classList.remove("hidden"); };
+document.getElementById("backToCategories").onclick=()=>{ document.getElementById("outdoorsProducts").classList.add("hidden"); document.getElementById("outdoorsCategories").classList.remove("hidden"); };
+document.querySelectorAll(".firstTimeBtn").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".firstTimeBtn").forEach(x=>{ x.style.background="#fff"; x.style.color="#000"; x.style.border="1px solid rgba(0,0,0,0.15)"; });
+  b.style.background="#000"; b.style.color="#FFD700"; b.style.border="1px solid #000";
+  document.getElementById("setupFee").style.display=b.dataset.val==="Yes"?"block":"none";
+});
+document.querySelectorAll(".artBtn").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".artBtn").forEach(x=>{ x.style.background="#fff"; x.style.color="#000"; x.style.border="1px solid rgba(0,0,0,0.15)"; });
+  b.style.background="#000"; b.style.color="#fff"; b.style.border="1px solid #000";
+  const yes=b.dataset.val==="Yes";
+  document.getElementById("artYes").classList.toggle("hidden", !yes);
+  document.getElementById("artNo").classList.toggle("hidden", yes);
+});
+
+loadProducts(); renderSizeGrid();
 </script>
 </body>
 </html>
