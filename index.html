@@ -8,20 +8,21 @@
 <style>
 :root{--gold:#FFC300;--black:#0B0B0B;--card:#151515;--border:#232323}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',Arial}
-body{background:var(--black);color:#fff;min-height:100vh}
-header{background:#000;border-bottom:1px solid var(--border);padding:14px 22px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
+body{background:linear-gradient(135deg,#0b0b0b 0%,#1b1209 24%,#0d1c1f 52%,#120d1a 100%);background-size:200% 200%;animation:gradientShift 18s ease infinite;color:#fff;min-height:100vh}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+header{background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:14px 22px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
 .brand{display:flex;gap:10px;align-items:center}
-.brand .dot{width:32px;height:32px;background:var(--gold);color:#000;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.brand .dot{width:32px;height:32px;background:var(--gold);color:#000;border-radius:50%;display:grid;place-items:center;font-weight:800;box-shadow:0 0 22px rgba(255,195,0,.45)}
 .brand h1{font-size:16px;letter-spacing:1px}
 .brand h1 span{color:var(--gold)}
 .nav{display:flex;gap:8px;flex-wrap:wrap}
 .nav button{background:var(--card);border:1px solid var(--border);color:#aaa;padding:9px 16px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
-.nav button.active,.nav button:hover{background:var(--gold);color:#000;border-color:var(--gold)}
-#subbar{background:#101010;border-bottom:1px solid var(--border);padding:10px 22px;display:flex;gap:8px;overflow-x:auto;align-items:center}
+.nav button.active,.nav button:hover{background:linear-gradient(135deg,#f8cd40,#ffc300);color:#000;border-color:var(--gold);box-shadow:0 8px 18px rgba(255,195,0,.18)}
+#subbar{background:rgba(16,16,16,.75);border-bottom:1px solid var(--border);padding:10px 22px;display:flex;gap:8px;overflow-x:auto;align-items:center}
 #subbar button{background:#1C1C1C;border:1px solid #2a2a2a;color:#bbb;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:12px;white-space:nowrap}
 #subbar button.active{background:#fff;color:#000}
 #crumb{padding:10px 22px;color:#555;font-size:11px;letter-spacing:.5px}
-#app{padding:18px 22px}
+#app{padding:18px 22px;padding-bottom:40px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}
 .card:hover{transform:translateY(-3px);border-color:var(--gold)}
@@ -47,6 +48,7 @@ header{background:#000;border-bottom:1px solid var(--border);padding:14px 22px;d
 .size.active{background:var(--gold);color:#000;border-color:var(--gold)}
 .success{text-align:center;padding:60px 20px}
 .success h1{color:var(--gold);font-size:32px}
+#load-more{display:inline-flex;align-items:center;justify-content:center;margin:18px auto 0;padding:12px 22px;border:none;border-radius:999px;background:linear-gradient(135deg,#ffe08a,#ffc300);color:#111;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 10px 24px rgba(255,195,0,.2)}
 </style>
 </head>
 <body>
@@ -62,11 +64,214 @@ header{background:#000;border-bottom:1px solid var(--border);padding:14px 22px;d
 <div id="subbar"></div>
 <div id="crumb">HOME / BUY</div>
 <div id="app">Loading...</div>
-
 <div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
 <div class="modal" id="modalInner"></div>
 </div>
+<script>
+/** REGALIA MALL V2 - Professional Code - House Logic Locked */
+const SHOPS = [
+  {shopId:"anc_regalia", name:"ANC REGALIA STYLE", owner:"Abdul Divad Kabika", logo:"ANC", location:"East London, EC", phone:"27700000000", verified:true, size:36}
+];
 
-<script src="data:application/javascript;base64,Y29uc3QgU0hPUFMgPSBbCiAge3Nob3BJZDoiYW5jX3JlZ2FsaWEiLCBuYW1lOiJBTkMgUkVHQUxJQSBTVFlMRSIsIG93bmVyOiJBYmR1bCBEaXZhZCBLYWJpa2EiLCBsb2dvOiJBTkMiLCBsb2NhdGlvbjoiRWFzdCBMb25kb24sIEVDIiwgcGhvbmU6IjI3Ny4uLiIsIGRlc2M6Ik1haW4gU2hvcCAtIEFOQyBDbG90aGluZyAmIFJlZ2FsaWEifQpdOwoKY29uc3QgUFJPRFVDVFMgPSBbCiAge2lkOiJwMSIsIG5hbWU6IkFOQyBDYXAgLSBZZWxsb3ciLCBpbWFnZToiaHR0cHM6Ly92aWEucGxhY2Vob2xkZXIuY29tLzMwMD90ZXh0PUFOQytDYXAiLCBwcmljZToyNTAsIGNhdGVnb3J5OiJCVVkiLCBzdWI6IkhlYWR3ZWFyIiwgc2hvcElkOiJhbmNfcmVnYWxpYSIsIGZhYnJpYzoiMTAwJSBDb3R0b24gVHdpbGwsIDYgcGFuZWwsIEVtYnJvaWRlcmVkIGxvZ28ifSwKICB7aWQ6InAyIiwgbmFtZToiQU5DIEhvb2RpZSBCbGFjayIsIGltYWdlOiJodHRwczovL3ZpYS5wbGFjZWhvbGRlci5jb20vMzAwP3RleHQ9SG9vZGllIiwgcHJpY2U6NTUwLCBjYXRlZ29yeToiQlVZIiwgc3ViOiJIb29kaWVzIiwgc2hvcElkOiJhbmNfcmVnYWxpYSIsIGZhYnJpYzoiRmxlZWNlIDI0MGdzbSwgQnJ1c2hlZCBpbnNpZGUsIERURiBmcm9udCJ9LAogIHtpZDoicDMiLCBuYW1lOiJHb2xmIFNoaXJ0IC0gR3JlZW4iLCBpbWFnZToiaHR0cHM6Ly92aWEucGxhY2Vob2xkZXIuY29tLzMwMD90ZXh0PUdvbGYrU2hpcnQiLCBwcmljZTo0NTAsIGNhdGVnb3J5OiJCVVkiLCBzdWI6IkFwcGFyZWwiLCBzaG9wSWQ6ImFuY19yZWdhbGlhIiwgZmFicmljOiJQaXF1ZSBHb2xmIDE4MGdzbSwgQ29sbGFyLCBTdWJsaW1hdGlvbiByZWFkeSJ9LAogIHtpZDoicDQiLCBuYW1lOiJBTkMgSmFja2V0IiwgaW1hZ2U6Imh0dHBzOi8vdmlhLnBsYWNlaG9sZGVyLmNvbS8zMDA/dGV4dD1KYWNrZXQiLCBwcmljZTo3NTAsIGNhdGVnb3J5OiJCVVkiLCBzdWI6IkphY2tldHMiLCBzaG9wSWQ6ImFuY19yZWdhbGlhIiwgZmFicmljOiJTb2Z0c2hlbGwsIFdhdGVyIHJlc2lzdGFudCwgRW1icm9pZGVyeSBjaGVzdCJ9LAogIHtpZDoicDUiLCBuYW1lOiJSb3VuZCBOZWNrIC0gRFRGIiwgaW1hZ2U6Imh0dHBzOi8vdmlhLnBsYWNlaG9sZGVyLmNvbS8zMDA/dGV4dD1Sb3VuZCtOZWNrIiwgcHJpY2U6MzAwLCBjYXRlZ29yeToiQlVZIiwgc3ViOiJBcHBhcmVsIiwgc2hvcElkOiJhbmNfcmVnYWxpYSIsIGZhYnJpYzoiQ290dG9uIDE2MGdzbSwgRFRGIDI4eDI4Y20ifSwKICB7aWQ6InA2IiwgbmFtZToiUGxhaW4gQmxhbmsgLSBCbGFjayIsIGltYWdlOiJodHRwczovL3ZpYS5wbGFjZWhvbGRlci5jb20vMzAwP3RleHQ9UGxhaW4rQmxhbmsiLCBwcmljZToxMjAsIGNhdGVnb3J5OiJQTEFJTlMiLCBzdWI6IlQtU2hpcnRzIiwgc2hvcElkOiJhbmNfcmVnYWxpYSIsIGZhYnJpYzoiQ2FwdGl2aXR5IFBsYWluIC0gMTAwJSBDb3R0b24ifSwKXTsKCmxldCBzdGF0ZSA9IHt2aWV3OiJCVVkiLCBmaWx0ZXI6IkFsbCIsIHNlbGVjdGVkOm51bGwsIHJlbnRTdGVwOiJvcHRpb25zIiwgYnJhbmRpbmc6Im9wdGlvbnMifTsKCmZ1bmN0aW9uIGdvKHZpZXcpewogIHN0YXRlLnZpZXc9dmlldzsKICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCduYXYgYnV0dG9uJykuZm9yRWFjaChiPT5iLmNsYXNzTGlzdC5yZW1vdmUoJ2FjdGl2ZScpKTsKICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYnRuLScrdmlldyk/LmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogIHJlbmRlcigpOwp9CgpmdW5jdGlvbiByZW5kZXIoKXsKICBjb25zdCBiYz1kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYnJlYWRjcnVtYicpOwogIGNvbnN0IGN0PWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjb250ZW50Jyk7CiAgYmMuaW5uZXJIVE1MPWBIb21lID4gJHtzdGF0ZS52aWV3fWA7CiAgaWYoc3RhdGUudmlldz09PSJCVVkiKSByZW5kZXJCdXkoY3QpOwogIGlmKHN0YXRlLnZpZXc9PT0iUExBSU5TIikgcmVuZGVyUGxhaW5zKGN0KTsKICBpZihzdGF0ZS52aWV3PT09IlJFTlQiKSByZW5kZXJSZW50KGN0KTsKICBpZihzdGF0ZS52aWV3PT09IkJSQU5ESU5HIikgcmVuZGVyQnJhbmRpbmcoY3QpOwogIGlmKHN0YXRlLnZpZXc9PT0iUFJPRFVDVCIpIHJlbmRlclByb2R1Y3QoY3QpOwp9CgpmdW5jdGlvbiByZW5kZXJCdXkoY3QpewogIGNvbnN0IHN1YnM9WyJBbGwiLCJIZWFkd2VhciIsIkFwcGFyZWwiLCJKYWNrZXRzIiwiSG9vZGllcyIsIkNhcHMiXTsKICBsZXQgaHRtbD1gPGRpdiBjbGFzcz0idG9nZ2xlIj4ke3N1YnMubWFwKHM9PmA8YnV0dG9uIGNsYXNzPSIke3N0YXRlLmZpbHRlcj09PXM/J2FjdGl2ZSc6Jyd9IiBvbmNsaWNrPSJzZXRGaWx0ZXIoJyR7c30nKSI+JHtzfTwvYnV0dG9uPmApLmpvaW4oJycpfTwvZGl2PmA7CiAgbGV0IGxpc3QgPSBQUk9EVUNUUy5maWx0ZXIocD0+cC5jYXRlZ29yeT09PSJCVVkiKTsKICBpZihzdGF0ZS5maWx0ZXIhPT0iQWxsIikgbGlzdD1saXN0LmZpbHRlcihwPT5wLnN1Yj09PXN0YXRlLmZpbHRlcik7CiAgaHRtbCs9YDxkaXYgY2xhc3M9ImdyaWQiPiR7bGlzdC5tYXAocD0+YAogICAgPGRpdiBjbGFzcz0iY2FyZCIgb25jbGljaz0ib3BlblByb2R1Y3QoJyR7cC5pZH0nKSI+CiAgICAgIDxpbWcgc3JjPSIke3AuaW1hZ2V9Ij4KICAgICAgPGg0PiR7cC5uYW1lfTwvaDQ+CiAgICAgIDxwIHN0eWxlPSJjb2xvcjpnb2xkIj5SJHtwLnByaWNlfTwvcD4KICAgICAgPHNwYW4gY2xhc3M9InNob3AtYmFkZ2UiPiR7U0hPUFMuZmluZChzPT5zLnNob3BJZD09PXAuc2hvcElkKT8ubmFtZXx8J0FOQyd9PC9zcGFuPgogICAgPC9kaXY+YCkuam9pbignJyl9PC9kaXY+YDsKICBjdC5pbm5lckhUTUw9aHRtbDsKfQoKZnVuY3Rpb24gcmVuZGVyUGxhaW5zKGN0KXsKICBsZXQgbGlzdD1QUk9EVUNUUy5maWx0ZXIocD0+cC5jYXRlZ29yeT09PSJQTEFJTlMiKTsKICBjdC5pbm5lckhUTUw9YDxkaXYgc3R5bGU9InBhZGRpbmc6MTVweCI+PGgyPkJVWSBQTEFJTlMgLSBDYXB0aXZpdHkgQmxhbmtzIChTY3JhcGVyIHdpbGwgZmlsbCBoZXJlKTwvaDI+PHA+QWxsIGJsYW5rcyBtaXhlZCwgc2FtZSBhcyBCVVkgYnV0IGZyb20gQ2FwdGl2aXR5PC9wPjwvZGl2PjxkaXYgY2xhc3M9ImdyaWQiPiR7bGlzdC5tYXAocD0+YAogICAgPGRpdiBjbGFzcz0iY2FyZCIgb25jbGljaz0ib3BlblByb2R1Y3QoJyR7cC5pZH0nKSI+CiAgICAgIDxpbWcgc3JjPSIke3AuaW1hZ2V9Ij48aDQ+JHtwLm5hbWV9PC9oND48cCBzdHlsZT0iY29sb3I6Z29sZCI+UiR7cC5wcmljZX0gKyA1MCU8L3A+CiAgICAgIDxzcGFuIGNsYXNzPSJzaG9wLWJhZGdlIj5DYXB0aXZpdHkgQmxhbms8L3NwYW4+CiAgICA8L2Rpdj5gKS5qb2luKCcnKX08L2Rpdj5gOwp9CgpmdW5jdGlvbiBvcGVuUHJvZHVjdChpZCl7CiAgc3RhdGUuc2VsZWN0ZWQ9UFJPRFVDVFMuZmluZChwPT5wLmlkPT09aWQpOwogIHN0YXRlLnZpZXc9IlBST0RVQ1QiOwogIHJlbmRlcigpOwp9CgpmdW5jdGlvbiByZW5kZXJQcm9kdWN0KGN0KXsKICBjb25zdCBwPXN0YXRlLnNlbGVjdGVkOwogIGNvbnN0IHNob3A9U0hPUFMuZmluZChzPT5zLnNob3BJZD09PXAuc2hvcElkKTsKICBjdC5pbm5lckhUTUw9YAogICAgPGRpdiBzdHlsZT0icGFkZGluZzoxNXB4O21heC13aWR0aDo5MDBweDttYXJnaW46YXV0byI+CiAgICAgIDxidXR0b24gY2xhc3M9ImJ0bjIiIG9uY2xpY2s9ImdvKCdCVVknKSI+4oaQIEJhY2sgdG8gQWxsIFByb2R1Y3RzPC9idXR0b24+CiAgICAgIDxkaXYgY2xhc3M9InNob3AtdG9wIiBvbmNsaWNrPSJhbGVydCgnU2hvcCBQcm9maWxlOlxcbiR7c2hvcC5uYW1lfVxcbk93bmVyOiAke3Nob3Aub3duZXJ9XFxuTG9jYXRpb246ICR7c2hvcC5sb2NhdGlvbn1cXG5QaG9uZTogJHtzaG9wLnBob25lfVxcblxcblZlcmlmaWNhdGlvbjogVmVyaWZpZWRcXG5TaG9wIFNpemU6IDM2IGl0ZW1zJykiPgogICAgICAgIDxkaXYgY2xhc3M9ImxvZ28tY2lyY2xlIj4ke3Nob3AubG9nb308L2Rpdj4KICAgICAgICA8ZGl2PjxzdHJvbmc+JHtzaG9wLm5hbWV9PC9zdHJvbmc+PGJyPjxzbWFsbD4ke3Nob3AubG9jYXRpb259IC0gVGFwIGZvciBwcm9maWxlPC9zbWFsbD48L2Rpdj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgc3R5bGU9ImRpc3BsYXk6ZmxleDtmbGV4LXdyYXA6d3JhcDtnYXA6MjBweDtiYWNrZ3JvdW5kOiMxYTFhMWE7cGFkZGluZzoyMHB4O2JvcmRlci1yYWRpdXM6OHB4Ij4KICAgICAgICA8aW1nIHNyYz0iJHtwLmltYWdlfSIgc3R5bGU9IndpZHRoOjMyMHB4O2hlaWdodDozMjBweDtvYmplY3QtZml0OmNvbnRhaW47YmFja2dyb3VuZDojZmZmO2JvcmRlci1yYWRpdXM6NnB4Ij4KICAgICAgICA8ZGl2IHN0eWxlPSJmbGV4OjEiPgogICAgICAgICAgPGgyPiR7cC5uYW1lfTwvaDI+CiAgICAgICAgICA8aDMgc3R5bGU9ImNvbG9yOmdvbGQ7bWFyZ2luOjEwcHggMCI+UiR7cC5wcmljZX08L2gzPgogICAgICAgICAgPHA+Q2F0ZWdvcnk6ICR7cC5zdWJ9PC9wPgogICAgICAgICAgPGJyPgogICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuMiIgb25jbGljaz0iYWxlcnQoJ0FkZGVkIHRvIENhcnQgLSB1cGdyYWRlIGxhdGVyJykiPkFkZCB0byBDYXJ0PC9idXR0b24+CiAgICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4iIG9uY2xpY2s9ImJ1eU5vdygpIj5CdXkgTm93IOKGkiBXaGF0c0FwcDwvYnV0dG9uPgogICAgICAgICAgPGhyIHN0eWxlPSJtYXJnaW46MjBweCAwO2JvcmRlcjowO2JvcmRlci10b3A6MXB4IHNvbGlkICMzMzMiPgogICAgICAgICAgPGg0PkZhYnJpYyAvIEZlYXR1cmVzPC9oND4KICAgICAgICAgIDxwIHN0eWxlPSJjb2xvcjojYWFhO21hcmdpbi10b3A6OHB4O2xpbmUtaGVpZ2h0OjEuNSI+JHtwLmZhYnJpY308L3A+CiAgICAgICAgICA8dWwgc3R5bGU9ImNvbG9yOiNhYWE7bWFyZ2luOjEwcHggMCAwIDIwcHgiPgogICAgICAgICAgICA8bGk+U2l6ZXM6IFMsIE0sIEwsIFhMLCAyWEwsIDNYTDwvbGk+CiAgICAgICAgICAgIDxsaT5XYXNoOiBDb2xkLCBEbyBub3QgYmxlYWNoPC9saT4KICAgICAgICAgICAgPGxpPkRlbGl2ZXJ5OiBFYXN0IExvbmRvbiArIENvdXJpZXI8L2xpPgogICAgICAgICAgPC91bD4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj5gOwp9CgpmdW5jdGlvbiBidXlOb3coKXsKICBjb25zdCBwPXN0YXRlLnNlbGVjdGVkOwogIGNvbnN0IHNob3A9U0hPUFMuZmluZChzPT5zLnNob3BJZD09PXAuc2hvcElkKTsKICBjb25zdCBtc2c9YEhpLCBJIHdhbnQgdG8gb3JkZXI6JTBBUHJvZHVjdDogJHtwLm5hbWV9JTBBUHJpY2U6IFIke3AucHJpY2V9JTBBU2hvcDogJHtzaG9wLm5hbWV9JTBBTG9jYXRpb246ICR7c2hvcC5sb2NhdGlvbn0lMEFGYWJyaWM6ICR7cC5mYWJyaWN9YDsKICB3aW5kb3cub3BlbihgaHR0cHM6Ly93YS5tZS8yNzcwMDAwMDAwMD90ZXh0PSR7bXNnfWAsJ19ibGFuaycpOwp9CgpmdW5jdGlvbiBzZXRGaWx0ZXIoZil7c3RhdGUuZmlsdGVyPWY7cmVuZGVyKCk7fQoKZnVuY3Rpb24gcmVuZGVyUmVudChjdCl7CiAgaWYoc3RhdGUucmVudFN0ZXA9PT0ib3B0aW9ucyIpewogICAgY3QuaW5uZXJIVE1MPWAKICAgICAgPGRpdiBzdHlsZT0icGFkZGluZzoyMHB4Ij4KICAgICAgICA8aDI+UkVOVCBTSE9QIC0gQ3JlYXRlIFlvdXIgU2hvcDwvaDI+CiAgICAgICAgPGRpdiBjbGFzcz0iZ3JpZCIgc3R5bGU9Im1hcmdpbi10b3A6MjBweCI+CiAgICAgICAgICA8ZGl2IGNsYXNzPSJjYXJkIiBvbmNsaWNrPSJyZW50T3B0aW9uKCdoYXZlJykiPjxoMz5JIGhhdmUgcHJvZHVjdHM8L2gzPjxwPllvdSBoYXZlIHlvdXIgb3duIHN0b2NrLiBSZWdpc3RlciBzaG9wICsgdmVyaWZpY2F0aW9uICsgY2hvb3NlIHNpemUgOSwxOCwzNiw3Miw4MTwvcD48L2Rpdj4KICAgICAgICAgIDxkaXYgY2xhc3M9ImNhcmQiIG9uY2xpY2s9InJlbnRPcHRpb24oJ25vaGF2ZScpIj48aDM+SSBkb24ndCBoYXZlIHByb2R1Y3RzPC9oMz48cD5XZSBzdXBwbHkgZnJvbSBDYXB0aXZpdHkgYmxhbmtzLiBTdGlsbCBjcmVhdGUgcHJvZmlsZSArIHNob3Agc2l6ZTwvcD48L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+YDsKICB9IGVsc2UgaWYoc3RhdGUucmVudFN0ZXA9PT0iZm9ybSIpewogICAgY3QuaW5uZXJIVE1MPWAKICAgICAgPGRpdiBzdHlsZT0icGFkZGluZzoyMHB4Ij4KICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4yIiBvbmNsaWNrPSJzdGF0ZS5yZW50U3RlcD0nb3B0aW9ucyc7cmVuZGVyKCkiPuKGkCBCYWNrPC9idXR0b24+CiAgICAgICAgPGgyPlJlZ2lzdGVyIFNob3AgUHJvZmlsZSAtICR7c3RhdGUucmVudEhhdmU9PT0naGF2ZSc/J0kgaGF2ZSBwcm9kdWN0cyc6J0kgZG9uXFwndCBoYXZlIHByb2R1Y3RzJ308L2gyPgogICAgICAgIDxkaXYgY2xhc3M9ImZvcm0tYm94IiBzdHlsZT0ibWFyZ2luLXRvcDoxNXB4Ij4KICAgICAgICAgIDxpbnB1dCBwbGFjZWhvbGRlcj0iU2hvcCBOYW1lIChlLmcgQU5DIFJFR0FMSUEgU1RZTEUpIj4KICAgICAgICAgIDxpbnB1dCBwbGFjZWhvbGRlcj0iT3duZXIgTmFtZSI+CiAgICAgICAgICA8aW5wdXQgcGxhY2Vob2xkZXI9IlBob25lIChXaGF0c0FwcCkiPgogICAgICAgICAgPGlucHV0IHBsYWNlaG9sZGVyPSJMb2NhdGlvbiI+CiAgICAgICAgICA8aW5wdXQgcGxhY2Vob2xkZXI9IkxvZ28gVVJMIG9yIHVwbG9hZCBsYXRlciI+CiAgICAgICAgICA8bGFiZWw+PGlucHV0IHR5cGU9ImNoZWNrYm94Ij4gSUQgVmVyaWZpY2F0aW9uPC9sYWJlbD48YnI+CiAgICAgICAgICA8bGFiZWw+PGlucHV0IHR5cGU9ImNoZWNrYm94Ij4gQnVzaW5lc3MgUmVnaXN0cmF0aW9uIChvcHRpb25hbCk8L2xhYmVsPjxicj48YnI+CiAgICAgICAgICA8cD5DaG9vc2UgU2hvcCBTaXplIChpdGVtcyB5b3UgY2FuIGxpc3QpOjwvcD4KICAgICAgICAgIDxkaXYgaWQ9InNpemVzIj4ke1s5LDE4LDM2LDcyLDgxXS5tYXAobj0+YDxzcGFuIGNsYXNzPSJzaXplLW9wdCIgb25jbGljaz0icGlja1NpemUoJHtufSkiIGlkPSJzaXplLSR7bn0iPiR7bn0gaXRlbXM8L3NwYW4+YCkuam9pbignJyl9PC9kaXY+CiAgICAgICAgICA8YnI+PGJyPgogICAgICAgICAgPGJ1dHRvbiBjbGFzcz0iYnRuIiBvbmNsaWNrPSJjcmVhdGVTaG9wKCkiPkNyZWF0ZSBTaG9wPC9idXR0b24+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PmA7CiAgfSBlbHNlIHsKICAgIGN0LmlubmVySFRNTD1gPGRpdiBzdHlsZT0icGFkZGluZzo0MHB4O3RleHQtYWxpZ246Y2VudGVyIj48aDEgc3R5bGU9ImNvbG9yOmdvbGQiPuKckyBTaG9wIFN1Y2Nlc3NmdWxseSBDcmVhdGVkITwvaDE+PHAgc3R5bGU9Im1hcmdpbjoxNXB4Ij5Zb3VyIHNob3AgaXMgbm93IGxpdmUgaW4gQlVZIC0gbWFsbCB2aWV3PC9wPjxidXR0b24gY2xhc3M9ImJ0biIgb25jbGljaz0ic3RhdGUucmVudFN0ZXA9J29wdGlvbnMnO2dvKCdCVVknKSI+R28gdG8gQlVZIC0gU2VlIHlvdXIgc2hvcDwvYnV0dG9uPjwvZGl2PmA7CiAgfQp9CgpmdW5jdGlvbiByZW50T3B0aW9uKGgpe3N0YXRlLnJlbnRIYXZlPWg7c3RhdGUucmVudFN0ZXA9J2Zvcm0nO3JlbmRlcigpO30KZnVuY3Rpb24gcGlja1NpemUobil7CiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgnLnNpemUtb3B0JykuZm9yRWFjaChlPT5lLmNsYXNzTGlzdC5yZW1vdmUoJ2FjdGl2ZScpKTsKICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc2l6ZS0nK24pLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogIHN0YXRlLnBpY2tlZFNpemU9bjsKfQpmdW5jdGlvbiBjcmVhdGVTaG9wKCl7CiAgaWYoIXN0YXRlLnBpY2tlZFNpemUpIHJldHVybiBhbGVydCgnUGljayBzaG9wIHNpemU6IDksMTgsMzYsNzIsODEnKTsKICBzdGF0ZS5yZW50U3RlcD0nc3VjY2Vzcyc7CiAgcmVuZGVyKCk7Cn0KCmZ1bmN0aW9uIHJlbmRlckJyYW5kaW5nKGN0KXsKICBpZihzdGF0ZS5icmFuZGluZz09PSJvcHRpb25zIil7CiAgICBjdC5pbm5lckhUTUw9YAogICAgICA8ZGl2IHN0eWxlPSJwYWRkaW5nOjIwcHgiPgogICAgICAgIDxoMj5CUkFORElORyAtIDQgU2VydmljZXM8L2gyPgogICAgICAgIDxkaXYgY2xhc3M9ImdyaWQiIHN0eWxlPSJtYXJnaW4tdG9wOjIwcHgiPgogICAgICAgICAgPGRpdiBjbGFzcz0iY2FyZCIgb25jbGljaz0ib3BlbkJyYW5kKCdlbWJyb2lkZXJ5JykiPjxoMz5FbWJyb2lkZXJ5PC9oMz48cD5Ecm9wIG9mZiAvIENvbGxlY3QgLyBDb3VyaWVyICsgbG9nbyArIHNldHVwIGZlZTwvcD48L2Rpdj4KICAgICAgICAgIDxkaXYgY2xhc3M9ImNhcmQiIG9uY2xpY2s9Im9wZW5CcmFuZCgnZHRmJykiPjxoMz5EVEYgUHJpbnRpbmc8L2gzPjxwPldpZHRoIDU4Y20geCBtZXRlcnMsIGFydHdvcmsgdXBsb2FkPC9wPjwvZGl2PgogICAgICAgICAgPGRpdiBjbGFzcz0iY2FyZCIgb25jbGljaz0ib3BlbkJyYW5kKCdzdWInKSI+PGgzPlN1YmxpbWF0aW9uPC9oMz48cD5XaWR0aCAxNDVjbSB4IG1ldGVyczwvcD48L2Rpdj4KICAgICAgICAgIDxkaXYgY2xhc3M9ImNhcmQiIG9uY2xpY2s9Im9wZW5CcmFuZCgnb3V0ZG9vcnMnKSI+PGgzPk91dGRvb3JzPC9oMz48cD5CYW5uZXJzLCBGbGFncywgR2F6ZWJvIGV0YzwvcD48L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+YDsKICB9IGVsc2UgewogICAgbGV0IGh0bWw9YDxkaXYgc3R5bGU9InBhZGRpbmc6MjBweCI+PGJ1dHRvbiBjbGFzcz0iYnRuMiIgb25jbGljaz0ic3RhdGUuYnJhbmRpbmc9J29wdGlvbnMnO3JlbmRlcigpIj7ihpAgQmFjazwvYnV0dG9uPmA7CiAgICBpZihzdGF0ZS5icmFuZGluZz09PSdlbWJyb2lkZXJ5Jyl7CiAgICAgIGh0bWwrPWA8aDI+RW1icm9pZGVyeSBPcmRlcjwvaDI+PGRpdiBjbGFzcz0iZm9ybS1ib3giIHN0eWxlPSJtYXJnaW4tdG9wOjE1cHgiPgogICAgICAgIDxzZWxlY3Q+PG9wdGlvbj5Ecm9wIG9mZjwvb3B0aW9uPjxvcHRpb24+Q29sbGVjdDwvb3B0aW9uPjxvcHRpb24+Q291cmllcjwvb3B0aW9uPjwvc2VsZWN0PgogICAgICAgIDxpbnB1dCBwbGFjZWhvbGRlcj0iVXBsb2FkIExvZ28gUE5HIC8gUERGIC0gSXMgdGhpcyBmaXJzdCB0aW1lPyAoc2V0dXAgZmVlKSI+CiAgICAgICAgPHRleHRhcmVhIHBsYWNlaG9sZGVyPSJQb3NpdGlvbjogY3V0IHBhcGVyICsgbmVlZGxlIHdoZXJlIGxvZ28gc2hvdWxkIGJlICsgc2l6ZSBjbSI+PC90ZXh0YXJlYT4KICAgICAgICA8aW5wdXQgcGxhY2Vob2xkZXI9IlF1YW50aXR5Ij4KICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4iIG9uY2xpY2s9ImFsZXJ0KCdFbWJyb2lkZXJ5IG9yZGVyIHNlbnQgdG8gV2hhdHNBcHAnKSI+U2VuZCB0byBXaGF0c0FwcDwvYnV0dG9uPgogICAgICA8L2Rpdj5gOwogICAgfQogICAgaWYoc3RhdGUuYnJhbmRpbmc9PT0nZHRmJyl7CiAgICAgIGh0bWwrPWA8aDI+RFRGIFByaW50aW5nIC0gV2lkdGggNThjbTwvaDI+PGRpdiBjbGFzcz0iZm9ybS1ib3giIHN0eWxlPSJtYXJnaW4tdG9wOjE1cHgiPgogICAgICAgIDxzZWxlY3QgaWQ9ImFydCIgb25jaGFuZ2U9InRvZ2dsZUFydCgpIj48b3B0aW9uIHZhbHVlPSJ5ZXMiPkkgaGF2ZSBhcnR3b3JrPC9vcHRpb24+PG9wdGlvbiB2YWx1ZT0ibm8iPlJlcXVpcmUgR3JhcGhpYyBEZXNpZ248L29wdGlvbj48L3NlbGVjdD4KICAgICAgICA8ZGl2IGlkPSJhcnQteWVzIj48aW5wdXQgcGxhY2Vob2xkZXI9IlVwbG9hZCBQREYgLyBQTkcgLSBXaWR0aCA1OGNtLCBsZW5ndGggaW4gbWV0ZXJzIj48aW5wdXQgcGxhY2Vob2xkZXI9Ikxlbmd0aCBtZXRlcnMgcmVxdWlyZWQiPjwvZGl2PgogICAgICAgIDxkaXYgaWQ9ImFydC1ubyIgc3R5bGU9ImRpc3BsYXk6bm9uZSI+PHRleHRhcmVhIHBsYWNlaG9sZGVyPSJEZXNjcmliZSBkZXNpZ24gbmVlZGVkIj48L3RleHRhcmVhPjwvZGl2PgogICAgICAgIDxidXR0b24gY2xhc3M9ImJ0biIgb25jbGljaz0iYWxlcnQoJ0RURiBvcmRlciBzZW50JykiPlNlbmQgdG8gV2hhdHNBcHA8L2J1dHRvbj4KICAgICAgPC9kaXY+YDsKICAgIH0KICAgIGlmKHN0YXRlLmJyYW5kaW5nPT09J3N1YicpewogICAgICBodG1sKz1gPGgyPlN1YmxpbWF0aW9uIC0gV2lkdGggMTQ1Y208L2gyPjxkaXYgY2xhc3M9ImZvcm0tYm94IiBzdHlsZT0ibWFyZ2luLXRvcDoxNXB4Ij4KICAgICAgICA8c2VsZWN0PjxvcHRpb24+SSBoYXZlIGFydHdvcms8L29wdGlvbj48b3B0aW9uPlJlcXVpcmUgR3JhcGhpYyBEZXNpZ248L29wdGlvbj48L3NlbGVjdD4KICAgICAgICA8aW5wdXQgcGxhY2Vob2xkZXI9IlVwbG9hZCBQREYgLyBQTkcgLSBXaWR0aCAxNDVjbSB4IG1ldGVycyI+CiAgICAgICAgPGlucHV0IHBsYWNlaG9sZGVyPSJMZW5ndGggbWV0ZXJzIj4KICAgICAgICA8YnV0dG9uIGNsYXNzPSJidG4iIG9uY2xpY2s9ImFsZXJ0KCdTdWJsaW1hdGlvbiBvcmRlciBzZW50JykiPlNlbmQgdG8gV2hhdHNBcHA8L2J1dHRvbj4KICAgICAgPC9kaXY+YDsKICAgIH0KICAgIGlmKHN0YXRlLmJyYW5kaW5nPT09J291dGRvb3JzJyl7CiAgICAgIGh0bWwrPWA8aDI+T3V0ZG9vcnMgLSBQcm9kdWN0cyAmIENhdGVnb3JpZXM8L2gyPjxkaXYgY2xhc3M9ImdyaWQiIHN0eWxlPSJtYXJnaW4tdG9wOjE1cHgiPgogICAgICAgIDxkaXYgY2xhc3M9ImNhcmQiPjxpbWcgc3JjPSJodHRwczovL3ZpYS5wbGFjZWhvbGRlci5jb20vMjAwP3RleHQ9QmFubmVyIj48aDQ+QmFubmVyczwvaDQ+PC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iY2FyZCI+PGltZyBzcmM9Imh0dHBzOi8vdmlhLnBsYWNlaG9sZGVyLmNvbS8yMDA/dGV4dD1GbGFnIj48aDQ+RmxhZ3M8L2g0PjwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9ImNhcmQiPjxpbWcgc3JjPSJodHRwczovL3ZpYS5wbGFjZWhvbGRlci5jb20vMjAwP3RleHQ9R2F6ZWJvIj48aDQ+R2F6ZWJvPC9oND48L2Rpdj4KICAgICAgICA8ZGl2IGNsYXNzPSJjYXJkIj48aW1nIHNyYz0iaHR0cHM6Ly92aWEucGxhY2Vob2xkZXIuY29tLzIwMD90ZXh0PUJvYXJkIj48aDQ+Qm9hcmRzPC9oND48L2Rpdj4KICAgICAgPC9kaXY+YDsKICAgIH0KICAgIGh0bWwrPWA8L2Rpdj5gOwogICAgY3QuaW5uZXJIVE1MPWh0bWw7CiAgfQp9CgpmdW5jdGlvbiBvcGVuQnJhbmQoYil7c3RhdGUuYnJhbmRpbmc9YjtyZW5kZXIoKTt9CmZ1bmN0aW9uIHRvZ2dsZUFydCgpewogIGNvbnN0IHY9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2FydCcpLnZhbHVlOwogIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhcnQteWVzJykuc3R5bGUuZGlzcGxheT12PT09J3llcyc/J2Jsb2NrJzonbm9uZSc7CiAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2FydC1ubycpLnN0eWxlLmRpc3BsYXk9dj09PSdubyc/J2Jsb2NrJzonbm9uZSc7Cn0KCnJlbmRlcigpOwo="></script>
+const PRODUCTS = [
+  {id:"1", name:"ANC Cap - Yellow/Green", img:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400", price:250, cat:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"100% Cotton Twill, 6 Panel, Embroidered, Adjustable strap"},
+  {id:"2", name:"ANC Hoodie - Black", img:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400", price:550, cat:"BUY", sub:"Hoodies", shopId:"anc_regalia", fabric:"Fleece 240gsm, Brushed inside, DTF print 28cm"},
+  {id:"3", name:"Golf Shirt - ANC Green", img:"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400", price:450, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Pique 180gsm, Collar, 3 button, Sublimation ready"},
+  {id:"4", name:"ANC Jacket - Winter", img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400", price:750, cat:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Softshell, Water resistant, Embroidery chest"},
+  {id:"5", name:"Round Neck - DTF Print", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:300, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Cotton 160gsm, DTF 28x28cm front, Sizes S-3XL"},
+  {id:"6", name:"ANC Beanie - Winter", img:"https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400", price:180, cat:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"Acrylic knit, Embroidered logo"},
+  {id:"7", name:"ANC Tee - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:240, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Premium cotton jersey, soft-touch finish, every-day staple"},
+  {id:"8", name:"Luxury Overshirt - Black", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:680, cat:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Structured overshirt, brushed lining, smart layering piece"},
+  {id:"9", name:"Plain Blank - Black", img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm, 100% Cotton, Bulk"},
+  {id:"10", name:"Plain Blank - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm"},
+];
+
+const BRANDING_CATS = [
+  {id:"embroidery", name:"Embroidery", desc:"Drop off / Collect / Courier"},
+  {id:"dtf", name:"DTF Printing", desc:"Width 58cm x meters"},
+  {id:"sub", name:"Sublimation", desc:"Width 145cm x meters"},
+  {id:"outdoors", name:"Outdoors", desc:"Banners, Flags, Gazebo"}
+];
+
+let S = {view:"BUY", filter:"All", product:null, rent:"options", branding:"options", size:null};
+
+function router(v){
+  S.view=v; S.filter="All";
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('n-'+v).classList.add('active');
+  document.getElementById('crumb').innerText="HOME / "+v;
+  render();
+}
+
+function render(){
+  const app=document.getElementById('app');
+  const sub=document.getElementById('subbar');
+  sub.innerHTML="";
+  if(S.view==="BUY"){
+    const cats=["All","Headwear","Apparel","Jackets","Hoodies"];
+    sub.innerHTML=cats.map(c=>`<button class="${S.filter===c?'active':''}" onclick="setF('${c}')">${c}</button>`).join('');
+    let list=PRODUCTS.filter(p=>p.cat==="BUY"); if(S.filter!=="All") list=list.filter(p=>p.sub===S.filter);
+    app.innerHTML=`<div class="grid">${list.map(card).join('')}</div>`;
+  } else if(S.view==="PLAINS"){
+    sub.innerHTML=`<span style="color:#666;font-size:12px">Captivity Blanks - Scraper will auto-fill here - Buy at cost +50% markup</span>`;
+    let list=PRODUCTS.filter(p=>p.cat==="PLAINS");
+    app.innerHTML=`<h3 style="margin-bottom:12px">BUY PLAINS - Blanks</h3><div class="grid">${list.map(card).join('')}</div>`;
+  } else if(S.view==="RENT"){
+    sub.innerHTML=`<span style="color:#666;font-size:12px">Shop sizes: 9 | 18 | 36 | 72 | 81 items - Choose after profile</span>`;
+    renderRent(app);
+  } else if(S.view==="BRANDING"){
+    sub.innerHTML=BRANDING_CATS.map(b=>`<button class="${S.branding===b.id?'active':''}" onclick="openB('${b.id}')">${b.name}</button>`).join('');
+    if(S.branding==="options"){
+      app.innerHTML=`<div class="hero">${BRANDING_CATS.map(b=>`<div class="hcard" onclick="openB('${b.id}')"><h2>${b.name}</h2><p>${b.desc}</p></div>`).join('')}</div>`;
+    } else {
+      renderBrand(app);
+    }
+  }
+}
+
+function card(p){
+  const sh=SHOPS.find(s=>s.shopId===p.shopId);
+  return `<div class="card" onclick="openP('${p.id}')"><div class="img"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=${encodeURIComponent(p.name)}'"></div><div class="info"><h3>${p.name}</h3><div class="price">R${p.price}</div><div class="shop-badge">● ${sh.name}</div></div></div>`;
+}
+function setF(f){S.filter=f;render();}
+function openP(id){
+  S.product=PRODUCTS.find(p=>p.id===id);
+  const p=S.product; const sh=SHOPS.find(s=>s.shopId===p.shopId);
+  document.getElementById('modalInner').innerHTML=`
+    <div class="shop-head" onclick="alert('Shop Profile:\\n${sh.name}\\nOwner: ${sh.owner}\\nLocation: ${sh.location}\\nVerified: ${sh.verified?'Yes':''}\\nSize: ${sh.size} items')">
+      <div class="av">${sh.logo}</div>
+      <div><strong style="font-size:14px">${sh.name}</strong><br><small style="color:#888">${sh.location} • Tap for full profile</small></div>
+      <div style="margin-left:auto;color:gold;font-size:11px">VERIFIED</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;padding:18px">
+      <img src="${p.img}" style="width:340px;height:340px;object-fit:contain;background:#fff;border-radius:10px">
+      <div style="flex:1;min-width:260px">
+        <h2>${p.name}</h2>
+        <div style="color:gold;font-weight:800;font-size:22px;margin:10px 0">R${p.price}</div>
+        <div style="color:#888;font-size:13px">Category: ${p.sub} | Stock: In Stock</div>
+        <div style="margin:16px 0;display:flex;gap:8px">
+          <button class="btn2" onclick="alert('Added to cart - upgrade later with quantities')">Add to Cart</button>
+          <button class="btn" onclick="buyNow()">Buy Now → WhatsApp</button>
+        </div>
+        <div style="margin-top:18px;border-top:1px solid #222;padding-top:14px">
+          <h4 style="font-size:13px;margin-bottom:8px">Fabric / Features</h4>
+          <p style="color:#aaa;font-size:13px;line-height:1.6">${p.fabric}</p>
+          <ul style="color:#666;font-size:12px;margin:10px 0 0 18px;line-height:1.8">
+            <li>Sizes: S, M, L, XL, 2XL, 3XL</li>
+            <li>Print: ${p.cat==='BUY'?'ANC Regalia':'Blank for branding'}</li>
+            <li>Delivery: Drop off / Collect / Courier (East London)</li>
+          </ul>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('modal').style.display='grid';
+}
+function closeModal(){document.getElementById('modal').style.display='none';}
+function buyNow(){
+  const p=S.product; const sh=SHOPS.find(s=>s.shopId===p.shopId);
+  const txt=`Hi REGALIA MALL, I want to order:%0A%0A*Product:* ${p.name}%0A*Price:* R${p.price}%0A*Shop:* ${sh.name} (${sh.location})%0A*Fabric:* ${p.fabric}%0A%0ASizes needed: ?%0AQty: ?`;
+  window.open(`https://wa.me/27700000000?text=${txt}`,'_blank');
+}
+
+function renderRent(app){
+  if(S.rent==="options"){
+    app.innerHTML=`<div class="hero"><div class="hcard" onclick="S.rent='form';S.rentType='have';render()"><h2>I have products</h2><p>You have stock. Create full profile + verification + shop size 9,18,36,72,81</p></div><div class="hcard" onclick="S.rent='form';S.rentType='nohave';render()"><h2>I don't have products</h2><p>We supply from Captivity blanks. Still need profile + size</p></div></div>`;
+  } else if(S.rent==="form"){
+    app.innerHTML=`<div style="display:flex;gap:20px;flex-wrap:wrap"><div class="form"><h3>Shop Profile - ${S.rentType==='have'?'Have Products':'No Products'}</h3>
+      <input id="sn" placeholder="Shop Name (e.g ANC REGALIA STYLE)">
+      <input id="on" placeholder="Owner Full Name">
+      <input id="ph" placeholder="WhatsApp Phone">
+      <input id="lc" placeholder="Location (e.g East London, EC)">
+      <input placeholder="Logo URL (or upload later)">
+      <div style="margin:10px 0"><label><input type="checkbox"> ID Verification</label><br><label><input type="checkbox"> Business Reg (optional)</label></div>
+      <p style="font-size:12px;margin:8px 0;color:#888">Shop Size - max items you can list:</p>
+      <div>${[9,18,36,72,81].map(n=>`<span class="size" onclick="pick(${n})" id="sz-${n}">${n} items</span>`).join('')}</div>
+      <br><button class="btn" onclick="createShop()">Create Shop → Success</button> <button class="btn2" onclick="S.rent='options';render()">Back</button>
+    </div><div style="flex:1;min-width:260px;color:#666;font-size:12px;line-height:1.7"><h4 style="color:#fff">How it works</h4><p>After profile creation, you get seller dashboard where you add products. Buyers see your products mixed in BUY mall view. Small logo at top links to your profile.</p></div></div>`;
+  } else {
+    app.innerHTML=`<div class="success"><h1>✓ Shop Successfully Created!</h1><p style="color:#888;margin:12px">Your shop is live in BUY - House Full Condition 2 Met</p><br><button class="btn" onclick="S.rent='options';router('BUY')">Go to BUY Mall</button></div>`;
+  }
+}
+function pick(n){S.size=n;document.querySelectorAll('.size').forEach(e=>e.classList.remove('active'));document.getElementById('sz-'+n).classList.add('active');}
+function createShop(){
+  const name=document.getElementById('sn')?.value||"New Shop";
+  if(!S.size) return alert("Pick shop size: 9, 18, 36, 72, 81");
+  // simulate add
+  SHOPS.push({shopId:name.toLowerCase().replace(/\s/g,'_'), name:name, owner:document.getElementById('on').value, logo:name[0], location:document.getElementById('lc').value, verified:false, size:S.size});
+  S.rent="success"; render();
+}
+
+function openB(id){S.branding=id; document.getElementById('crumb').innerText="HOME / BRANDING / "+id.toUpperCase(); render();}
+function renderBrand(app){
+  let h=`<button class="btn2" onclick="S.branding='options';router('BRANDING')">← Back to Branding</button><div style="margin-top:14px">`;
+  if(S.branding==="embroidery"){
+    h+=`<div class="form"><h3>Embroidery Order</h3><select><option>Drop off at shop</option><option>Collect from client</option><option>Courier (Paxi/Aramex)</option></select><input placeholder="Logo file - PNG/PDF - First time = setup fee R150"><textarea placeholder="Position: Cut paper + pin/needle where logo should be - include size cm (e.g Left chest 10cm)"></textarea><input placeholder="Quantity"><input placeholder="Garment to embroider on"><button class="btn" onclick="alert('Order sent to WhatsApp - house full 1')">Send to WhatsApp</button></div>`;
+  }
+  if(S.branding==="dtf"){
+    h+=`<div class="form"><h3>DTF Printing - Width 58cm</h3><select id="dtfArt" onchange="dtfT()"><option value="yes">I have artwork</option><option value="no">Need Graphic Design</option></select><div id="dtfYes"><input placeholder="Upload PDF/PNG - Artwork"><input placeholder="Length meters required (e.g 2m)"><p style="color:#666;font-size:11px">Fixed width 58cm x your meters - we print roll</p></div><div id="dtfNo" style="display:none"><textarea placeholder="Describe design - colors, text, logo idea"></textarea></div><button class="btn" onclick="alert('DTF order to WhatsApp')">Send</button></div>`;
+  }
+  if(S.branding==="sub"){
+    h+=`<div class="form"><h3>Sublimation - Width 145cm</h3><input placeholder="Upload PDF/PNG - Width 145cm"><input placeholder="Length meters"><p style="color:#666;font-size:11px">Full sublimation - all over print - 145cm roll</p><button class="btn" onclick="alert('Sub order to WhatsApp')">Send</button></div>`;
+  }
+  if(S.branding==="outdoors"){
+    h+=`<h3>Outdoors - Banners, Flags, Gazebo</h3><div class="grid" style="margin-top:12px"><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Banner"></div><div class="info"><h3>Vinyl Banners</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Flag"></div><div class="info"><h3>Flags</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Gazebo"></div><div class="info"><h3>Gazebo 3x3</h3></div></div><div class="card"><div class="img"><img src="https://via.placeholder.com/300?text=Board"></div><div class="info"><h3>Correx Boards</h3></div></div></div>`;
+  }
+  h+=`</div>`;
+  app.innerHTML=h;
+}
+function dtfT(){const v=document.getElementById('dtfArt').value;document.getElementById('dtfYes').style.display=v==='yes'?'block':'none';document.getElementById('dtfNo').style.display=v==='no'?'block':'none';}
+
+render();
+
+</script>
+<script>
+(function(){
+  const originalRender = window.render;
+  function attachLoadMore(){
+    const app = document.getElementById('app');
+    const state = typeof S !== 'undefined' ? S : null;
+    if(!app || !state || state.view !== 'BUY') return;
+    const grid = app.querySelector('.grid');
+    if(!grid) return;
+    const items = Array.from(grid.children);
+    if(items.length <= 6){
+      const btn = document.getElementById('load-more');
+      if(btn) btn.remove();
+      return;
+    }
+    const visibleCount = Number(grid.dataset.visibleCount || 6);
+    items.forEach((item, index) => {
+      item.style.display = index < visibleCount ? 'block' : 'none';
+    });
+    let button = document.getElementById('load-more');
+    if(!button){
+      button = document.createElement('button');
+      button.id='load-more';
+      button.type='button';
+      button.textContent='LOAD MORE';
+      button.addEventListener('click', function(){
+        const nextCount = Math.min(visibleCount + 6, items.length);
+        grid.dataset.visibleCount = String(nextCount);
+        items.forEach((item, index) => {
+          item.style.display = index < nextCount ? 'block' : 'none';
+        });
+        if(nextCount >= items.length){ button.remove(); }
+      });
+      app.appendChild(button);
+    }
+    grid.dataset.visibleCount = String(visibleCount);
+  }
+  if(typeof originalRender === 'function'){
+    window.render = function(){
+      originalRender();
+      requestAnimationFrame(attachLoadMore);
+    };
+  }
+  attachLoadMore();
+  window.addEventListener('DOMContentLoaded', function(){
+    setTimeout(attachLoadMore, 50);
+  });
+})();
+</script>
 </body>
 </html>

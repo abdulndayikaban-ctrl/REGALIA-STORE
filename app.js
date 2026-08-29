@@ -10,8 +10,10 @@ const PRODUCTS = [
   {id:"4", name:"ANC Jacket - Winter", img:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400", price:750, cat:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Softshell, Water resistant, Embroidery chest"},
   {id:"5", name:"Round Neck - DTF Print", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:300, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Cotton 160gsm, DTF 28x28cm front, Sizes S-3XL"},
   {id:"6", name:"ANC Beanie - Winter", img:"https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400", price:180, cat:"BUY", sub:"Headwear", shopId:"anc_regalia", fabric:"Acrylic knit, Embroidered logo"},
-  {id:"7", name:"Plain Blank - Black", img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm, 100% Cotton, Bulk"},
-  {id:"8", name:"Plain Blank - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm"},
+  {id:"7", name:"ANC Tee - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:240, cat:"BUY", sub:"Apparel", shopId:"anc_regalia", fabric:"Premium cotton jersey, soft-touch finish, every-day staple"},
+  {id:"8", name:"Luxury Overshirt - Black", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:680, cat:"BUY", sub:"Jackets", shopId:"anc_regalia", fabric:"Structured overshirt, brushed lining, smart layering piece"},
+  {id:"9", name:"Plain Blank - Black", img:"https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm, 100% Cotton, Bulk"},
+  {id:"10", name:"Plain Blank - White", img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", price:120, cat:"PLAINS", sub:"T-Shirts", shopId:"anc_regalia", fabric:"Captivity Plain 160gsm"},
 ];
 
 const BRANDING_CATS = [
