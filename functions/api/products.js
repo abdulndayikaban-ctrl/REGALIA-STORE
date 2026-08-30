@@ -246,7 +246,8 @@ async function ensureAllTables(db) {
 }
 
 function normalizeProductRecord(product) {
-  const img = normalizeText(product.image_url || product.image, FALLBACK_IMAGE);
+  if (!product) return null;
+  const img = normalizeText(product?.image_url || product?.image, FALLBACK_IMAGE);
   return {
     ...product,
     image: img,
