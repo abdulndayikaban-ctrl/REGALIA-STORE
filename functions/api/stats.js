@@ -18,7 +18,11 @@ export async function onRequest(context) {
     const totalShops = await db.prepare('SELECT COUNT(*) AS total FROM shops').first();
     const shopsWeek = await db.prepare('SELECT COUNT(*) AS total FROM shops WHERE created_at >= datetime("now", "-7 days")').first();
     const fullShops = await db.prepare('SELECT COUNT(*) AS total FROM (SELECT shop_id, COUNT(*) AS product_count FROM products GROUP BY shop_id HAVING COUNT(*) >= 450)').first();
-    const viewsToday = await db.prepare('SELECT COALESCE(SUM(views),0) AS total FROM products WHERE date(updated_at) = date("now")').first();
+    const shopsAt500 = await db.prepare('SELECT COUNT(*) AS total FROM shops WHERE product_count >= 500').first();
+    const viewsToday = await db.prepare('SELECT COUNT(*) AS total FROM product_views WHERE date(viewed_at) = date("now")').first();
+    const totalUniqueViewers = await db.prepare('SELECT COUNT(DISTINCT session_id) AS total FROM product_views WHERE date(viewed_at) = date("now")').first();
+    const totalClicks = await db.prepare('SELECT COALESCE(SUM(clicks),0) AS total FROM products').first();
+    const totalShares = await db.prepare('SELECT COALESCE(SUM(shares),0) AS total FROM products').first();
     const ordersToday = await db.prepare('SELECT COUNT(*) AS total FROM orders WHERE date(created_at) = date("now")').first();
 
     let productMetrics = null;
@@ -46,7 +50,11 @@ export async function onRequest(context) {
       totalShops: Number(totalShops?.total || 0),
       shopsWeek: Number(shopsWeek?.total || 0),
       fullShops: Number(fullShops?.total || 0),
+      shopsAt500: Number(shopsAt500?.total || 0),
       viewsToday: Number(viewsToday?.total || 0),
+      totalUniqueViewers: Number(totalUniqueViewers?.total || 0),
+      totalClicks: Number(totalClicks?.total || 0),
+      totalShares: Number(totalShares?.total || 0),
       ordersToday: Number(ordersToday?.total || 0),
       topProducts: topProducts.results || [],
       productMetrics

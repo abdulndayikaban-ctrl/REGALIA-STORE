@@ -54,15 +54,24 @@ export async function onRequest(context) {
         session_id TEXT,
         traffic_source TEXT,
         referrer TEXT,
+        search_term TEXT,
         province TEXT,
         device TEXT,
+        age_range TEXT,
+        interest TEXT,
+        time_spent INTEGER DEFAULT 0,
         viewed_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `).run();
 
+    const searchTerm = String(payload?.search_term || '').trim();
+    const ageRange = String(payload?.age_range || '').trim();
+    const interest = String(payload?.interest || '').trim();
+    const timeSpent = Number(payload?.time_spent || 0);
+
     await db.prepare('UPDATE products SET views = COALESCE(views, 0) + 1 WHERE id = ?').bind(productId).run();
-    await db.prepare('INSERT INTO product_views (product_id, shop_id, session_id, traffic_source, referrer, province, device) VALUES (?, ?, ?, ?, ?, ?, ?)')
-      .bind(productId, shopId, sessionId, trafficSource, referrer, province, device).run();
+    await db.prepare('INSERT INTO product_views (product_id, shop_id, session_id, traffic_source, referrer, search_term, province, device, age_range, interest, time_spent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+      .bind(productId, shopId, sessionId, trafficSource, referrer, searchTerm, province, device, ageRange, interest, timeSpent).run();
 
     return Response.json({ ok: true, product_id: productId, views: 1 });
   } catch (error) {

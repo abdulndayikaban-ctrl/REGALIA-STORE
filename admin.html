@@ -1,480 +1,508 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ANC Regalia Admin</title>
-    <style>
-      :root {
-        --bg: #0b0d12;
-        --panel: #141922;
-        --panel-alt: #1b2330;
-        --line: rgba(255,255,255,0.1);
-        --text: #f3f5f8;
-        --muted: #9ba8b6;
-        --gold: #f4c95d;
-        --gold-strong: #d7aa2d;
-        --green: #1ecb8c;
-        --danger: #ff6b6b;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regalia Super Admin</title>
+  <style>
+    :root {
+      --bg: #0b0d12; --panel: #141922; --panel-alt: #1b2330; --line: rgba(255,255,255,0.12);
+      --text: #f3f5f8; --muted: #9ba8b6; --gold: #f4c95d; --gold-strong: #d7aa2d;
+      --green: #1ecb8c; --danger: #ff6b6b; --white: #fff; --black: #111;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: linear-gradient(180deg, #0b0d12, #101923); color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .hidden { display: none !important; }
+    .login-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+    .login-card {
+      width: min(420px, 100%); background: rgba(20,25,34,0.96); border: 1px solid var(--line);
+      border-radius: 18px; padding: 28px 22px; box-shadow: 0 20px 45px rgba(0,0,0,0.22);
+    }
+    label { display: block; color: var(--muted); font-size: 0.82rem; margin: 12px 0 8px; }
+    input, textarea, select {
+      width: 100%; border: 1px solid var(--line); background: var(--panel-alt); color: var(--text);
+      border-radius: 10px; padding: 12px 14px; font-size: 1rem;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    button { cursor: pointer; }
+    .btn {
+      width: 100%; margin-top: 18px; border: none; background: linear-gradient(135deg, var(--gold), var(--gold-strong));
+      color: #111; font-weight: 800; border-radius: 10px; padding: 12px 18px;
+    }
+    .error { min-height: 20px; margin-top: 12px; color: var(--danger); font-size: 0.82rem; }
+    .shell { max-width: 1280px; margin: 0 auto; padding: 32px 16px 80px; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 24px;
+    }
+    .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.08em; }
+    .logout-btn { background: transparent; border: 1px solid var(--line); color: var(--text); border-radius: 10px; padding: 10px 16px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .kpi { background: rgba(20,25,34,0.96); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .kpi .label { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .kpi .value { margin-top: 8px; font-size: 1.8rem; font-weight: 900; }
+    .panel { background: rgba(20,25,34,0.96); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+    .search-input { font-size: 1.05rem; }
+    .result-card { margin-top: 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .result-layout { display: grid; grid-template-columns: 260px 1fr; gap: 18px; padding: 20px; }
+    .result-image { width: 100%; height: 260px; object-fit: cover; border-radius: 14px; background: #0d1117; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); font-size: 0.72rem; font-weight: 700; }
+    .color-btn, .size-btn { border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: #111; padding: 7px 12px; font-weight: 700; margin: 4px 4px 0 0; }
+    .save-btn {
+      margin-top: 12px; border: none; background: linear-gradient(135deg, var(--green), #39d9a9);
+      color: #111; font-weight: 800; border-radius: 10px; padding: 10px 14px; width: 100%;
+    }
+    .share-btn { margin-top: 10px; border: 1px solid var(--line); background: transparent; color: var(--text); border-radius: 10px; padding: 10px 14px; width: 100%; }
+    .main-grid { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(300px,0.7fr); gap: 18px; margin-top: 20px; }
+    .analytics { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--text); }
+    .tab.active { background: linear-gradient(135deg, var(--gold), var(--gold-strong)); color: #111; border-color: transparent; }
+    .analytics-box { margin-top: 18px; border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: rgba(255,255,255,0.02); }
+    .list { display: grid; gap: 10px; }
+    .scrape-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: rgba(255,255,255,0.02); }
+    .scrape-actions { display: flex; gap: 8px; }
+    .mini-btn { padding: 8px 10px; border-radius: 8px; border: none; font-weight: 700; }
+    .approve { background: var(--green); color: #111; }
+    .reject { background: var(--danger); color: #fff; }
+    .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: #fff; color: #111; padding: 10px 18px; border-radius: 999px; font-weight: 800; box-shadow: 0 12px 34px rgba(0,0,0,0.25); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+    .toast.show { opacity: 1; }
+    @media (max-width: 900px) { .result-layout { grid-template-columns: 1fr; } .main-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="loginShell" class="login-shell">
+    <div class="login-card">
+      <h1>ANC REGALIA</h1>
+      <div style="color:var(--muted); margin-bottom:20px;">Super Admin access</div>
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Enter password" />
+      <button id="loginBtn" class="btn">Enter admin</button>
+      <div id="loginError" class="error"></div>
+    </div>
+  </div>
 
-      * { box-sizing: border-box; }
-
-      body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: linear-gradient(180deg, #0b0d12, #101923);
-        color: var(--text);
-      }
-
-      .login-shell {
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        padding: 24px;
-      }
-
-      .login-card {
-        width: min(420px, 100%);
-        background: rgba(20, 25, 34, 0.96);
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        padding: 28px 22px;
-        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
-      }
-
-      .login-card h1 {
-        margin: 0 0 8px;
-        font-size: clamp(1.7rem, 3vw, 2.3rem);
-        letter-spacing: 0.04em;
-      }
-
-      .subhead {
-        color: var(--muted);
-        margin-bottom: 22px;
-      }
-
-      label {
-        display: block;
-        color: var(--muted);
-        font-size: 0.82rem;
-        margin-bottom: 8px;
-      }
-
-      input,
-      textarea {
-        width: 100%;
-        border: 1px solid var(--line);
-        background: var(--panel-alt);
-        color: var(--text);
-        padding: 12px 14px;
-        border-radius: 10px;
-        font-size: 1rem;
-      }
-
-      textarea {
-        resize: vertical;
-        min-height: 96px;
-      }
-
-      .btn {
-        width: 100%;
-        margin-top: 18px;
-        border: none;
-        background: linear-gradient(135deg, var(--gold), var(--gold-strong));
-        color: #111;
-        font-weight: 700;
-        border-radius: 10px;
-        padding: 12px 18px;
-        cursor: pointer;
-      }
-
-      .error {
-        margin-top: 14px;
-        min-height: 20px;
-        color: var(--danger);
-        font-size: 0.85rem;
-      }
-
-      .admin-shell {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 32px 16px 60px;
-      }
-
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .brand {
-        font-size: 1.5rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-      }
-
-      .logout-btn {
-        background: transparent;
-        border: 1px solid var(--line);
-        color: var(--text);
-        border-radius: 10px;
-        padding: 10px 16px;
-        cursor: pointer;
-      }
-
-      .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 18px;
-      }
-
-      .product-card {
-        background: rgba(20, 25, 34, 0.95);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        overflow: hidden;
-      }
-
-      .product-card img {
-        display: block;
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        background: #0d1117;
-      }
-
-      .product-body {
-        padding: 16px;
-      }
-
-      .product-body label {
-        margin-top: 12px;
-      }
-
-      .product-body .inline-row {
-        display: flex;
-        gap: 10px;
-      }
-
-      .upload-row {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        margin-top: 12px;
-      }
-
-      .upload-row input[type='file'] {
-        flex: 1;
-        padding: 8px;
-        border-radius: 8px;
-        font-size: 0.8rem;
-      }
-
-      .small-btn {
-        border: 1px solid var(--line);
-        background: var(--panel-alt);
-        color: var(--text);
-        border-radius: 8px;
-        cursor: pointer;
-        padding: 10px 12px;
-        font-weight: 600;
-      }
-
-      .save-btn {
-        width: 100%;
-        margin-top: 18px;
-        background: var(--green);
-        border: none;
-        color: #0d1a15;
-        font-weight: 700;
-        border-radius: 10px;
-        padding: 10px 16px;
-        cursor: pointer;
-      }
-
-      .status {
-        margin-top: 8px;
-        min-height: 20px;
-        color: var(--gold);
-        font-size: 0.82rem;
-      }
-
-      .hidden {
-        display: none !important;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="loginShell" class="login-shell">
-      <div class="login-card">
-        <h1>ANC REGALIA</h1>
-        <div class="subhead">Store admin access</div>
-        <label for="password">Password</label>
-        <input id="password" type="password" placeholder="Enter password" />
-        <button id="loginBtn" class="btn">Enter admin</button>
-        <div id="loginError" class="error"></div>
-      </div>
+  <div id="dashboard" class="shell hidden">
+    <div class="topbar">
+      <div class="brand">ANC REGALIA SUPER ADMIN</div>
+      <button id="logoutBtn" class="logout-btn">Log out</button>
     </div>
 
-    <div id="adminShell" class="admin-shell hidden">
-      <div class="topbar">
-        <div class="brand">ANC REGALIA ADMIN</div>
-        <button id="logoutBtn" class="logout-btn">Log out</button>
-      </div>
-      <div id="productGrid" class="product-grid"></div>
+    <div id="kpis" class="kpi-grid"></div>
+
+    <div class="panel" style="margin-top:12px;">
+      <input id="searchInput" class="search-input" type="search" placeholder="Search any product by name, brand, shop to see performance..." />
+      <div id="searchResults"></div>
     </div>
 
-    <script>
-      const ADMIN_PASSWORD = '12345';
-      const loginShell = document.getElementById('loginShell');
-      const adminShell = document.getElementById('adminShell');
-      const passwordInput = document.getElementById('password');
-      const loginError = document.getElementById('loginError');
-      const productGrid = document.getElementById('productGrid');
+    <div class="main-grid">
+      <div id="inlineProduct"></div>
+      <aside class="panel">
+        <h3>Scraped Products Staging</h3>
+        <div id="scrapedList" class="list" style="margin-top:12px;"></div>
 
-      function showLogin() {
+        <div style="margin-top:26px; border-top:1px solid var(--line); padding-top:18px;">
+          <h3>Outdoor Lookbook Manager</h3>
+          <label>Shop</label>
+          <select id="lookbookShop"></select>
+          <label>Scene image</label>
+          <input id="lookbookFile" type="file" accept="image/*" />
+          <img id="lookbookPreview" alt="lookbook preview" style="width:100%; margin-top:12px; border-radius:14px; display:none; max-height:220px; object-fit:cover;" />
+          <label>Tagged product</label>
+          <select id="lookbookProduct"></select>
+          <button id="saveLookbook" class="btn" style="margin-top:12px;">Save tagged lookbook</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const ADMIN_PASSWORD = 'REGALIA_SUPER_2025';
+    const shopOptions = [
+      { id: 'anc_regalia', name: 'ANC REGALIA STYLE' },
+      { id: 'cape_culture', name: 'CAPE CULTURE CO' },
+      { id: 'jozi_street', name: 'JOZI STREETWEAR' }
+    ];
+    let activeTab = 'overview';
+    let searchTimer = null;
+
+    const loginShell = document.getElementById('loginShell');
+    const dashboard = document.getElementById('dashboard');
+    const kpisEl = document.getElementById('kpis');
+    const searchInput = document.getElementById('searchInput');
+    const resultsEl = document.getElementById('searchResults');
+    const inlineProductEl = document.getElementById('inlineProduct');
+    const toastEl = document.getElementById('toast');
+
+    function setToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      clearTimeout(setToast.timer);
+      setToast.timer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    function ensureAuth() {
+      const okay = sessionStorage.getItem('regalia-super-auth') === 'true';
+      if (!okay) {
         loginShell.classList.remove('hidden');
-        adminShell.classList.add('hidden');
-      }
-
-      function showAdmin() {
+        dashboard.classList.add('hidden');
+      } else {
         loginShell.classList.add('hidden');
-        adminShell.classList.remove('hidden');
+        dashboard.classList.remove('hidden');
+        init();
       }
+    }
 
-      function escapeHtml(value) {
-        return String(value ?? '')
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
+    async function fetchJson(url, options = {}) {
+      const response = await fetch(url, options);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Request failed');
+      return data;
+    }
 
-      function isAuthenticated() {
-        return sessionStorage.getItem('regalia-admin-auth') === 'true';
-      }
+    async function loadStats() {
+      const stats = await fetchJson('/api/stats');
+      const entries = [
+        ['Total Products in Platform', stats.totalProducts || 0],
+        ['Products Added Today', stats.addedToday || 0],
+        ['Products Added This Week', stats.addedWeek || 0],
+        ['Total Shops', stats.totalShops || 0],
+        ['Shops Joined This Week', stats.shopsWeek || 0],
+        ['Full Shops', stats.fullShops || 0],
+        ['Shops at 500/500', stats.shopsAt500 || 0],
+        ['Total Views Today', stats.viewsToday || 0],
+        ['Total Unique Viewers', stats.totalUniqueViewers || 0],
+        ['Total Clicks', stats.totalClicks || 0],
+        ['Total Shares', stats.totalShares || 0],
+        ['Total Orders Today', stats.ordersToday || 0]
+      ];
+      kpisEl.innerHTML = entries.map(([label, value]) => `
+        <div class="kpi">
+          <div class="label">${escapeHtml(label)}</div>
+          <div class="value">${escapeHtml(value)}</div>
+        </div>
+      `).join('');
+    }
 
-      async function login() {
-        const value = passwordInput.value.trim();
+    function renderLookbookSelectors() {
+      const shopSelect = document.getElementById('lookbookShop');
+      shopSelect.innerHTML = shopOptions.map(shop => `<option value="${shop.id}">${shop.name}</option>`).join('');
+      const productSelect = document.getElementById('lookbookProduct');
+      productSelect.innerHTML = '<option value="">Select product</option>';
 
-        if (value !== ADMIN_PASSWORD) {
-          loginError.textContent = 'Incorrect password.';
-          return;
-        }
-
-        sessionStorage.setItem('regalia-admin-auth', 'true');
-        loginError.textContent = '';
-        await loadProducts();
-        showAdmin();
-      }
-
-      function logout() {
-        sessionStorage.removeItem('regalia-admin-auth');
-        passwordInput.value = '';
-        showLogin();
-      }
-
-      async function uploadImage(file) {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
+      fetchJson('/api/products')
+        .then((items) => {
+          if (Array.isArray(items)) {
+            productSelect.innerHTML = '<option value="">Select product</option>' + items.map(item => `<option value="${item.id}">${item.name}</option>`).join('');
+          }
+        })
+        .catch(() => {
+          productSelect.innerHTML = '<option value="">Select product</option>';
         });
+    }
 
-        const result = await response.json();
+    function renderAnalysisTab(product, tab) {
+      const views = Number(product.views || 0);
+      const clicks = Number(product.clicks || 0);
+      const shares = Number(product.shares || 0);
+      const followers = Number(product.followers_gained || 0);
+      const conversion = views ? ((clicks / views) * 100).toFixed(1) : '0.0';
+      if (tab === 'overview') return `<div><strong>Views:</strong> ${views}<br /><strong>Unique viewers:</strong> ${Number(product.uniqueViewers || 0)}<br /><strong>Clicks:</strong> ${clicks}<br /><strong>Add to cart:</strong> 0<br /><strong>Conversion %:</strong> ${conversion}%</div>`;
+      if (tab === 'viewer') return `<div><strong>Total viewers:</strong> ${views}<br /><strong>Returning:</strong> 0<br /><strong>New:</strong> ${views}<br /><strong>Time spent:</strong> ${Number(product.time_spent || 0)}s<br /><strong>Bounce:</strong> 0%<br /><strong>Peak hours:</strong> 18:00 - 20:00</div>`;
+      if (tab === 'follower') return `<div><strong>Followers gained:</strong> ${followers}</div>`;
+      if (tab === 'traffic') return `<div><strong>Facebook:</strong> 0<br /><strong>Google:</strong> 0<br /><strong>Direct:</strong> ${views}<br /><strong>WhatsApp:</strong> 0<br /><strong>Search terms:</strong> ${escapeHtml(product.search_term || 'none')}</div>`;
+      return `<div><strong>Province:</strong> Unknown<br /><strong>Device:</strong> desktop/mobile<br /><strong>Age range:</strong> 18-35<br /><strong>Psychographic:</strong> fashion buyer<br /><strong>Behaviour:</strong> scroll depth 68%, bulk order</div>`;
+    }
 
-        if (!response.ok) {
-          throw new Error(result.error || 'Image upload failed.');
-        }
-
-        return result.url;
+    function renderResultCard(product) {
+      if (!product) {
+        inlineProductEl.innerHTML = '<div class="panel">No product selected.</div>';
+        return;
       }
 
-      function renderProducts(products) {
-        productGrid.innerHTML = products.map((product) => {
-          const imageValue = escapeHtml(product.image || '');
-          const nameValue = escapeHtml(product.name || '');
-          const categoryValue = escapeHtml(product.category || 'BUY');
-          const brandValue = escapeHtml(product.brand || 'ANC Regalia');
-          const stockValue = Number(product.stock || 0);
-          const descriptionValue = escapeHtml(product.description || '');
-          const featuresValue = escapeHtml(product.features || '');
-          const colorsValue = escapeHtml(product.colors || '');
-          const sizesValue = escapeHtml(product.sizes || '');
-          const deliveryValue = escapeHtml(product.delivery_info || '4 working days before collection');
-          const priceValue = Number(product.price || 0);
-          const previewImage = imageValue || 'https://via.placeholder.com/600x600?text=No+Image';
+      const colors = (product.colors || '').split(',').map(x => x.trim()).filter(Boolean);
+      const sizes = (product.sizes || '').split(',').map(x => x.trim()).filter(Boolean);
+      const features = (product.features || '').split(/\n|\r|,/).map(x => x.trim()).filter(Boolean);
+      const shopId = product.shop_id || 'anc_regalia';
+      const productId = product.id;
 
-          return `
-            <div class="product-card">
-              <img src="${previewImage}" alt="${nameValue}" data-preview="${product.id}" />
-              <div class="product-body">
+      inlineProductEl.innerHTML = `
+        <div class="result-card">
+          <div class="result-layout">
+            <div>
+              <img class="result-image" src="${escapeHtml(product.image || 'https://placehold.co/600x600/111/FFD700?text=No+Image')}" alt="${escapeHtml(product.name || '')}" />
+            </div>
+            <div>
+              <div class="meta-row">
+                <span class="pill">${escapeHtml(product.category || 'BUY')}</span>
+                <span class="pill">${escapeHtml(product.shop_name || 'ANC REGALIA STYLE')}</span>
+                <span class="pill">${escapeHtml(product.brand || 'ANC Regalia')}</span>
+              </div>
+              <h2>${escapeHtml(product.name || '')}</h2>
+              <div class="meta-row">
+                <span class="pill">R${Number(product.price || 0)}</span>
+                <span class="pill">Stock ${Number(product.stock || 0)}</span>
+              </div>
+
+              <div style="margin-top:12px;">
+                <div style="font-weight:800; margin-bottom:6px;">Colors</div>
+                <div>${colors.length ? colors.map(color => `<button class="color-btn" type="button">${escapeHtml(color)}</button>`).join('') : '<span class="pill">Not set</span>'}</div>
+              </div>
+
+              <div style="margin-top:12px;">
+                <div style="font-weight:800; margin-bottom:6px;">Sizes</div>
+                <div>${sizes.length ? sizes.map(size => `<button class="size-btn" type="button">${escapeHtml(size)}</button>`).join('') : '<span class="pill">Not set</span>'}</div>
+              </div>
+
+              <div style="margin-top:16px;">
+                <div style="font-weight:800; margin-bottom:6px;">Description</div>
+                <div>${escapeHtml(product.description || 'No description')}</div>
+              </div>
+
+              <div style="margin-top:16px;">
+                <div style="font-weight:800; margin-bottom:6px;">Features</div>
+                <div>${features.length ? '<ul>' + features.map(feature => `<li>${escapeHtml(feature)}</li>`).join('') + '</ul>' : 'No features listed'}</div>
+              </div>
+
+              <div style="margin-top:16px; display:grid; gap:12px;">
                 <label>Product Name</label>
-                <input data-field="name" value="${nameValue}" />
-
-                <label>Price</label>
-                <input type="number" step="0.01" data-field="price" value="${priceValue}" />
-
-                <label>Category</label>
-                <input data-field="category" value="${categoryValue}" />
-
-                <label>Brand</label>
-                <input data-field="brand" value="${brandValue}" />
-
-                <label>Stock</label>
-                <input type="number" data-field="stock" value="${stockValue}" />
-
-                <label>Description</label>
-                <textarea data-field="description" rows="3">${descriptionValue}</textarea>
-
-                <label>Product Features</label>
-                <textarea data-field="features" rows="3" placeholder="One feature per line">${featuresValue}</textarea>
-
-                <label>Colors</label>
-                <input data-field="colors" value="${colorsValue}" placeholder="e.g. Yellow, Green, Black" />
-
-                <label>Sizes</label>
-                <input data-field="sizes" value="${sizesValue}" placeholder="e.g. S, M, L, XL, XXL" />
-
-                <label>Expected Delivery</label>
-                <input data-field="delivery_info" value="${deliveryValue}" />
-
-                <label>Image URL</label>
-                <input data-field="image" value="${imageValue}" />
-
-                <div class="upload-row">
-                  <input type="file" accept="image/*" data-upload="${product.id}" />
-                  <button class="small-btn" data-upload-btn="${product.id}">Upload</button>
+                <input data-field="name" value="${escapeHtml(product.name || '')}" />
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                  <div><label>Price</label><input data-field="price" type="number" value="${Number(product.price || 0)}" /></div>
+                  <div><label>Stock</label><input data-field="stock" type="number" value="${Number(product.stock || 0)}" /></div>
                 </div>
-
-                <button class="save-btn" data-save="${product.id}">Save</button>
-                <div class="status" data-status="${product.id}"></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                  <div><label>Category</label><input data-field="category" value="${escapeHtml(product.category || 'BUY')}" /></div>
+                  <div><label>Brand</label><input data-field="brand" value="${escapeHtml(product.brand || 'ANC Regalia')}" /></div>
+                </div>
+                <label>Shop</label>
+                <select data-field="shop_id">${shopOptions.map(shop => `<option value="${shop.id}" ${shop.id === shopId ? 'selected' : ''}>${shop.name}</option>`).join('')}</select>
+                <label>Description</label>
+                <textarea data-field="description">${escapeHtml(product.description || '')}</textarea>
+                <label>Features</label>
+                <textarea data-field="features">${escapeHtml(product.features || '')}</textarea>
+                <label>Colors</label>
+                <input data-field="colors" value="${escapeHtml(product.colors || '')}" placeholder="e.g. Yellow, Green, Black" />
+                <label>Sizes</label>
+                <input data-field="sizes" value="${escapeHtml(product.sizes || '')}" placeholder="e.g. S, M, L, XL, XXL" />
+                <label>Expected Delivery</label>
+                <input data-field="delivery_info" value="${escapeHtml(product.delivery_info || '4 working days before collection')}" />
+                <label>Image URL</label>
+                <input data-field="image" value="${escapeHtml(product.image || '')}" />
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                  <div><label>Image Upload</label><input type="file" id="imageUpload" /></div>
+                  <div><label>Preview</label><img src="${escapeHtml(product.image || 'https://placehold.co/200x200/111/FFD700?text=No+Image')}" style="width:100%; height:90px; object-fit:cover; border-radius:10px;" /></div>
+                </div>
+                <button class="save-btn" type="button" data-save="${productId}">Save</button>
+                <button class="share-btn" type="button" data-share="${productId}">Share</button>
               </div>
             </div>
-          `;
-        }).join('');
+          </div>
+          <div style="padding:20px; border-top:1px solid var(--line);">
+            <div class="analytics">
+              <button class="tab ${activeTab === 'overview' ? 'active' : ''}" data-tab="overview">Overview</button>
+              <button class="tab ${activeTab === 'viewer' ? 'active' : ''}" data-tab="viewer">Viewer</button>
+              <button class="tab ${activeTab === 'follower' ? 'active' : ''}" data-tab="follower">Follower</button>
+              <button class="tab ${activeTab === 'traffic' ? 'active' : ''}" data-tab="traffic">Traffic</button>
+              <button class="tab ${activeTab === 'audience' ? 'active' : ''}" data-tab="audience">Audience</button>
+            </div>
+            <div class="analytics-box">${renderAnalysisTab(product, activeTab)}</div>
+          </div>
+        </div>
+      `;
+
+      const imageUpload = document.getElementById('imageUpload');
+      if (imageUpload) {
+        imageUpload.addEventListener('change', async (event) => {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+          const formData = new FormData();
+          formData.append('file', file);
+          try {
+            const upload = await fetchJson('/api/upload', { method: 'POST', body: formData });
+            document.querySelector('[data-field="image"]').value = upload.url;
+            document.querySelector('.result-image').src = upload.url;
+          } catch (error) {
+            setToast(error.message || 'Upload failed');
+          }
+        });
       }
 
-      async function loadProducts() {
-        const response = await fetch('/api/products');
-        const products = await response.json();
+      document.querySelector('[data-save]').addEventListener('click', () => saveProduct(productId));
+      document.querySelector('[data-share]').addEventListener('click', () => shareProduct(productId, shopId));
+      document.querySelectorAll('.tab').forEach((button) => {
+        button.addEventListener('click', () => { activeTab = button.dataset.tab; renderResultCard(product); });
+      });
+    }
 
-        if (!Array.isArray(products)) {
-          productGrid.innerHTML = '<p>No products available.</p>';
+    async function searchProducts(value) {
+      const term = value.trim();
+      if (!term) { resultsEl.innerHTML = ''; inlineProductEl.innerHTML = ''; return; }
+      try {
+        const products = await fetchJson('/api/products?search=' + encodeURIComponent(term));
+        const list = Array.isArray(products) ? products : [];
+        if (!list.length) {
+          resultsEl.innerHTML = '<div class="panel" style="margin-top:12px;">No matching product found.</div>';
+          inlineProductEl.innerHTML = '<div class="panel">No product result.</div>';
           return;
         }
 
-        renderProducts(products);
-      }
+        resultsEl.innerHTML = list.slice(0, 5).map(product => `
+          <div class="panel" style="margin-top:12px; cursor:pointer;" data-product-id="${product.id}">
+            <strong>${escapeHtml(product.name || '')}</strong> - ${escapeHtml(product.brand || 'ANC Regalia')}<br />
+            <span>${escapeHtml(product.shop_name || 'ANC REGALIA STYLE')}</span>
+          </div>
+        `).join('');
 
-      async function saveProduct(productId) {
-        const card = document.querySelector(`.product-card [data-save="${productId}"]`)?.closest('.product-card');
-        if (!card) return;
-
-        const name = card.querySelector('[data-field="name"]').value.trim();
-        const price = Number(card.querySelector('[data-field="price"]').value);
-        const category = card.querySelector('[data-field="category"]').value.trim() || 'BUY';
-        const brand = card.querySelector('[data-field="brand"]').value.trim() || 'ANC Regalia';
-        const stock = Number(card.querySelector('[data-field="stock"]').value || 0);
-        const description = card.querySelector('[data-field="description"]').value.trim();
-        const features = card.querySelector('[data-field="features"]').value.trim();
-        const colors = card.querySelector('[data-field="colors"]').value.trim();
-        const sizes = card.querySelector('[data-field="sizes"]').value.trim();
-        const deliveryInfo = card.querySelector('[data-field="delivery_info"]').value.trim() || '4 working days before collection';
-        const image = card.querySelector('[data-field="image"]').value.trim() || 'https://via.placeholder.com/600x600?text=No+Image';
-        const statusNode = card.querySelector('[data-status="' + productId + '"]');
-
-        statusNode.textContent = 'Saving...';
-
-        const response = await fetch('/api/products', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: productId,
-            name,
-            price,
-            category,
-            brand,
-            stock,
-            description,
-            features,
-            colors,
-            sizes,
-            delivery_info: deliveryInfo,
-            image
-          })
+        resultsEl.querySelectorAll('[data-product-id]').forEach((node) => {
+          node.addEventListener('click', () => {
+            const selected = list.find((item) => String(item.id) === node.dataset.productId);
+            if (selected) renderResultCard(selected);
+          });
         });
 
-        const result = await response.json();
-
-        if (!response.ok) {
-          statusNode.textContent = result.error || 'Could not save.';
-          return;
-        }
-
-        const img = card.querySelector('img');
-        if (result.image) img.src = result.image;
-
-        statusNode.textContent = 'Saved successfully.';
-        setTimeout(() => {
-          statusNode.textContent = '';
-        }, 1800);
+        renderResultCard(list[0]);
+      } catch (error) {
+        resultsEl.innerHTML = '<div class="panel" style="margin-top:12px;">Unable to search products.</div>';
       }
+    }
 
-      document.getElementById('loginBtn').addEventListener('click', login);
-      document.getElementById('logoutBtn').addEventListener('click', logout);
-      passwordInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') login();
+    async function saveProduct(productId) {
+      const card = document.querySelector('[data-save]')?.closest('.result-card');
+      if (!card) return;
+      const payload = {};
+      card.querySelectorAll('input, textarea, select').forEach((field) => {
+        const key = field.dataset.field;
+        if (!key) return;
+        payload[key] = field.value;
       });
 
-      document.addEventListener('click', async (event) => {
-        const uploadButton = event.target.closest('[data-upload-btn]');
-        const saveButton = event.target.closest('[data-save]');
-
-        if (uploadButton) {
-          const productId = Number(uploadButton.dataset.uploadBtn);
-          const input = document.querySelector(`input[data-upload="${productId}"]`);
-          const card = uploadButton.closest('.product-card');
-          const statusNode = card.querySelector('[data-status="' + productId + '"]');
-
-          if (!input || !input.files || input.files.length === 0) {
-            statusNode.textContent = 'Choose a file first.';
-            return;
-          }
-
-          statusNode.textContent = 'Uploading...';
-
-          try {
-            const uploadedUrl = await uploadImage(input.files[0]);
-            const imageInput = card.querySelector('[data-field="image"]');
-            imageInput.value = uploadedUrl;
-            card.querySelector('img').src = uploadedUrl;
-            statusNode.textContent = 'Image uploaded.';
-          } catch (error) {
-            statusNode.textContent = error.message || 'Upload failed.';
-          }
-        }
-
-        if (saveButton) {
-          const productId = Number(saveButton.dataset.save);
-          await saveProduct(productId);
-        }
+      const url = '/api/products/' + encodeURIComponent(productId);
+      const result = await fetchJson(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
 
-      if (isAuthenticated()) {
-        showAdmin();
-        loadProducts();
-      } else {
-        showLogin();
+      setToast(result.message || 'Product saved and hidden — search to view');
+      searchInput.value = '';
+      resultsEl.innerHTML = '';
+      inlineProductEl.innerHTML = '';
+    }
+
+    async function shareProduct(productId, shopId) {
+      await fetchJson('/api/track-share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: productId, shop_id: shopId })
+      });
+      setToast('Product shared');
+    }
+
+    async function loadScrapedProducts() {
+      const list = document.getElementById('scrapedList');
+      try {
+        const items = await fetchJson('/api/scraped?status=pending');
+        list.innerHTML = (items || []).map(item => `
+          <div class="scrape-item">
+            <div>
+              <div><strong>${escapeHtml(item.title || 'Scraped product')}</strong></div>
+              <div style="color:var(--muted); font-size:0.78rem;">R${Number(item.price || 0)}</div>
+            </div>
+            <div class="scrape-actions">
+              <button class="mini-btn approve" data-scraped-action="approve" data-id="${item.id}">Approve</button>
+              <button class="mini-btn reject" data-scraped-action="reject" data-id="${item.id}">Reject</button>
+            </div>
+          </div>
+        `).join('');
+
+        list.querySelectorAll('[data-scraped-action]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const action = button.dataset.scrapedAction;
+            await fetchJson('/api/scraped', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action, id: button.dataset.id })
+            });
+            loadScrapedProducts();
+          });
+        });
+      } catch (error) {
+        list.innerHTML = '<div class="scrape-item">No pending scraped products.</div>';
       }
-    </script>
-  </body>
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const value = document.getElementById('password').value.trim();
+      if (value !== ADMIN_PASSWORD) {
+        document.getElementById('loginError').textContent = 'Incorrect password.';
+        return;
+      }
+      sessionStorage.setItem('regalia-super-auth', 'true');
+      ensureAuth();
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('regalia-super-auth');
+      ensureAuth();
+    });
+
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => searchProducts(searchInput.value), 300);
+    });
+
+    document.getElementById('lookbookFile').addEventListener('change', (event) => {
+      const file = event.target.files && event.target.files[0];
+      const preview = document.getElementById('lookbookPreview');
+      if (!file) {
+        preview.style.display = 'none';
+        preview.src = '';
+        return;
+      }
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+    });
+
+    document.getElementById('saveLookbook').addEventListener('click', async () => {
+      const file = document.getElementById('lookbookFile').files && document.getElementById('lookbookFile').files[0];
+      const productId = document.getElementById('lookbookProduct').value;
+      const shopId = document.getElementById('lookbookShop').value;
+      if (!file || !productId) {
+        setToast('Select a scene image and product first.');
+        return;
+      }
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const upload = await fetchJson('/api/upload', { method: 'POST', body: formData });
+        await fetchJson('/api/lookbook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ shop_id: shopId, product_id: productId, image_url: upload.url, x_percent: 50, y_percent: 50 })
+        });
+        setToast('Lookbook tag saved');
+      } catch (error) {
+        setToast(error.message || 'Lookbook save failed');
+      }
+    });
+
+    async function init() {
+      await loadStats();
+      await loadScrapedProducts();
+      renderLookbookSelectors();
+    }
+
+    ensureAuth();
+  </script>
+</body>
 </html>

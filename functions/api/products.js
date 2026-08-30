@@ -60,9 +60,9 @@ const DEFAULT_SHOPS = [
 
 const TABLE_COLUMNS = {
   products: [
-    'description', 'features', 'colors', 'sizes', 'delivery_info', 'shop_id', 'views', 'clicks', 'shares', 'followers_gained', 'stock', 'brand'
+    'description', 'features', 'colors', 'sizes', 'delivery_info', 'shop_id', 'views', 'clicks', 'shares', 'followers_gained', 'stock', 'brand', 'display_zones'
   ],
-  shops: ['id', 'name', 'slug', 'owner_name', 'owner_email', 'logo_url', 'whatsapp', 'province', 'created_at', 'product_count'],
+  shops: ['id', 'name', 'slug', 'owner_name', 'owner_email', 'logo_url', 'whatsapp', 'province', 'created_at', 'product_count', 'is_full'],
   product_views: ['id', 'product_id', 'shop_id', 'session_id', 'traffic_source', 'referrer', 'province', 'device', 'viewed_at'],
   shop_followers: ['id', 'shop_id', 'session_id', 'source_product_id', 'created_at'],
   orders: ['id', 'shop_id', 'customer_name', 'phone', 'delivery_type', 'courier_fee', 'payment_type', 'payment_status', 'total', 'created_at'],
@@ -117,6 +117,7 @@ async function ensureProductsTable(db) {
       followers_gained INTEGER DEFAULT 0,
       stock INTEGER DEFAULT 0,
       brand TEXT,
+      display_zones TEXT DEFAULT 'shopgrid',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
@@ -161,7 +162,8 @@ async function ensureShopsTable(db) {
       whatsapp TEXT,
       province TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      product_count INTEGER DEFAULT 0
+      product_count INTEGER DEFAULT 0,
+      is_full INTEGER DEFAULT 0
     )
   `).run();
 
@@ -171,8 +173,8 @@ async function ensureShopsTable(db) {
     const existing = await db.prepare('SELECT id FROM shops WHERE id = ?').bind(shop.id).first();
     if (!existing) {
       await db.prepare(
-        'INSERT INTO shops (id, name, slug, owner_name, owner_email, logo_url, whatsapp, province, product_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-      ).bind(shop.id, shop.name, shop.slug, shop.owner_name, shop.owner_email, shop.logo_url, shop.whatsapp, shop.province, 0).run();
+        'INSERT INTO shops (id, name, slug, owner_name, owner_email, logo_url, whatsapp, province, product_count, is_full) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      ).bind(shop.id, shop.name, shop.slug, shop.owner_name, shop.owner_email, shop.logo_url, shop.whatsapp, shop.province, 0, 0).run();
     }
   }
 }
@@ -262,11 +264,33 @@ function normalizeProductRecord(product) {
     sizes: normalizeText(product.sizes, ''),
     delivery_info: normalizeText(product.delivery_info, '4 working days before collection'),
     shop_id: normalizeText(product.shop_id, 'anc_regalia'),
+    display_zones: normalizeText(product.display_zones, 'shopgrid'),
     views: Number(product.views ?? 0),
     clicks: Number(product.clicks ?? 0),
     shares: Number(product.shares ?? 0),
     followers_gained: Number(product.followers_gained ?? 0)
   };
+}
+
+async function resolveShopId(db, value) {
+  const candidate = normalizeText(value, 'anc_regalia');
+  if (!candidate) return 'anc_regalia';
+  const direct = await db.prepare('SELECT id FROM shops WHERE id = ? OR slug = ?').bind(candidate, candidate).first();
+  if (direct?.id) return direct.id;
+
+  const fallbackSlug = String(candidate).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
+  const generatedId = fallbackSlug;
+  await db.prepare('INSERT OR IGNORE INTO shops (id, name, slug, owner_name, whatsapp, province, product_count) VALUES (?, ?, ?, ?, ?, ?, 0)')
+    .bind(generatedId, 'ANC REGALIA STYLE', fallbackSlug, 'Owner', '27731234567', 'Eastern Cape')
+    .run();
+  return generatedId;
+}
+
+async function syncShopProductCount(db, shopId) {
+  const shopCount = await db.prepare('SELECT COUNT(*) AS total FROM products WHERE shop_id = ?').bind(shopId).first();
+  const total = Number(shopCount?.total || 0);
+  await db.prepare('UPDATE shops SET product_count = ?, is_full = ? WHERE id = ?').bind(total, total >= 450 ? 1 : 0, shopId).run();
+  return total;
 }
 
 async function getProductShopName(db, shopId) {
@@ -295,34 +319,46 @@ export async function onRequest(context) {
       const search = normalizeText(searchParams.get('search'), '');
       const shop = normalizeText(searchParams.get('shop'), '');
       const shopId = normalizeText(searchParams.get('shop_id'), '');
+      const shopSlug = normalizeText(searchParams.get('shop_slug'), '');
       const productId = routeId || normalizeText(searchParams.get('id'), '');
 
-      let sql = 'SELECT * FROM products';
+      let sql = 'SELECT p.*, s.name AS shop_name, s.slug AS shop_slug FROM products p LEFT JOIN shops s ON s.id = p.shop_id';
       const where = [];
       const binds = [];
 
       if (productId) {
-        where.push('id = ?');
+        where.push('p.id = ?');
         binds.push(productId);
       }
       if (search) {
-        where.push('LOWER(name) LIKE ?');
-        binds.push(`%${search.toLowerCase()}%`);
+        where.push('(LOWER(p.name) LIKE ? OR LOWER(COALESCE(p.brand, "")) LIKE ? OR LOWER(COALESCE(s.name, "")) LIKE ? OR LOWER(COALESCE(s.slug, "")) LIKE ?)');
+        binds.push(`%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`);
       }
       if (shop) {
-        where.push('(shop_id = ? OR shop_id = ? OR shop_id IN (SELECT id FROM shops WHERE slug = ?))');
-        binds.push(shop, shop, shop);
+        where.push('(p.shop_id = ? OR s.slug = ?)');
+        binds.push(shop, shop);
       }
       if (shopId) {
-        where.push('shop_id = ?');
+        where.push('p.shop_id = ?');
         binds.push(shopId);
+      }
+      if (shopSlug) {
+        where.push('(p.shop_id = ? OR s.slug = ?)');
+        binds.push(shopSlug, shopSlug);
       }
 
       if (where.length) sql += ' WHERE ' + where.join(' AND ');
       sql += ' ORDER BY id DESC';
 
       const result = await db.prepare(sql).bind(...binds).all();
-      const records = (result.results || []).map((product) => normalizeProductRecord(product));
+      const records = (result.results || []).map((product) => {
+        const normalized = normalizeProductRecord(product);
+        return {
+          ...normalized,
+          shop_name: normalizeText(product.shop_name, 'ANC REGALIA STYLE'),
+          shop_slug: normalizeText(product.shop_slug, 'anc-regalia-style')
+        };
+      });
 
       if (productId && records.length === 1) {
         const shopInfo = await getProductShopName(db, records[0].shop_id);
@@ -355,7 +391,8 @@ export async function onRequest(context) {
       const colors = normalizeText(body?.colors || '', '');
       const sizes = normalizeText(body?.sizes || '', '');
       const deliveryInfo = normalizeText(body?.delivery_info || '4 working days before collection', '4 working days before collection');
-      const shopId = normalizeText(body?.shop_id || body?.shop || 'anc_regalia', 'anc_regalia');
+      const shopIdInput = normalizeText(body?.shop_id || body?.shop || 'anc_regalia', 'anc_regalia');
+      const shopId = await resolveShopId(db, shopIdInput);
 
       if (!name) {
         return new Response(JSON.stringify({ error: 'Product name is required.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
@@ -364,10 +401,10 @@ export async function onRequest(context) {
         return new Response(JSON.stringify({ error: 'Product price is invalid.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
       }
 
-      const shopExists = await db.prepare('SELECT id FROM shops WHERE id = ? OR slug = ?').bind(shopId, shopId).first();
+      const shopExists = await db.prepare('SELECT id FROM shops WHERE id = ? OR slug = ?').bind(shopIdInput, shopIdInput).first();
       if (!shopExists) {
-        const newSlug = String(shopId).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
-        const uniqueId = String(shopId || newSlug).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
+        const newSlug = String(shopIdInput).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
+        const uniqueId = String(shopIdInput || newSlug).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
         await db.prepare('INSERT OR IGNORE INTO shops (id, name, slug, owner_name, whatsapp, province, product_count) VALUES (?, ?, ?, ?, ?, ?, 0)').bind(uniqueId, 'ANC REGALIA STYLE', newSlug, 'Owner', '27731234567', 'Eastern Cape').run();
       }
 
@@ -381,8 +418,8 @@ export async function onRequest(context) {
         }
 
         await db.prepare(
-          'UPDATE products SET name = ?, price = ?, image = ?, category = ?, description = ?, features = ?, colors = ?, sizes = ?, delivery_info = ?, shop_id = ?, stock = ?, brand = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
-        ).bind(name, price, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand, productNumberId).run();
+          'UPDATE products SET name = ?, price = ?, image = ?, category = ?, description = ?, features = ?, colors = ?, sizes = ?, delivery_info = ?, shop_id = ?, stock = ?, brand = ?, display_zones = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
+        ).bind(name, price, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand, normalizeText(body?.display_zones || 'shopgrid', 'shopgrid'), productNumberId).run();
       } else {
         const count = await db.prepare('SELECT COUNT(*) AS total FROM products WHERE shop_id = ?').bind(shopId).first();
         if (Number(count?.total || 0) >= 500) {
@@ -390,15 +427,17 @@ export async function onRequest(context) {
         }
 
         const insert = await db.prepare(
-          'INSERT INTO products (name, price, image, category, description, features, colors, sizes, delivery_info, shop_id, stock, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(name, price, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand).run();
+          'INSERT INTO products (name, price, image, category, description, features, colors, sizes, delivery_info, shop_id, stock, brand, display_zones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(name, price, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand, normalizeText(body?.display_zones || 'shopgrid', 'shopgrid')).run();
         const lastId = insert?.meta?.last_row_id ?? null;
         if (lastId) {
+          await syncShopProductCount(db, shopId);
           const productRecord = await db.prepare('SELECT * FROM products WHERE id = ?').bind(lastId).first();
           return Response.json(normalizeProductRecord(productRecord));
         }
       }
 
+      await syncShopProductCount(db, shopId);
       const saved = await db.prepare('SELECT * FROM products WHERE id = ?').bind(productNumberId || productIdValue).first();
       return Response.json(normalizeProductRecord(saved));
     } catch (error) {

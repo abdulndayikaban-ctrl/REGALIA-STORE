@@ -30,6 +30,9 @@ export async function onRequest(context) {
     await db.prepare('INSERT INTO shop_followers (shop_id, session_id, source_product_id) VALUES (?, ?, ?)')
       .bind(shopId, sessionId, productId || '').run();
     await db.prepare('UPDATE products SET followers_gained = COALESCE(followers_gained, 0) + 1 WHERE shop_id = ?').bind(shopId).run();
+    if (productId) {
+      await db.prepare('UPDATE products SET followers_gained = COALESCE(followers_gained, 0) + 1 WHERE id = ?').bind(productId).run();
+    }
     return Response.json({ ok: true, shop_id: shopId, product_id: productId || null, followed: true });
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message || 'Unable to record follow.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
