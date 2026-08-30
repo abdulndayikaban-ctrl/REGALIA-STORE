@@ -238,7 +238,7 @@
       const productId = product.id;
 
       inlineProductEl.innerHTML = `
-        <div class="result-card">
+        <div class="result-card" data-product-id="${productId}" data-image-url="${escapeHtml(product.image || '')}">
           <div class="result-layout">
             <div>
               <img class="result-image" src="${escapeHtml(product.image || 'https://placehold.co/600x600/111/FFD700?text=No+Image')}" alt="${escapeHtml(product.name || '')}" />
@@ -299,8 +299,8 @@
                 <label>Expected Delivery</label>
                 <input data-field="delivery_info" value="${escapeHtml(product.delivery_info || '4 working days before collection')}" />
                 <label>Image Upload</label>
-                <input type="file" id="imageUpload" accept="image/*" />
-                <img id="imagePreview" src="${escapeHtml(product.image || 'https://placehold.co/200x200/111/FFD700?text=No+Image')}" style="width:100%; height:90px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+                <input type="file" class="imageUpload" accept="image/*" />
+                <img class="imagePreview" src="${escapeHtml(product.image || 'https://placehold.co/200x200/111/FFD700?text=No+Image')}" style="width:100%; height:90px; object-fit:cover; border-radius:10px; margin-top:8px;" />
                 <button class="save-btn" type="button" id="saveProductBtn">Save</button>
                 <button class="share-btn" type="button" data-share="${productId}">Share</button>
               </div>
@@ -319,7 +319,11 @@
         </div>
       `;
 
-      const imageUpload = document.getElementById('imageUpload');
+      const card = inlineProductEl.querySelector('[data-product-id]');
+      const imageUpload = card.querySelector('.imageUpload');
+      const imagePreview = card.querySelector('.imagePreview');
+      const saveBtn = card.querySelector('#saveProductBtn');
+
       if (imageUpload) {
         imageUpload.addEventListener('change', async (event) => {
           const file = event.target.files && event.target.files[0];
@@ -328,8 +332,8 @@
           formData.append('file', file);
           try {
             const upload = await fetchJson('/api/upload', { method: 'POST', body: formData });
-            uploadedImageUrl = upload.url;
-            document.getElementById('imagePreview').src = upload.url;
+            card.dataset.imageUrl = upload.url;
+            imagePreview.src = upload.url;
             setToast('Image uploaded');
           } catch (error) {
             setToast(error.message || 'Upload failed');
@@ -337,9 +341,16 @@
         });
       }
 
-      let uploadedImageUrl = product.image;
-      document.getElementById('saveProductBtn').addEventListener('click', () => saveProduct(product, uploadedImageUrl));
-      document.querySelector('[data-share]').addEventListener('click', () => shareProduct(productId, shopId));
+      if (saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+          await saveProduct(product, card);
+        });
+      }
+
+      if (document.querySelector('[data-share]')) {
+        document.querySelector('[data-share]').addEventListener('click', () => shareProduct(productId, shopId));
+      }
+
       document.querySelectorAll('.tab').forEach((button) => {
         button.addEventListener('click', () => { activeTab = button.dataset.tab; renderResultCard(product); });
       });
@@ -377,8 +388,7 @@
       }
     }
 
-    async function saveProduct(product, imageUrl) {
-      const card = document.querySelector('[id="saveProductBtn"]')?.closest('.result-card');
+    async function saveProduct(product, card) {
       if (!card) return;
 
       const payload = {
@@ -393,7 +403,7 @@
         delivery_info: card.querySelector('[data-field="delivery_info"]')?.value || '4 working days before collection',
         stock: Number(card.querySelector('[data-field="stock"]')?.value || 0),
         shop_id: card.querySelector('[data-field="shop_id"]')?.value || 'anc_regalia',
-        image_url: imageUrl || ''
+        image_url: card.dataset.imageUrl || product.image || ''
       };
 
       if (!payload.name) {

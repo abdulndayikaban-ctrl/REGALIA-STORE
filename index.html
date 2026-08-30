@@ -74,10 +74,10 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:
     </div>
   </div>
   <div class="doors">
-   <button class="door active" data-door="BUY" onclick="location.href='/?view=buy'" style="cursor:pointer;"><div class="door-title">1. BUY</div><div class="door-desc">Curated Products</div></button>
+   <button class="door active" data-door="BUY" onclick="location.href='/shop.html'" style="cursor:pointer;"><div class="door-title">1. BUY</div><div class="door-desc">Curated Products</div></button>
    <button class="door" data-door="RENT_SHOP" onclick="location.href='/shop-auth.html'" style="cursor:pointer;"><div class="door-title">2. RENT SHOP</div><div class="door-desc">Sell With Us</div></button>
-   <button class="door" data-door="BRANDING" onclick="location.href='/?view=branding'" style="cursor:pointer;"><div class="door-title">3. BRANDING</div><div class="door-desc">Print & Stitch</div></button>
-   <button class="door" data-door="BUY_PLAINS" onclick="location.href='/?view=plains'" style="cursor:pointer;"><div class="door-title">4. BUY PLAINS</div><div class="door-desc">Blanks Bulk</div></button>
+   <button class="door" data-door="BRANDING" onclick="location.href='/branding.html'" style="cursor:pointer;"><div class="door-title">3. BRANDING</div><div class="door-desc">Print & Stitch</div></button>
+   <button class="door" data-door="BUY_PLAINS" onclick="location.href='/plains.html'" style="cursor:pointer;"><div class="door-title">4. BUY PLAINS</div><div class="door-desc">Blanks Bulk</div></button>
   </div>
 </div>
 
@@ -231,7 +231,27 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:
 
 <div id="shopModal" class="hidden" style="position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center;padding:0"><div id="modalBg" style="position:absolute;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px)"></div><div style="position:relative;width:100%;max-width:420px;background:#fff;color:#000;border-radius:24px 24px 0 0;padding:24px;max-height:90vh;overflow:auto"><button id="closeModal" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:9999px;background:rgba(0,0,0,0.1);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</button><div style="display:flex;align-items:center;gap:16px"><div id="modalLogo" style="width:56px;height:56px;border-radius:9999px;background:#000;color:#FFD700;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px"></div><div><div id="modalName" style="font-weight:900;font-size:16px"></div><div id="modalOwner" style="font-size:12px;color:rgba(0,0,0,0.6);display:flex;align-items:center;gap:4px"></div></div></div><div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;font-size:13px"><div id="modalLoc" style="display:flex;align-items:center;gap:8px"></div><div id="modalPhone" style="display:flex;align-items:center;gap:8px"></div><div id="modalVerified" style="display:flex;align-items:center;gap:8px"></div></div><button id="modalWa" style="margin-top:24px;width:100%;height:44px;border-radius:9999px;background:#000;color:#FFD700;font-weight:700;font-size:12px;border:none;cursor:pointer">CHAT SHOP ON WHATSAPP</button></div></div>
 
-<footer style="position:relative;z-index:10;border-top:1px solid rgba(255,255,255,0.1);margin-top:48px;padding:24px 0;text-align:center;font-size:10px;letter-spacing:0.2em;color:rgba(255,255,255,0.3)">HOUSE V2 - Gradient Animated • BLACK • GOLD #FFD700 • WHITE CARDS • PURE HTML EXACT • ALL BUTTONS WORKING</footer>
+<footer style="position:relative;z-index:10;border-top:1px solid rgba(255,255,255,0.1);margin-top:60px;padding:40px 16px">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px">
+    <div>
+      <h4 style="font-weight:900;font-size:13px;letter-spacing:0.1em;margin-bottom:12px;color:#FFD700">REGALIA MALL V2</h4>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8">Luxury fashion & branding platform for African brands. EST 2024.</p>
+    </div>
+    <div>
+      <h4 style="font-weight:900;font-size:13px;letter-spacing:0.1em;margin-bottom:12px;color:#FFD700">DOORS</h4>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8;cursor:pointer" onclick="location.href='/shop.html'">• Buy</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8;cursor:pointer" onclick="location.href='/shop-auth.html'">• Rent Shop</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8;cursor:pointer" onclick="location.href='/branding.html'">• Branding</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8;cursor:pointer" onclick="location.href='/plains.html'">• Buy Plains</p>
+    </div>
+    <div>
+      <h4 style="font-weight:900;font-size:13px;letter-spacing:0.1em;margin-bottom:12px;color:#FFD700">SUPPORT</h4>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8"><a href="mailto:hello@regalia.store" style="text-decoration:none;color:rgba(255,255,255,0.7)">• Email: hello@regalia.store</a></p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8"><a href="https://wa.me/27731234567" target="_blank" style="text-decoration:none;color:rgba(255,255,255,0.7)">• WhatsApp: +27 731 234 567</a></p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;letter-spacing:0.2em;color:rgba(255,255,255,0.3)">REGALIA MALL V2 HOUSE • BLACK • GOLD • PURE HTML • CLOUDFLARE POWERED</div>
+</footer>
 
 <script>
 const shops=[

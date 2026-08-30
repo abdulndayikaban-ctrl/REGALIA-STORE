@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REGALIA MALL V2 HOUSE • BUY PLAINS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0A0A0A;color:#fff;font-family:Inter,system-ui,sans-serif;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column}
+.top-line{height:3px;background:linear-gradient(90deg,#FFD700,#FDB931,#FFD700,#FFE55C,#FFD700);background-size:200% 100%;animation:flow 2.8s linear infinite}
+@keyframes flow{0%{background-position:-200% 0}100%{background-position:200% 0}}
+body::before{content:'';position:fixed;inset:0;z-index:-1;background:
+ radial-gradient(130% 90% at 15% 12%, rgba(255,215,0,0.14) 0%, rgba(26,21,0,0.5) 18%, rgba(10,10,10,0) 56%),
+ radial-gradient(110% 80% at 85% 85%, rgba(255,215,0,0.10) 0%, rgba(31,26,0,0.42) 20%, rgba(10,10,10,0) 62%),
+ linear-gradient(120deg, #0A0A0A 0%, #0f0e08 22%, #1a1500 48%, #111009 78%, #0A0A0A 100%);
+ background-size:200% 200%,200% 200%,320% 320%;animation:gradientShift 18s ease-in-out infinite}
+@keyframes gradientShift{0%{background-position:0% 50%,100% 50%,0% 50%}50%{background-position:100% 30%,0% 70%,100% 50%}100%{background-position:0% 50%,100% 50%,0% 50%}}
+.header{position:sticky;top:0;z-index:30;background:rgba(10,10,10,0.9);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.1)}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 16px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo-wrap{display:flex;align-items:center;gap:12px;cursor:pointer}
+.logo-circle{width:36px;height:36px;border-radius:9999px;background:#FFD700;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;letter-spacing:0.1em}
+.main{max-width:1280px;margin:0 auto;padding:60px 16px;position:relative;z-index:10;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center}
+.coming-soon{margin-bottom:32px}
+.coming-soon h1{font-size:48px;font-weight:900;letter-spacing:-0.02em;margin-bottom:16px;background:linear-gradient(135deg,#FFD700,#FFE55C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.coming-soon p{font-size:18px;color:rgba(255,255,255,0.7);line-height:1.6;margin-bottom:24px}
+.notify-form{max-width:400px;margin:0 auto;display:flex;gap:12px}
+.notify-input{flex:1;padding:12px 16px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);border-radius:9999px;color:#fff;font-size:14px}
+.notify-input::placeholder{color:rgba(255,255,255,0.4)}
+.notify-btn{padding:12px 24px;background:#FFD700;color:#000;border:none;font-weight:900;border-radius:9999px;cursor:pointer;transition:all .2s}
+.notify-btn:hover{transform:scale(1.05)}
+.footer{background:rgba(10,10,10,0.8);border-top:1px solid rgba(255,255,255,0.1);padding:40px 16px;margin-top:auto}
+.footer-cols{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px}
+.footer-col h4{font-weight:900;font-size:13px;letter-spacing:0.1em;margin-bottom:12px;color:#FFD700}
+.footer-col p, .footer-col a{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8}
+.footer-col a{cursor:pointer;text-decoration:none}
+.footer-col a:hover{color:#FFD700}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+<div class="top-line"></div>
+<div class="header">
+  <div class="header-inner">
+    <div class="logo-wrap" onclick="location.href='/'">
+      <div class="logo-circle">RM</div>
+      <div>
+        <div style="font-weight:900;letter-spacing:0.18em;font-size:14px;line-height:1">REGALIA MALL V2 HOUSE</div>
+        <div style="font-size:10px;letter-spacing:0.3em;color:#FFD700;margin-top:2px">EST 2024</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="coming-soon">
+    <h1>🔜 Coming Soon</h1>
+    <p>Bulk Plains & Blanks Collection</p>
+    <p style="font-size:14px;opacity:0.6">We're curating the finest selection of high-quality plains for your branding and customization needs.</p>
+    
+    <div class="notify-form">
+      <input type="email" class="notify-input" id="emailInput" placeholder="Enter your email" />
+      <button class="notify-btn" onclick="notifyMe()">Notify Me</button>
+    </div>
+    <div id="notifyStatus" style="margin-top:16px;font-size:14px;color:#FFD700;display:none"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>REGALIA MALL</h4>
+      <p>Luxury fashion & branding platform for African brands</p>
+    </div>
+    <div class="footer-col">
+      <h4>QUICK LINKS</h4>
+      <p><a onclick="location.href='/'">Home</a></p>
+      <p><a onclick="location.href='/shop-auth.html'">Rent a Shop</a></p>
+      <p><a onclick="location.href='/branding.html'">Branding Services</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>SUPPORT</h4>
+      <p><a href="mailto:hello@regalia.store">hello@regalia.store</a></p>
+      <p><a href="https://wa.me/27731234567" target="_blank">WhatsApp Support</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+function notifyMe() {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!email) {
+    alert('Please enter your email address');
+    return;
+  }
+  const status = document.getElementById('notifyStatus');
+  status.textContent = '✓ You will be notified when plains drop!';
+  status.style.display = 'block';
+  document.getElementById('emailInput').value = '';
+  setTimeout(() => {
+    status.style.display = 'none';
+  }, 3000);
+}
+</script>
+</body>
+</html>

@@ -374,7 +374,7 @@ export async function onRequest(context) {
     }
   }
 
-  if (request.method === 'PUT') {
+  if (request.method === 'POST' || request.method === 'PUT') {
     try {
       await ensureAllTables(db);
       const body = await request.json();
@@ -382,7 +382,7 @@ export async function onRequest(context) {
       const productNumberId = productIdValue ? Number(productIdValue) : null;
       const name = normalizeText(body?.name || '', '');
       const price = Number(body?.price ?? 0);
-      const image = normalizeText(body?.image || '', FALLBACK_IMAGE);
+      const image = normalizeText(body?.image || body?.image_url || '', FALLBACK_IMAGE);
       const category = normalizeText(body?.category || 'BUY', 'BUY');
       const brand = normalizeText(body?.brand || 'ANC Regalia', 'ANC Regalia');
       const stock = Number(body?.stock ?? 0);
@@ -390,7 +390,7 @@ export async function onRequest(context) {
       const features = normalizeText(body?.features || '', '');
       const colors = normalizeText(body?.colors || '', '');
       const sizes = normalizeText(body?.sizes || '', '');
-      const deliveryInfo = normalizeText(body?.delivery_info || '4 working days before collection', '4 working days before collection');
+      const deliveryInfo = normalizeText(body?.delivery_info || body?.expectedDelivery || '4 working days before collection', '4 working days before collection');
       const shopIdInput = normalizeText(body?.shop_id || body?.shop || 'anc_regalia', 'anc_regalia');
       const shopId = await resolveShopId(db, shopIdInput);
 
