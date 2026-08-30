@@ -21,7 +21,17 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div id="shopLoginShell" class="wrap">
+    <div class="panel">
+      <h1>Shop Admin Login</h1>
+      <label>Shop slug</label>
+      <input id="shopSlugLogin" placeholder="Enter any shop slug" />
+      <button id="shopLoginBtn">Open shop admin</button>
+      <div id="shopLoginError" class="status" style="color: #ff6b6b;"></div>
+    </div>
+  </div>
+
+  <div id="shopAdminShell" class="wrap hidden">
     <div class="panel">
       <h1>Shop Admin</h1>
       <div class="row">
@@ -49,6 +59,7 @@
 
   <script>
     const STORAGE_KEY = 'regalia_shop_profile';
+    const SHOP_LOGIN_KEY = 'regalia_shop_slug';
     const defaultProfile = {
       shopName: 'ANC REGALIA STYLE',
       shopSlug: 'anc-regalia-style',
@@ -84,6 +95,24 @@
       updatePreview();
     }
 
+    function openShopAdmin(slug) {
+      const normalizedSlug = String(slug || '').trim();
+      if (!normalizedSlug) {
+        document.getElementById('shopLoginError').textContent = 'Please enter a shop slug.';
+        return;
+      }
+
+      localStorage.setItem(SHOP_LOGIN_KEY, normalizedSlug);
+      document.getElementById('shopLoginShell').classList.add('hidden');
+      document.getElementById('shopAdminShell').classList.remove('hidden');
+      document.getElementById('shopSlug').value = normalizedSlug;
+      document.getElementById('shopLoginError').textContent = '';
+    }
+
+    document.getElementById('shopLoginBtn').addEventListener('click', () => {
+      openShopAdmin(document.getElementById('shopSlugLogin').value);
+    });
+
     document.getElementById('shopName').addEventListener('input', updatePreview);
     document.getElementById('logoUrl').addEventListener('input', updatePreview);
 
@@ -105,6 +134,11 @@
       saveProfile(profile);
       document.getElementById('status').textContent = 'Shop profile saved.';
     });
+
+    const storedSlug = localStorage.getItem(SHOP_LOGIN_KEY);
+    if (storedSlug) {
+      openShopAdmin(storedSlug);
+    }
 
     applyProfile();
   </script>
