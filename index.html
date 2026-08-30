@@ -258,6 +258,53 @@ const outdoors=[{name:"Banners",image:"https://images.unsplash.com/photo-1561070
 
 let currentDoor="BUY", currentFilter="All", visible=20, cart=2, selectedProduct=null, currentShop=null, selectedSize=9, hasProducts=true;
 let allProducts=[];
+const CART_KEY = 'regalia_cart';
+const PLACEHOLDER_IMAGE = 'https://placehold.co/600x600/111/FFD700?text=No+Image';
+let selectedColor = '';
+let selectedSize = '';
+
+function getCart() {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveCart(items) {
+  localStorage.setItem(CART_KEY, JSON.stringify(items));
+}
+
+function updateCartBadge() {
+  const count = getCart().reduce((sum, item) => sum + Number(item.qty || 1), 0);
+  const badge = document.getElementById('cartNum');
+  if (badge) badge.textContent = count;
+}
+
+function addProductToCart(product, color = selectedColor, size = selectedSize) {
+  const cart = getCart();
+  const item = {
+    id: String(product.id),
+    name: product.name,
+    price: Number(product.price || 0),
+    image: product.image || PLACEHOLDER_IMAGE,
+    color: color || (Array.isArray(product.colors) && product.colors[0] ? product.colors[0] : ''),
+    size: size || (Array.isArray(product.sizes) && product.sizes[0] ? product.sizes[0] : ''),
+    qty: 1,
+    shop_id: product.shopId || 'anc_regalia'
+  };
+
+  const existingIndex = cart.findIndex(entry => entry.id === item.id && entry.color === item.color && entry.size === item.size);
+  if (existingIndex >= 0) {
+    cart[existingIndex].qty += 1;
+  } else {
+    cart.push(item);
+  }
+
+  saveCart(cart);
+  updateCartBadge();
+  toast('Added to cart');
+}
 
 function normalizeProduct(product, index) {
 const category = String(product && product.category ? product.category : "BUY").toUpperCase();
@@ -365,12 +412,14 @@ function parseList(value, fallback) {
 function openProduct(id){
   const p=allProducts.find(x=>x.id===id); if(!p) return;
   selectedProduct=p; const shop=getShop(p.shopId); currentShop=shop;
-  const safeImage = p.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80';
+  const safeImage = p.image || PLACEHOLDER_IMAGE;
   const description = p.description || 'Premium quality product from ANC Regalia.';
   const features = parseList(p.features, p.fabric ? [p.fabric] : ['Premium quality']);
   const colors = parseList(p.colors, ['Black','Gold']);
   const sizes = parseList(p.sizes, ['S','M','L','XL','XXL']);
   const deliveryInfo = p.delivery_info || '4 working days before collection';
+  selectedColor = (selectedColor && colors.includes(selectedColor)) ? selectedColor : (colors[0] || '');
+  selectedSize = (selectedSize && sizes.includes(selectedSize)) ? selectedSize : (sizes[0] || '');
 
   document.getElementById("buySection").classList.add("hidden");
   document.getElementById("plainsSection").classList.add("hidden");
@@ -387,9 +436,22 @@ function openProduct(id){
   document.getElementById("waPreview").textContent=`Order: ${p.name} - R${p.price} from ${shop.name}`;
   document.getElementById("detailDescription").textContent=description;
   document.getElementById("detailFeatures").innerHTML=features.map(f=>`<li>${f}</li>`).join('');
-  document.getElementById("detailColors").innerHTML=colors.map(color=>`<button style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:#fff;color:#000;font-weight:700;font-size:11px;cursor:pointer">${color}</button>`).join('');
-  document.getElementById("detailSizes").innerHTML=sizes.map(size=>`<button style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-weight:700;font-size:11px;cursor:pointer">${size}</button>`).join('');
+  document.getElementById("detailColors").innerHTML=colors.map(color=>`<button data-color="${color}" style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:${selectedColor===color?'#FFD700':'#fff'};color:#000;font-weight:700;font-size:11px;cursor:pointer">${color}</button>`).join('');
+  document.getElementById("detailSizes").innerHTML=sizes.map(size=>`<button data-size="${size}" style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:${selectedSize===size?'#FFD700':'transparent'};color:${selectedSize===size?'#000':'#fff'};font-weight:700;font-size:11px;cursor:pointer">${size}</button>`).join('');
   document.getElementById("detailDelivery").textContent=`Expected Delivery: ${deliveryInfo}`;
+
+  document.querySelectorAll('#detailColors [data-color]').forEach((button) => {
+    button.onclick = () => {
+      selectedColor = button.dataset.color;
+      openProduct(id);
+    };
+  });
+  document.querySelectorAll('#detailSizes [data-size]').forEach((button) => {
+    button.onclick = () => {
+      selectedSize = button.dataset.size;
+      openProduct(id);
+    };
+  });
 }
 function closeProduct(){
   document.getElementById("productDetail").classList.add("hidden");
@@ -425,13 +487,15 @@ function openOutdoorProducts(name){
 document.querySelectorAll(".door").forEach(d=>d.onclick=()=>switchDoor(d.dataset.door));
 document.getElementById("loadMore").onclick=()=>{ visible+=20; renderBuy(); };
 document.getElementById("backToProducts").onclick=closeProduct;
-document.getElementById("cartBtn").onclick=()=>toast(`${cart} items in cart • Checkout via WhatsApp`);
-document.getElementById("addCart").onclick=()=>{ cart++; document.getElementById("cartNum").textContent=cart; toast("Added to cart"); };
+document.getElementById("cartBtn").onclick=()=>window.location.href='/checkout.html';
+document.getElementById("addCart").onclick=()=>{
+  if(!selectedProduct) return;
+  addProductToCart(selectedProduct, selectedColor, selectedSize);
+};
 document.getElementById("buyNow").onclick=()=>{
   if(!selectedProduct) return;
-  const shop=getShop(selectedProduct.shopId);
-  const msg=`Order: ${selectedProduct.name} - R${selectedProduct.price} from ${shop.name}\nShop: ${shop.location}\nPlease confirm availability.`;
-  window.open(`https://wa.me/${shop.phone}?text=${encodeURIComponent(msg)}`,'_blank');
+  addProductToCart(selectedProduct, selectedColor, selectedSize);
+  window.location.href='/checkout.html';
 };
 document.getElementById("detailShopBtn").onclick=()=>openShopModal(currentShop);
 function openShopModal(shop){
@@ -505,7 +569,9 @@ document.querySelectorAll(".artBtn").forEach(b=>b.onclick=()=>{
   document.getElementById("artNo").classList.toggle("hidden", yes);
 });
 
-loadProducts(); renderSizeGrid();
+updateCartBadge();
+loadProducts();
+renderSizeGrid();
 </script>
 </body>
 </html>

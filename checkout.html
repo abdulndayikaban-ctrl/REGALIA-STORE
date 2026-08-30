@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regalia Checkout</title>
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --panel: #141922;
+      --panel-alt: #1b2330;
+      --line: rgba(255,255,255,0.12);
+      --text: #f3f5f8;
+      --muted: #a7b2c3;
+      --gold: #f4c95d;
+      --gold-strong: #d7aa2d;
+      --green: #1ecb8c;
+      --danger: #ff6b6b;
+      --white: #ffffff;
+      --black: #111111;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0b0d12, #101923);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 16px 80px;
+    }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .brand {
+      font-size: 1.5rem; font-weight: 900; letter-spacing: 0.08em;
+    }
+    .grid {
+      display: grid; gap: 20px; grid-template-columns: 1.2fr 0.8fr;
+    }
+    @media (max-width: 840px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .panel {
+      background: rgba(20, 25, 34, 0.96);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .panel h2 {
+      margin: 0 0 18px; font-size: 1.15rem; letter-spacing: 0.08em;
+    }
+    .cart-item {
+      display: grid; grid-template-columns: 72px 1fr auto; gap: 12px; align-items: center;
+      border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin-bottom: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+    .cart-item img {
+      width: 72px; height: 72px; object-fit: cover; border-radius: 12px; background: #0d1117;
+    }
+    .name { font-weight: 700; }
+    .meta { color: var(--muted); font-size: 0.8rem; margin-top: 5px; }
+    .price { font-weight: 700; }
+    .empty {
+      color: var(--muted); padding: 20px 10px; text-align: center;
+    }
+    label {
+      display: block; color: var(--muted); font-size: 0.8rem; margin: 14px 0 8px;
+    }
+    input, select, textarea {
+      width: 100%; border: 1px solid var(--line); background: var(--panel-alt); color: var(--text);
+      border-radius: 10px; padding: 12px 14px; font-size: 1rem;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    .inline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .radio-row {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;
+    }
+    .radio-option {
+      flex: 1; min-width: 140px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--panel-alt); color: var(--text); cursor: pointer; text-align: center; font-weight: 700;
+    }
+    .radio-option.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-strong)); color: #111; border-color: transparent;
+    }
+    .totals { margin-top: 20px; display: grid; gap: 10px; }
+    .row { display: flex; justify-content: space-between; color: var(--muted); }
+    .grand { display: flex; justify-content: space-between; font-weight: 900; padding-top: 10px; border-top: 1px solid var(--line); }
+    .cta {
+      width: 100%; border: none; background: linear-gradient(135deg, var(--gold), var(--gold-strong));
+      border-radius: 12px; padding: 14px 16px; font-weight: 900; color: #111; cursor: pointer; margin-top: 20px;
+    }
+    .muted-link { color: var(--gold); text-decoration: none; }
+    .success {
+      display: none; background: rgba(30, 203, 140, 0.12); border: 1px solid rgba(30, 203, 140, 0.6); padding: 16px; border-radius: 12px; margin-top: 20px; color: var(--text);
+    }
+    .success.visible { display: block; }
+    .help-fab {
+      position: fixed; right: 20px; bottom: 20px; z-index: 30; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+    .help-button {
+      background: #fff; color: #111; border: none; border-radius: 999px; padding: 12px 18px; cursor: pointer;
+      font-weight: 800; box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+    }
+    .help-box {
+      width: 260px; background: rgba(20, 25, 34, 0.98); border: 1px solid var(--line); border-radius: 16px; padding: 14px;
+      display: none;
+    }
+    .help-box.visible { display: block; }
+    .help-box .title { font-weight: 800; margin-bottom: 8px; }
+    .help-box .message { color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">REGALIA CHECKOUT</div>
+      <a class="muted-link" href="/index.html">← Continue shopping</a>
+    </div>
+
+    <div class="grid">
+      <section class="panel">
+        <h2>YOUR CART</h2>
+        <div id="cartItems"></div>
+      </section>
+
+      <section class="panel">
+        <h2>CHECKOUT</h2>
+        <form id="checkoutForm">
+          <div class="inline">
+            <div>
+              <label>Customer name</label>
+              <input id="customerName" required placeholder="Full name" />
+            </div>
+            <div>
+              <label>Phone</label>
+              <input id="phone" required placeholder="e.g. 2773..." />
+            </div>
+          </div>
+
+          <label>Delivery type</label>
+          <div class="radio-row">
+            <div class="radio-option active" data-delivery="Collection">Collection</div>
+            <div class="radio-option" data-delivery="Courier">Courier</div>
+          </div>
+
+          <div id="addressWrap" style="display:none;">
+            <label>Delivery address</label>
+            <textarea id="address" placeholder="Street address, suburb, city"></textarea>
+          </div>
+
+          <label>Payment</label>
+          <div class="radio-row">
+            <div class="radio-option active" data-payment="Pay on Collection">Pay on Collection</div>
+            <div class="radio-option" data-payment="Pay Now">Pay Now</div>
+          </div>
+
+          <div class="totals">
+            <div class="row"><span>Subtotal</span><strong id="subtotal">R0.00</strong></div>
+            <div class="row"><span>Courier fee</span><strong id="courierFee">R0.00</strong></div>
+            <div class="grand"><span>Total</span><span id="total">R0.00</span></div>
+          </div>
+
+          <button class="cta" type="submit">Place Order</button>
+        </form>
+
+        <div id="successBox" class="success"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="help-fab">
+    <div id="helpBox" class="help-box">
+      <div class="title">Customer Service</div>
+      <div class="message">Need help with shipping, sizes, or a product question? Message our support team and we’ll respond shortly.</div>
+    </div>
+    <button id="helpToggle" class="help-button">Need help? Chat with support</button>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'regalia_cart';
+    const defaultShops = {
+      anc_regalia: { name: 'ANC REGALIA STYLE', phone: '27731234567' },
+      cape_culture: { name: 'CAPE CULTURE CO', phone: '27769871234' },
+      jozi_street: { name: 'JOZI STREETWEAR', phone: '27744556677' }
+    };
+    let selectedDelivery = 'Collection';
+    let selectedPayment = 'Pay on Collection';
+
+    function readCart() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function money(value) {
+      return 'R' + Number(value || 0).toFixed(2);
+    }
+
+    function getShopName(shopId) {
+      return (defaultShops[shopId] && defaultShops[shopId].name) || 'ANC REGALIA STYLE';
+    }
+
+    function getShopPhone(shopId) {
+      return (defaultShops[shopId] && defaultShops[shopId].phone) || '27731234567';
+    }
+
+    function computeTotals(items) {
+      const subtotal = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
+      const courierFee = selectedDelivery === 'Courier' ? 99 : 0;
+      return { subtotal, courierFee, total: subtotal + courierFee };
+    }
+
+    function renderCart() {
+      const items = readCart();
+      const cartItems = document.getElementById('cartItems');
+      if (!items.length) {
+        cartItems.innerHTML = '<div class="empty">Your cart is empty. Add products from the shop to continue.</div>';
+        document.getElementById('subtotal').textContent = money(0);
+        document.getElementById('courierFee').textContent = money(0);
+        document.getElementById('total').textContent = money(0);
+        return;
+      }
+
+      const totals = computeTotals(items);
+      cartItems.innerHTML = items.map(item => `
+        <div class="cart-item">
+          <img src="${item.image || 'https://placehold.co/72x72/111/FFD700?text=No+Image'}" alt="${item.name}" />
+          <div>
+            <div class="name">${item.name}</div>
+            <div class="meta">${item.color || 'No colour'} • ${item.size || 'No size'} • Qty ${item.qty || 1}</div>
+          </div>
+          <div class="price">${money(Number(item.price || 0) * Number(item.qty || 1))}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('subtotal').textContent = money(totals.subtotal);
+      document.getElementById('courierFee').textContent = money(totals.courierFee);
+      document.getElementById('total').textContent = money(totals.total);
+    }
+
+    document.querySelectorAll('[data-delivery]').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedDelivery = button.dataset.delivery;
+        document.querySelectorAll('[data-delivery]').forEach(node => node.classList.toggle('active', node.dataset.delivery === selectedDelivery));
+        document.getElementById('addressWrap').style.display = selectedDelivery === 'Courier' ? 'block' : 'none';
+        renderCart();
+      });
+    });
+
+    document.querySelectorAll('[data-payment]').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedPayment = button.dataset.payment;
+        document.querySelectorAll('[data-payment]').forEach(node => node.classList.toggle('active', node.dataset.payment === selectedPayment));
+      });
+    });
+
+    document.getElementById('helpToggle').addEventListener('click', () => {
+      document.getElementById('helpBox').classList.toggle('visible');
+    });
+
+    document.getElementById('checkoutForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const items = readCart();
+      if (!items.length) {
+        document.getElementById('successBox').classList.add('visible');
+        document.getElementById('successBox').innerHTML = 'Your cart is empty, please add a product first.';
+        return;
+      }
+
+      const subtotal = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.qty || 1), 0);
+      const courierFee = selectedDelivery === 'Courier' ? 99 : 0;
+      const total = subtotal + courierFee;
+      const shopId = items[0].shop_id || 'anc_regalia';
+      const payload = {
+        id: `ORD-${Date.now()}`,
+        shop_id: shopId,
+        customer_name: document.getElementById('customerName').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        delivery_type: selectedDelivery,
+        courier_fee: courierFee,
+        payment_type: selectedPayment,
+        payment_status: selectedPayment === 'Pay Now' ? 'paid' : 'pending',
+        total,
+        items: items.map(item => ({
+          product_id: String(item.id),
+          qty: Number(item.qty || 1),
+          color: item.color || '',
+          size: item.size || '',
+          price: Number(item.price || 0)
+        }))
+      };
+
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        document.getElementById('successBox').classList.add('visible');
+        document.getElementById('successBox').textContent = result.error || 'Unable to create order.';
+        return;
+      }
+
+      localStorage.removeItem(STORAGE_KEY);
+      document.getElementById('successBox').classList.add('visible');
+      const orderNumber = result.order_id || payload.id;
+      const shopName = getShopName(shopId);
+      const orderText = [
+        `Order: ${orderNumber}`,
+        `Customer: ${payload.customer_name}`,
+        `Phone: ${payload.phone}`,
+        `Delivery: ${selectedDelivery}`,
+        `Payment: ${selectedPayment}`,
+        `Total: ${money(total)}`,
+        `Items: ${items.map(item => `${item.name} x${item.qty || 1}`).join(', ')}`
+      ].join('\n');
+
+      document.getElementById('successBox').innerHTML = `
+        <strong>Order placed successfully.</strong><br />
+        Order number: <strong>${orderNumber}</strong><br />
+        Please keep your phone ready for order confirmation.
+      `;
+
+      const waNumber = getShopPhone(shopId);
+      window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(`Hi ${shopName}, I placed a new order.\n\n${orderText}`)}`, '_blank');
+      renderCart();
+      document.getElementById('checkoutForm').reset();
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>

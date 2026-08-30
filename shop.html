@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | Regalia</title>
+  <style>
+    :root { --bg:#0b0d12; --panel:#141922; --line: rgba(255,255,255,0.12); --text:#f3f5f8; --muted:#9ba8b6; --gold:#f4c95d; --gold-strong:#d7aa2d; --card:#fff; --card-text:#111; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:linear-gradient(180deg,#0b0d12,#101923); color:var(--text); font-family:Arial, Helvetica, sans-serif; }
+    .wrap { max-width: 1200px; margin:0 auto; padding:32px 16px 60px; }
+    .header { display:flex; align-items:center; gap:18px; margin-bottom:24px; padding:20px; border:1px solid var(--line); border-radius:18px; background: rgba(20,25,34,0.96); }
+    .logo { width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-strong)); color:#111; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.3rem; }
+    .title-group h1 { margin:0; font-size: clamp(1.8rem, 4vw, 2.5rem); }
+    .subtitle { color: var(--muted); }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:18px; }
+    .card { background: var(--card); color: var(--card-text); border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08); }
+    .card img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:#f5f5f5; }
+    .body { padding:14px; }
+    .name { font-weight:800; margin-bottom:8px; }
+    .meta { font-size: 0.75rem; color: #555; }
+    .price { font-size: 1.1rem; font-weight:900; margin-top:8px; }
+    .empty { border:1px solid var(--line); background: rgba(20,25,34,0.96); border-radius:16px; padding:24px; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="shopHeader" class="header"></div>
+    <div id="shopProducts" class="grid"></div>
+  </div>
+
+  <script>
+    const FALLBACK_IMAGE = 'https://placehold.co/600x600/111/FFD700?text=No+Image';
+    const defaultShop = { id: 'anc_regalia', name: 'ANC REGALIA STYLE', slug: 'anc-regalia-style', logo: 'ANC', description: 'Premium streetwear and gifting labels.' };
+
+    function getSlug() {
+      const params = new URLSearchParams(window.location.search);
+      return (params.get('slug') || 'anc-regalia-style').trim();
+    }
+
+    function formatMoney(value) {
+      return 'R' + Number(value || 0).toFixed(2);
+    }
+
+    function renderHeader(shop) {
+      const header = document.getElementById('shopHeader');
+      const logo = shop.logo || shop.name.slice(0, 3).toUpperCase();
+      header.innerHTML = `
+        <div class="logo">${logo}</div>
+        <div class="title-group">
+          <h1>${shop.name}</h1>
+          <div class="subtitle">${shop.description || 'Shop collection'}</div>
+        </div>
+      `;
+    }
+
+    async function loadProducts() {
+      const slug = getSlug();
+      const response = await fetch(`/api/products?shop=${encodeURIComponent(slug)}`);
+      const data = await response.json();
+      const items = Array.isArray(data) ? data : [];
+      const shop = items[0] ? { ...defaultShop, name: items[0].shop_name || defaultShop.name, slug } : { ...defaultShop, slug };
+      renderHeader(shop);
+
+      const products = items.length ? items : [];
+      const grid = document.getElementById('shopProducts');
+      if (!products.length) {
+        grid.innerHTML = '<div class="empty">No products are available for this shop yet.</div>';
+        return;
+      }
+
+      grid.innerHTML = products.map(product => `
+        <div class="card">
+          <img src="${product.image || FALLBACK_IMAGE}" alt="${product.name}" />
+          <div class="body">
+            <div class="name">${product.name}</div>
+            <div class="meta">${product.category || 'BUY'} • ${product.brand || 'ANC Regalia'}</div>
+            <div class="price">${formatMoney(product.price)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    loadProducts();
+  </script>
+</body>
+</html>
