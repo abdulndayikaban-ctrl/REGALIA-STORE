@@ -61,7 +61,8 @@
         margin-bottom: 8px;
       }
 
-      input {
+      input,
+      textarea {
         width: 100%;
         border: 1px solid var(--line);
         background: var(--panel-alt);
@@ -69,6 +70,11 @@
         padding: 12px 14px;
         border-radius: 10px;
         font-size: 1rem;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 96px;
       }
 
       .btn {
@@ -296,17 +302,50 @@
         productGrid.innerHTML = products.map((product) => {
           const imageValue = escapeHtml(product.image || '');
           const nameValue = escapeHtml(product.name || '');
+          const categoryValue = escapeHtml(product.category || 'BUY');
+          const brandValue = escapeHtml(product.brand || 'ANC Regalia');
+          const stockValue = Number(product.stock || 0);
+          const descriptionValue = escapeHtml(product.description || '');
+          const featuresValue = escapeHtml(product.features || '');
+          const colorsValue = escapeHtml(product.colors || '');
+          const sizesValue = escapeHtml(product.sizes || '');
+          const deliveryValue = escapeHtml(product.delivery_info || '4 working days before collection');
           const priceValue = Number(product.price || 0);
+          const previewImage = imageValue || 'https://via.placeholder.com/600x600?text=No+Image';
 
           return `
             <div class="product-card">
-              <img src="${imageValue || 'https://via.placeholder.com/600x600?text=No+Image'}" alt="${nameValue}" />
+              <img src="${previewImage}" alt="${nameValue}" data-preview="${product.id}" />
               <div class="product-body">
-                <label>Name</label>
+                <label>Product Name</label>
                 <input data-field="name" value="${nameValue}" />
 
                 <label>Price</label>
                 <input type="number" step="0.01" data-field="price" value="${priceValue}" />
+
+                <label>Category</label>
+                <input data-field="category" value="${categoryValue}" />
+
+                <label>Brand</label>
+                <input data-field="brand" value="${brandValue}" />
+
+                <label>Stock</label>
+                <input type="number" data-field="stock" value="${stockValue}" />
+
+                <label>Description</label>
+                <textarea data-field="description" rows="3">${descriptionValue}</textarea>
+
+                <label>Product Features</label>
+                <textarea data-field="features" rows="3" placeholder="One feature per line">${featuresValue}</textarea>
+
+                <label>Colors</label>
+                <input data-field="colors" value="${colorsValue}" placeholder="e.g. Yellow, Green, Black" />
+
+                <label>Sizes</label>
+                <input data-field="sizes" value="${sizesValue}" placeholder="e.g. S, M, L, XL, XXL" />
+
+                <label>Expected Delivery</label>
+                <input data-field="delivery_info" value="${deliveryValue}" />
 
                 <label>Image URL</label>
                 <input data-field="image" value="${imageValue}" />
@@ -342,7 +381,15 @@
 
         const name = card.querySelector('[data-field="name"]').value.trim();
         const price = Number(card.querySelector('[data-field="price"]').value);
-        const image = card.querySelector('[data-field="image"]').value.trim();
+        const category = card.querySelector('[data-field="category"]').value.trim() || 'BUY';
+        const brand = card.querySelector('[data-field="brand"]').value.trim() || 'ANC Regalia';
+        const stock = Number(card.querySelector('[data-field="stock"]').value || 0);
+        const description = card.querySelector('[data-field="description"]').value.trim();
+        const features = card.querySelector('[data-field="features"]').value.trim();
+        const colors = card.querySelector('[data-field="colors"]').value.trim();
+        const sizes = card.querySelector('[data-field="sizes"]').value.trim();
+        const deliveryInfo = card.querySelector('[data-field="delivery_info"]').value.trim() || '4 working days before collection';
+        const image = card.querySelector('[data-field="image"]').value.trim() || 'https://via.placeholder.com/600x600?text=No+Image';
         const statusNode = card.querySelector('[data-status="' + productId + '"]');
 
         statusNode.textContent = 'Saving...';
@@ -350,7 +397,20 @@
         const response = await fetch('/api/products', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: productId, name, price, image })
+          body: JSON.stringify({
+            id: productId,
+            name,
+            price,
+            category,
+            brand,
+            stock,
+            description,
+            features,
+            colors,
+            sizes,
+            delivery_info: deliveryInfo,
+            image
+          })
         });
 
         const result = await response.json();

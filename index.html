@@ -210,7 +210,15 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:
         <div style="margin-top:16px"><div id="detailType" style="font-size:10px;letter-spacing:0.2em;color:#FFD700;font-weight:700;margin-bottom:8px"></div><h1 id="detailName" style="font-size:28px;font-weight:900;line-height:0.95;letter-spacing:-0.02em"></h1><div id="detailPrice" style="margin-top:12px;font-size:26px;font-weight:900"></div></div>
         <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px"><button id="addCart" style="height:48px;border-radius:9999px;background:#fff;color:#000;font-weight:900;font-size:13px;letter-spacing:0.05em;border:1px solid #fff;cursor:pointer">ADD TO CART</button><button id="buyNow" style="height:48px;border-radius:9999px;background:#FFD700;color:#000;font-weight:900;font-size:13px;letter-spacing:0.05em;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">BUY NOW <span style="font-size:10px;background:#000;color:#FFD700;padding:2px 6px;border-radius:9999px">WA</span></button></div>
         <div style="margin-top:12px;font-size:11px;color:rgba(255,255,255,0.5);line-height:1.6">On Buy Now, open WhatsApp with order details: <span id="waPreview" style="color:rgba(255,255,255,0.8)"></span></div>
-        <div style="margin-top:16px;border-radius:18px;background:#151515;border:1px solid rgba(255,255,255,0.1);padding:20px"><div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;letter-spacing:0.05em">📏 FABRIC / FEATURES</div><p id="detailFabric" style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6"></p><div id="detailFeatures" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px"></div></div>
+        <div style="margin-top:16px;border-radius:18px;background:#151515;border:1px solid rgba(255,255,255,0.1);padding:20px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;letter-spacing:0.05em">📏 PRODUCT DETAILS</div>
+          <p id="detailDescription" style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6"></p>
+          <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.6);font-weight:800;letter-spacing:0.1em">FEATURES</div>
+          <ul id="detailFeatures" style="margin:10px 0 0 18px;padding:0;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.7"></ul>
+          <div style="margin-top:16px"><div style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:800;letter-spacing:0.1em">COLOURS</div><div id="detailColors" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div></div>
+          <div style="margin-top:16px"><div style="font-size:11px;color:rgba(255,255,255,0.6);font-weight:800;letter-spacing:0.1em">SIZES</div><div id="detailSizes" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div></div>
+          <div id="detailDelivery" style="margin-top:16px;font-size:12px;color:#FFD700;font-weight:700"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -254,6 +262,9 @@ let allProducts=[];
 function normalizeProduct(product, index) {
 const category = String(product && product.category ? product.category : "BUY").toUpperCase();
 const type = product && product.type ? product.type : (category === "BUY_PLAINS" ? "Blanks" : "Apparel");
+const featureList = Array.isArray(product && product.features) ? product.features : (typeof product?.features === 'string' ? product.features.split(/\n|,/) : ["Premium quality","Ready to order"]);
+const colorList = Array.isArray(product && product.colors) ? product.colors : (typeof product?.colors === 'string' ? product.colors.split(',') : ["Black","Gold"]);
+const sizeList = Array.isArray(product && product.sizes) ? product.sizes : (typeof product?.sizes === 'string' ? product.sizes.split(',') : ["S","M","L","XL","XXL"]);
 return {
   id: String(product && product.id !== undefined ? product.id : index + 1),
   name: product && product.name ? product.name : `Product ${index + 1}`,
@@ -263,7 +274,11 @@ return {
   category,
   type,
   fabric: product && product.fabric ? product.fabric : "Premium quality product material",
-  features: Array.isArray(product && product.features) ? product.features : ["Premium quality","Ready to order"]
+  description: product && product.description ? product.description : "Premium quality product from ANC Regalia.",
+  features: featureList.map(item => String(item).trim()).filter(Boolean),
+  colors: colorList.map(item => String(item).trim()).filter(Boolean),
+  sizes: sizeList.map(item => String(item).trim()).filter(Boolean),
+  delivery_info: product && product.delivery_info ? product.delivery_info : "4 working days before collection"
 };
 }
 
@@ -323,7 +338,8 @@ function renderBuy(){
   const slice=filtered.slice(0,visible);
   document.getElementById("grid").innerHTML=slice.map(p=>{
     const shop=getShop(p.shopId);
-    return `<div class="card" data-id="${p.id}"><div class="card-img"><img src="${p.image}" loading="lazy"><div class="badge-shop"><div class="badge-logo">${shop.logoText}</div><div class="badge-text">${shop.logoText}</div></div><div class="type-badge">${p.type}</div></div><div class="card-body"><div class="card-name">${p.name}</div><div class="card-price"><div class="price">R${p.price}</div><div class="loc">📍${shop.location.split(",")[0]}</div></div></div></div>`;
+    const safeImage = p.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80';
+    return `<div class="card" data-id="${p.id}"><div class="card-img"><img src="${safeImage}" loading="lazy"><div class="badge-shop"><div class="badge-logo">${shop.logoText}</div><div class="badge-text">${shop.logoText}</div></div><div class="type-badge">${p.type}</div></div><div class="card-body"><div class="card-name">${p.name}</div><div class="card-price"><div class="price">R${p.price}</div><div class="loc">📍${shop.location.split(",")[0]}</div></div></div></div>`;
   }).join('');
   document.getElementById("loadMore").style.display=filtered.length>visible?'inline-block':'none';
   document.querySelectorAll(".card").forEach(c=>c.onclick=()=>openProduct(c.dataset.id));
@@ -333,19 +349,35 @@ function renderPlains(){
   const list=allProducts.filter(p=>p.category==="BUY_PLAINS");
   document.getElementById("plainsGrid").innerHTML=list.map(p=>{
     const shop=getShop(p.shopId);
-    return `<div class="card" data-id="${p.id}"><div class="card-img"><img src="${p.image}"><div style="position:absolute;top:8px;left:8px;background:#000;color:#fff;font-size:10px;padding:2px 8px;border-radius:9999px;font-weight:700">BLANK</div></div><div class="card-body"><div class="card-name">${p.name}</div><div style="font-size:11px;color:rgba(0,0,0,0.6);margin-top:4px">${p.fabric.split(",")[0]}</div><div class="price" style="margin-top:8px">R${p.price}</div><div style="font-size:10px;color:rgba(0,0,0,0.5);margin-top:2px">${shop.name}</div></div></div>`;
+    const safeImage = p.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80';
+    return `<div class="card" data-id="${p.id}"><div class="card-img"><img src="${safeImage}"><div style="position:absolute;top:8px;left:8px;background:#000;color:#fff;font-size:10px;padding:2px 8px;border-radius:9999px;font-weight:700">BLANK</div></div><div class="card-body"><div class="card-name">${p.name}</div><div style="font-size:11px;color:rgba(0,0,0,0.6);margin-top:4px">${(p.fabric||'Premium blanks').split(",")[0]}</div><div class="price" style="margin-top:8px">R${p.price}</div><div style="font-size:10px;color:rgba(0,0,0,0.5);margin-top:2px">${shop.name}</div></div></div>`;
   }).join('');
   document.querySelectorAll("#plainsGrid .card").forEach(c=>c.onclick=()=>openProduct(c.dataset.id));
 }
+function parseList(value, fallback) {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (typeof value === 'string') {
+    return value.split(/\n|,/) .map(item => item.trim()).filter(Boolean);
+  }
+  return fallback;
+}
+
 function openProduct(id){
   const p=allProducts.find(x=>x.id===id); if(!p) return;
   selectedProduct=p; const shop=getShop(p.shopId); currentShop=shop;
+  const safeImage = p.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80';
+  const description = p.description || 'Premium quality product from ANC Regalia.';
+  const features = parseList(p.features, p.fabric ? [p.fabric] : ['Premium quality']);
+  const colors = parseList(p.colors, ['Black','Gold']);
+  const sizes = parseList(p.sizes, ['S','M','L','XL','XXL']);
+  const deliveryInfo = p.delivery_info || '4 working days before collection';
+
   document.getElementById("buySection").classList.add("hidden");
   document.getElementById("plainsSection").classList.add("hidden");
   document.getElementById("rentSection").classList.add("hidden");
   document.getElementById("brandingSection").classList.add("hidden");
   document.getElementById("productDetail").classList.remove("hidden");
-  document.getElementById("detailImg").src=p.image;
+  document.getElementById("detailImg").src=safeImage;
   document.getElementById("detailShopLogo").textContent=shop.logoText;
   document.getElementById("detailShopName").textContent=shop.name;
   document.getElementById("detailShopLoc").textContent="📍"+shop.location;
@@ -353,8 +385,11 @@ function openProduct(id){
   document.getElementById("detailName").textContent=p.name;
   document.getElementById("detailPrice").textContent="R"+p.price;
   document.getElementById("waPreview").textContent=`Order: ${p.name} - R${p.price} from ${shop.name}`;
-  document.getElementById("detailFabric").textContent=p.fabric;
-  document.getElementById("detailFeatures").innerHTML=p.features.map(f=>`<span style="padding:4px 10px;border-radius:9999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.7)">${f}</span>`).join('');
+  document.getElementById("detailDescription").textContent=description;
+  document.getElementById("detailFeatures").innerHTML=features.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById("detailColors").innerHTML=colors.map(color=>`<button style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:#fff;color:#000;font-weight:700;font-size:11px;cursor:pointer">${color}</button>`).join('');
+  document.getElementById("detailSizes").innerHTML=sizes.map(size=>`<button style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-weight:700;font-size:11px;cursor:pointer">${size}</button>`).join('');
+  document.getElementById("detailDelivery").textContent=`Expected Delivery: ${deliveryInfo}`;
 }
 function closeProduct(){
   document.getElementById("productDetail").classList.add("hidden");
