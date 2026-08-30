@@ -123,7 +123,7 @@ async function ensureProductsTable(db) {
   await ensureTableColumns(db, 'products', TABLE_COLUMNS.products);
   const count = await db.prepare('SELECT COUNT(*) AS total FROM products').first();
   const total = Number(count?.total || 0);
-  if (total === 0) {
+  if (total === 0 && false) {
     for (const product of DEFAULT_PRODUCTS) {
       await db.prepare(
         'INSERT INTO products (name, price, image, image_url, category, description, features, colors, sizes, delivery_info, shop_id, stock, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
