@@ -298,13 +298,10 @@
                 <input data-field="sizes" value="${escapeHtml(product.sizes || '')}" placeholder="e.g. S, M, L, XL, XXL" />
                 <label>Expected Delivery</label>
                 <input data-field="delivery_info" value="${escapeHtml(product.delivery_info || '4 working days before collection')}" />
-                <label>Image URL</label>
-                <input data-field="image" value="${escapeHtml(product.image || '')}" />
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                  <div><label>Image Upload</label><input type="file" id="imageUpload" /></div>
-                  <div><label>Preview</label><img src="${escapeHtml(product.image || 'https://placehold.co/200x200/111/FFD700?text=No+Image')}" style="width:100%; height:90px; object-fit:cover; border-radius:10px;" /></div>
-                </div>
-                <button class="save-btn" type="button" data-save="${productId}">Save</button>
+                <label>Image Upload</label>
+                <input type="file" id="imageUpload" accept="image/*" />
+                <img id="imagePreview" src="${escapeHtml(product.image || 'https://placehold.co/200x200/111/FFD700?text=No+Image')}" style="width:100%; height:90px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+                <button class="save-btn" type="button" id="saveProductBtn">Save</button>
                 <button class="share-btn" type="button" data-share="${productId}">Share</button>
               </div>
             </div>
@@ -331,15 +328,17 @@
           formData.append('file', file);
           try {
             const upload = await fetchJson('/api/upload', { method: 'POST', body: formData });
-            document.querySelector('[data-field="image"]').value = upload.url;
-            document.querySelector('.result-image').src = upload.url;
+            uploadedImageUrl = upload.url;
+            document.getElementById('imagePreview').src = upload.url;
+            setToast('Image uploaded');
           } catch (error) {
             setToast(error.message || 'Upload failed');
           }
         });
       }
 
-      document.querySelector('[data-save]').addEventListener('click', () => saveProduct(productId));
+      let uploadedImageUrl = product.image;
+      document.getElementById('saveProductBtn').addEventListener('click', () => saveProduct(product, uploadedImageUrl));
       document.querySelector('[data-share]').addEventListener('click', () => shareProduct(productId, shopId));
       document.querySelectorAll('.tab').forEach((button) => {
         button.addEventListener('click', () => { activeTab = button.dataset.tab; renderResultCard(product); });
@@ -378,27 +377,44 @@
       }
     }
 
-    async function saveProduct(productId) {
-      const card = document.querySelector('[data-save]')?.closest('.result-card');
+    async function saveProduct(product, imageUrl) {
+      const card = document.querySelector('[id="saveProductBtn"]')?.closest('.result-card');
       if (!card) return;
-      const payload = {};
-      card.querySelectorAll('input, textarea, select').forEach((field) => {
-        const key = field.dataset.field;
-        if (!key) return;
-        payload[key] = field.value;
-      });
 
-      const url = '/api/products/' + encodeURIComponent(productId);
-      const result = await fetchJson(url, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      const payload = {
+        name: card.querySelector('[data-field="name"]')?.value || '',
+        price: Number(card.querySelector('[data-field="price"]')?.value || 0),
+        category: card.querySelector('[data-field="category"]')?.value || 'BUY',
+        brand: card.querySelector('[data-field="brand"]')?.value || 'ANC Regalia',
+        description: card.querySelector('[data-field="description"]')?.value || '',
+        features: card.querySelector('[data-field="features"]')?.value || '',
+        colors: card.querySelector('[data-field="colors"]')?.value || '',
+        sizes: card.querySelector('[data-field="sizes"]')?.value || '',
+        delivery_info: card.querySelector('[data-field="delivery_info"]')?.value || '4 working days before collection',
+        stock: Number(card.querySelector('[data-field="stock"]')?.value || 0),
+        shop_id: card.querySelector('[data-field="shop_id"]')?.value || 'anc_regalia',
+        image_url: imageUrl || ''
+      };
 
-      setToast(result.message || 'Product saved and hidden — search to view');
-      searchInput.value = '';
-      resultsEl.innerHTML = '';
-      inlineProductEl.innerHTML = '';
+      if (!payload.name) {
+        setToast('Product name is required.');
+        return;
+      }
+
+      try {
+        const result = await fetchJson('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        setToast('Product saved and hidden — search to view');
+        searchInput.value = '';
+        resultsEl.innerHTML = '';
+        inlineProductEl.innerHTML = '';
+      } catch (error) {
+        setToast(error.message || 'Save failed');
+      }
     }
 
     async function shareProduct(productId, shopId) {

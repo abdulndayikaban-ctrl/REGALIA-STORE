@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rent Your Shop - REGALIA MALL</title>
+  <style>
+    :root { --bg:#0b0d12; --panel:#141922; --line: rgba(255,255,255,0.12); --text:#f3f5f8; --muted:#9ba8b6; --gold:#f4c95d; --gold-strong:#d7aa2d; --green:#1ecb8c; --danger:#ff6b6b; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:Arial, Helvetica, sans-serif; background:linear-gradient(180deg,#0b0d12,#101923); color:var(--text); min-height:100vh; }
+    .shell { max-width:1280px; margin:0 auto; padding:40px 16px; }
+    h1 { text-align:center; font-size:2rem; letter-spacing:0.1em; margin-bottom:8px; }
+    .tagline { text-align:center; color:var(--muted); margin-bottom:40px; }
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; }
+    .card { background:rgba(20,25,34,0.96); border:1px solid var(--line); border-radius:18px; padding:28px; }
+    .card h2 { font-size:1.4rem; letter-spacing:0.05em; margin-top:0; margin-bottom:20px; }
+    label { display:block; color:var(--muted); font-size:0.82rem; margin:14px 0 8px; }
+    input, select { width:100%; border:1px solid var(--line); background:#1b2330; color:var(--text); border-radius:10px; padding:12px 14px; font-size:1rem; margin-bottom:12px; }
+    button { width:100%; border:none; background:linear-gradient(135deg,var(--gold),var(--gold-strong)); color:#111; font-weight:900; padding:12px 18px; border-radius:10px; cursor:pointer; margin-top:12px; }
+    button:hover { opacity:0.9; }
+    .link-btn { background:transparent; border:1px solid var(--line); color:var(--text); text-decoration:none; display:block; text-align:center; }
+    .status { min-height:20px; margin-top:12px; font-size:0.9rem; }
+    .status.success { color:var(--green); }
+    .status.error { color:var(--danger); }
+    .hidden { display:none !important; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>REGALIA MALL</h1>
+    <div class="tagline">Rent Your Shop · Sell Your Products</div>
+
+    <div class="cards-grid">
+      <!-- LOGIN CARD -->
+      <div class="card">
+        <h2>Login</h2>
+        <label>Shop Slug</label>
+        <input id="loginSlug" placeholder="e.g. anc-regalia-style" />
+        <label>Owner Email</label>
+        <input id="loginEmail" type="email" placeholder="your@email.com" />
+        <button id="loginBtn">Open Shop Admin</button>
+        <div id="loginStatus" class="status"></div>
+      </div>
+
+      <!-- REGISTER CARD -->
+      <div class="card">
+        <h2>Create New Shop</h2>
+        <label>Shop Name</label>
+        <input id="registerName" placeholder="e.g. ANC REGALIA STYLE" />
+        <label>Shop Slug</label>
+        <input id="registerSlug" placeholder="e.g. anc-regalia-style" />
+        <label>Owner Email</label>
+        <input id="registerEmail" type="email" placeholder="your@email.com" />
+        <label>WhatsApp Number</label>
+        <input id="registerWhatsApp" placeholder="e.g. 27731234567" />
+        <label>Province</label>
+        <select id="registerProvince">
+          <option value="">Select Province</option>
+          <option value="Eastern Cape">Eastern Cape</option>
+          <option value="Free State">Free State</option>
+          <option value="Gauteng">Gauteng</option>
+          <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+          <option value="Limpopo">Limpopo</option>
+          <option value="Mpumalanga">Mpumalanga</option>
+          <option value="Northern Cape">Northern Cape</option>
+          <option value="North West">North West</option>
+          <option value="Western Cape">Western Cape</option>
+        </select>
+        <button id="registerBtn">Create My Shop</button>
+        <div id="registerStatus" class="status"></div>
+      </div>
+
+      <!-- VIEW SHOPS CARD -->
+      <div class="card">
+        <h2>Browse Shops</h2>
+        <p style="color:var(--muted); line-height:1.6;">View all active shops on REGALIA MALL, explore their products, and connect with shop owners.</p>
+        <a href="/shops.html" class="link-btn" style="margin-top:40px;">View All Shops →</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchJson(url, options = {}) {
+      const response = await fetch(url, options);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Request failed');
+      return data;
+    }
+
+    // LOGIN
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const slug = document.getElementById('loginSlug').value.trim();
+      const email = document.getElementById('loginEmail').value.trim();
+      const statusEl = document.getElementById('loginStatus');
+
+      if (!slug || !email) {
+        statusEl.textContent = 'Please enter shop slug and email.';
+        statusEl.className = 'status error';
+        return;
+      }
+
+      // For now, just redirect to shop-admin with slug
+      localStorage.setItem('regalia_shop_slug', slug);
+      localStorage.setItem('regalia_shop_email', email);
+      window.location.href = '/shop-admin.html';
+    });
+
+    // REGISTER
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+      const name = document.getElementById('registerName').value.trim();
+      const slug = document.getElementById('registerSlug').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
+      const email = document.getElementById('registerEmail').value.trim();
+      const whatsapp = document.getElementById('registerWhatsApp').value.trim();
+      const province = document.getElementById('registerProvince').value.trim();
+      const statusEl = document.getElementById('registerStatus');
+
+      if (!name || !slug || !email || !whatsapp || !province) {
+        statusEl.textContent = 'All fields are required.';
+        statusEl.className = 'status error';
+        return;
+      }
+
+      try {
+        const result = await fetchJson('/api/shops', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: slug,
+            name,
+            slug,
+            owner_name: name,
+            owner_email: email,
+            whatsapp,
+            province
+          })
+        });
+
+        statusEl.textContent = 'Shop created! Redirecting...';
+        statusEl.className = 'status success';
+        localStorage.setItem('regalia_shop_slug', slug);
+        localStorage.setItem('regalia_shop_email', email);
+        setTimeout(() => {
+          window.location.href = '/shop-admin.html';
+        }, 1500);
+      } catch (error) {
+        statusEl.textContent = 'Error: ' + error.message;
+        statusEl.className = 'status error';
+      }
+    });
+  </script>
+</body>
+</html>

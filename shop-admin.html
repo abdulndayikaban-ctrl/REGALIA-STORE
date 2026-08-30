@@ -13,11 +13,18 @@
     h1 { margin-top:0; }
     label { display:block; color:var(--muted); font-size:0.82rem; margin: 14px 0 8px; }
     input { width:100%; border:1px solid var(--line); background:#1b2330; color:var(--text); border-radius:10px; padding:12px 14px; }
+    .panel { background: rgba(20,25,34,0.96); border:1px solid var(--line); border-radius:18px; padding:24px; }
+    h1 { margin-top:0; }
+    label { display:block; color:var(--muted); font-size:0.82rem; margin: 14px 0 8px; }
+    input, textarea, select { width:100%; border:1px solid var(--line); background:#1b2330; color:var(--text); border-radius:10px; padding:12px 14px; }
+    textarea { min-height:90px; resize:vertical; }
     .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     .logo-box { display:flex; align-items:center; gap:16px; margin-top:16px; }
     .logo-preview { width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-strong)); color:#111; display:flex; align-items:center; justify-content:center; font-weight:900; }
     button { margin-top:18px; width:100%; border:none; border-radius:10px; background:linear-gradient(135deg,var(--gold),var(--gold-strong)); color:#111; font-weight:900; padding:12px 18px; cursor:pointer; }
     .status { min-height: 20px; color: var(--gold); margin-top: 12px; }
+    .hidden { display:none !important; }
+    .divider { border-top:1px solid var(--line); margin:24px 0; padding-top:24px; }
   </style>
 </head>
 <body>
@@ -54,6 +61,35 @@
       </div>
       <button id="saveShopBtn">Save Shop Info</button>
       <div id="status" class="status"></div>
+
+      <div class="divider">
+        <h2>Add Product</h2>
+        <label>Product Name</label>
+        <input id="productName" placeholder="Product Name" />
+        <div class="row">
+          <div><label>Price</label><input id="productPrice" type="number" placeholder="0" value="0" /></div>
+          <div><label>Stock</label><input id="productStock" type="number" placeholder="0" value="0" /></div>
+        </div>
+        <div class="row">
+          <div><label>Category</label><input id="productCategory" placeholder="BUY" value="BUY" /></div>
+          <div><label>Brand</label><input id="productBrand" placeholder="ANC Regalia" value="ANC Regalia" /></div>
+        </div>
+        <label>Description</label>
+        <textarea id="productDescription" placeholder="Product description"></textarea>
+        <label>Features (one per line)</label>
+        <textarea id="productFeatures" placeholder="Feature 1&#10;Feature 2"></textarea>
+        <label>Colors (comma-separated)</label>
+        <input id="productColors" placeholder="e.g. Yellow, Green, Black" />
+        <label>Sizes (comma-separated)</label>
+        <input id="productSizes" placeholder="e.g. S, M, L, XL, XXL" />
+        <label>Expected Delivery</label>
+        <input id="productDelivery" value="4 working days before collection" />
+        <label>Upload Image</label>
+        <input type="file" id="productImageUpload" accept="image/*" />
+        <img id="productImagePreview" src="https://placehold.co/200x200/111/FFD700?text=No+Image" style="width:100%; height:120px; object-fit:cover; border-radius:10px; margin-top:8px;" />
+        <button id="saveProductBtn">Add Product</button>
+        <div id="productStatus" class="status"></div>
+      </div>
     </div>
   </div>
 
@@ -133,6 +169,74 @@
       };
       saveProfile(profile);
       document.getElementById('status').textContent = 'Shop profile saved.';
+    });
+
+    let uploadedProductImage = '';
+    document.getElementById('productImageUpload').addEventListener('change', async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const response = await fetch('/api/upload', { method: 'POST', body: formData });
+        const data = await response.json();
+        uploadedProductImage = data.url;
+        document.getElementById('productImagePreview').src = uploadedProductImage;
+        document.getElementById('productStatus').textContent = 'Image uploaded';
+      } catch (error) {
+        document.getElementById('productStatus').textContent = 'Upload failed: ' + error.message;
+      }
+    });
+
+    document.getElementById('saveProductBtn').addEventListener('click', async () => {
+      const name = document.getElementById('productName').value.trim();
+      if (!name) {
+        document.getElementById('productStatus').textContent = 'Product name is required.';
+        return;
+      }
+
+      const slug = document.getElementById('shopSlug').value.trim() || 'anc-regalia';
+      const payload = {
+        name,
+        price: Number(document.getElementById('productPrice').value || 0),
+        category: document.getElementById('productCategory').value || 'BUY',
+        brand: document.getElementById('productBrand').value || 'ANC Regalia',
+        description: document.getElementById('productDescription').value || '',
+        features: document.getElementById('productFeatures').value || '',
+        colors: document.getElementById('productColors').value || '',
+        sizes: document.getElementById('productSizes').value || '',
+        delivery_info: document.getElementById('productDelivery').value || '4 working days before collection',
+        stock: Number(document.getElementById('productStock').value || 0),
+        shop_id: slug,
+        image_url: uploadedProductImage
+      };
+
+      try {
+        const response = await fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Save failed');
+
+        document.getElementById('productStatus').textContent = 'Product saved!';
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '0';
+        document.getElementById('productStock').value = '0';
+        document.getElementById('productCategory').value = 'BUY';
+        document.getElementById('productBrand').value = 'ANC Regalia';
+        document.getElementById('productDescription').value = '';
+        document.getElementById('productFeatures').value = '';
+        document.getElementById('productColors').value = '';
+        document.getElementById('productSizes').value = '';
+        document.getElementById('productDelivery').value = '4 working days before collection';
+        document.getElementById('productImageUpload').value = '';
+        document.getElementById('productImagePreview').src = 'https://placehold.co/200x200/111/FFD700?text=No+Image';
+        uploadedProductImage = '';
+      } catch (error) {
+        document.getElementById('productStatus').textContent = 'Error: ' + error.message;
+      }
     });
 
     const storedSlug = localStorage.getItem(SHOP_LOGIN_KEY);
