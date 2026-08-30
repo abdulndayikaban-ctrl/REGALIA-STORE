@@ -60,7 +60,7 @@ const DEFAULT_SHOPS = [
 
 const TABLE_COLUMNS = {
   products: [
-    'description', 'features', 'colors', 'sizes', 'delivery_info', 'shop_id', 'views', 'clicks', 'shares', 'followers_gained', 'stock', 'brand', 'display_zones'
+    'image', 'image_url', 'description', 'features', 'colors', 'sizes', 'delivery_info', 'shop_id', 'views', 'clicks', 'shares', 'followers_gained', 'stock', 'brand', 'display_zones'
   ],
   shops: ['id', 'name', 'slug', 'owner_name', 'owner_email', 'logo_url', 'whatsapp', 'province', 'created_at', 'product_count', 'is_full'],
   product_views: ['id', 'product_id', 'shop_id', 'session_id', 'traffic_source', 'referrer', 'province', 'device', 'viewed_at'],
@@ -78,19 +78,16 @@ function normalizeText(value, fallback = '') {
 async function ensureTableColumns(db, tableName, columns) {
   const info = await db.prepare(`PRAGMA table_info(${tableName})`).all();
   const names = new Set((info.results || []).map((col) => col.name));
-
   for (const column of columns) {
     if (!names.has(column)) {
-      const definition = column === 'description' || column === 'features' || column === 'colors' || column === 'sizes' || column === 'delivery_info'
+      const definition = column === 'image' || column === 'image_url' ? `${column} TEXT`
+        : column === 'description' || column === 'features' || column === 'colors' || column === 'sizes' || column === 'delivery_info'
         ? `${column} TEXT`
         : column === 'product_count' || column === 'views' || column === 'clicks' || column === 'shares' || column === 'followers_gained' || column === 'stock' || column === 'qty' || column === 'courier_fee' || column === 'total' || column === 'price'
           ? `${column} INTEGER` 
-          : column === 'delivery_info'
-            ? `${column} TEXT DEFAULT '4 working days before collection'`
-            : column === 'created_at' || column === 'viewed_at' || column === 'updated_at'
-              ? `${column} DATETIME DEFAULT CURRENT_TIMESTAMP`
-              : `${column} TEXT`;
-
+          : column === 'created_at' || column === 'viewed_at' || column === 'updated_at'
+            ? `${column} DATETIME DEFAULT CURRENT_TIMESTAMP`
+            : `${column} TEXT`;
       const finalDefinition = column === 'delivery_info' ? 'delivery_info TEXT DEFAULT "4 working days before collection"' : definition;
       await db.prepare(`ALTER TABLE ${tableName} ADD COLUMN ${finalDefinition}`).run();
     }
@@ -104,6 +101,7 @@ async function ensureProductsTable(db) {
       name TEXT NOT NULL,
       price REAL NOT NULL DEFAULT 0,
       image TEXT,
+      image_url TEXT,
       category TEXT NOT NULL DEFAULT 'BUY',
       description TEXT,
       features TEXT,
@@ -122,19 +120,17 @@ async function ensureProductsTable(db) {
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `).run();
-
   await ensureTableColumns(db, 'products', TABLE_COLUMNS.products);
-
   const count = await db.prepare('SELECT COUNT(*) AS total FROM products').first();
   const total = Number(count?.total || 0);
-
   if (total === 0) {
     for (const product of DEFAULT_PRODUCTS) {
       await db.prepare(
-        'INSERT INTO products (name, price, image, category, description, features, colors, sizes, delivery_info, shop_id, stock, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO products (name, price, image, image_url, category, description, features, colors, sizes, delivery_info, shop_id, stock, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
       ).bind(
         product.name,
         product.price,
+        product.image || FALLBACK_IMAGE,
         product.image || FALLBACK_IMAGE,
         product.category,
         product.description || '',
@@ -166,9 +162,7 @@ async function ensureShopsTable(db) {
       is_full INTEGER DEFAULT 0
     )
   `).run();
-
   await ensureTableColumns(db, 'shops', TABLE_COLUMNS.shops);
-
   for (const shop of DEFAULT_SHOPS) {
     const existing = await db.prepare('SELECT id FROM shops WHERE id = ?').bind(shop.id).first();
     if (!existing) {
@@ -252,9 +246,11 @@ async function ensureAllTables(db) {
 }
 
 function normalizeProductRecord(product) {
+  const img = normalizeText(product.image_url || product.image, FALLBACK_IMAGE);
   return {
     ...product,
-    image: normalizeText(product.image, FALLBACK_IMAGE),
+    image: img,
+    image_url: img,
     category: normalizeText(product.category, 'BUY'),
     brand: normalizeText(product.brand, 'ANC Regalia'),
     stock: Number(product.stock ?? 0),
@@ -277,7 +273,6 @@ async function resolveShopId(db, value) {
   if (!candidate) return 'anc_regalia';
   const direct = await db.prepare('SELECT id FROM shops WHERE id = ? OR slug = ?').bind(candidate, candidate).first();
   if (direct?.id) return direct.id;
-
   const fallbackSlug = String(candidate).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
   const generatedId = fallbackSlug;
   await db.prepare('INSERT OR IGNORE INTO shops (id, name, slug, owner_name, whatsapp, province, product_count) VALUES (?, ?, ?, ?, ?, ?, 0)')
@@ -302,17 +297,14 @@ export async function onRequest(context) {
   const { request, env, params } = context;
   const url = new URL(request.url);
   const searchParams = url.searchParams;
-
   if (!env.REGALIA_DB) {
     return new Response(JSON.stringify({ error: 'REGALIA_DB binding is missing.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
   }
-
   const db = env.REGALIA_DB;
   const routeId = params?.id ? String(params.id) : null;
-
   if (request.method === 'GET') {
     try {
       await ensureAllTables(db);
@@ -321,59 +313,30 @@ export async function onRequest(context) {
       const shopId = normalizeText(searchParams.get('shop_id'), '');
       const shopSlug = normalizeText(searchParams.get('shop_slug'), '');
       const productId = routeId || normalizeText(searchParams.get('id'), '');
-
       let sql = 'SELECT p.*, s.name AS shop_name, s.slug AS shop_slug FROM products p LEFT JOIN shops s ON s.id = p.shop_id';
       const where = [];
       const binds = [];
-
-      if (productId) {
-        where.push('p.id = ?');
-        binds.push(productId);
-      }
-      if (search) {
-        where.push('(LOWER(p.name) LIKE ? OR LOWER(COALESCE(p.brand, "")) LIKE ? OR LOWER(COALESCE(s.name, "")) LIKE ? OR LOWER(COALESCE(s.slug, "")) LIKE ?)');
-        binds.push(`%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`);
-      }
-      if (shop) {
-        where.push('(p.shop_id = ? OR s.slug = ?)');
-        binds.push(shop, shop);
-      }
-      if (shopId) {
-        where.push('p.shop_id = ?');
-        binds.push(shopId);
-      }
-      if (shopSlug) {
-        where.push('(p.shop_id = ? OR s.slug = ?)');
-        binds.push(shopSlug, shopSlug);
-      }
-
+      if (productId) { where.push('p.id = ?'); binds.push(productId); }
+      if (search) { where.push('(LOWER(p.name) LIKE ? OR LOWER(COALESCE(p.brand, "")) LIKE ? OR LOWER(COALESCE(s.name, "")) LIKE ? OR LOWER(COALESCE(s.slug, "")) LIKE ?)'); binds.push(`%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`, `%${search.toLowerCase()}%`); }
+      if (shop) { where.push('(p.shop_id = ? OR s.slug = ?)'); binds.push(shop, shop); }
+      if (shopId) { where.push('p.shop_id = ?'); binds.push(shopId); }
+      if (shopSlug) { where.push('(p.shop_id = ? OR s.slug = ?)'); binds.push(shopSlug, shopSlug); }
       if (where.length) sql += ' WHERE ' + where.join(' AND ');
       sql += ' ORDER BY id DESC';
-
       const result = await db.prepare(sql).bind(...binds).all();
       const records = (result.results || []).map((product) => {
         const normalized = normalizeProductRecord(product);
-        return {
-          ...normalized,
-          shop_name: normalizeText(product.shop_name, 'ANC REGALIA STYLE'),
-          shop_slug: normalizeText(product.shop_slug, 'anc-regalia-style')
-        };
+        return { ...normalized, shop_name: normalizeText(product.shop_name, 'ANC REGALIA STYLE'), shop_slug: normalizeText(product.shop_slug, 'anc-regalia-style') };
       });
-
       if (productId && records.length === 1) {
         const shopInfo = await getProductShopName(db, records[0].shop_id);
         return Response.json({ ...records[0], shop_name: shopInfo.name, shop_slug: shopInfo.slug });
       }
-
       return Response.json(records);
     } catch (error) {
-      return new Response(JSON.stringify({ error: error.message || 'Unable to load products.' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      return new Response(JSON.stringify({ error: error.message || 'Unable to load products.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
   }
-
   if (request.method === 'POST' || request.method === 'PUT') {
     try {
       await ensureAllTables(db);
@@ -393,42 +356,29 @@ export async function onRequest(context) {
       const deliveryInfo = normalizeText(body?.delivery_info || body?.expectedDelivery || '4 working days before collection', '4 working days before collection');
       const shopIdInput = normalizeText(body?.shop_id || body?.shop || 'anc_regalia', 'anc_regalia');
       const shopId = await resolveShopId(db, shopIdInput);
-
-      if (!name) {
-        return new Response(JSON.stringify({ error: 'Product name is required.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-      }
-      if (!Number.isFinite(price)) {
-        return new Response(JSON.stringify({ error: 'Product price is invalid.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-      }
-
+      if (!name) return new Response(JSON.stringify({ error: 'Product name is required.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+      if (!Number.isFinite(price)) return new Response(JSON.stringify({ error: 'Product price is invalid.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
       const shopExists = await db.prepare('SELECT id FROM shops WHERE id = ? OR slug = ?').bind(shopIdInput, shopIdInput).first();
       if (!shopExists) {
         const newSlug = String(shopIdInput).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
         const uniqueId = String(shopIdInput || newSlug).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'anc-regalia';
         await db.prepare('INSERT OR IGNORE INTO shops (id, name, slug, owner_name, whatsapp, province, product_count) VALUES (?, ?, ?, ?, ?, ?, 0)').bind(uniqueId, 'ANC REGALIA STYLE', newSlug, 'Owner', '27731234567', 'Eastern Cape').run();
       }
-
       if (productNumberId !== null && Number.isFinite(productNumberId)) {
         const check = await db.prepare('SELECT shop_id FROM products WHERE id = ?').bind(productNumberId).first();
         if (check && check.shop_id && check.shop_id !== shopId) {
           const count = await db.prepare('SELECT COUNT(*) AS total FROM products WHERE shop_id = ?').bind(shopId).first();
-          if (Number(count?.total || 0) >= 500) {
-            return new Response(JSON.stringify({ error: 'This shop has reached the 500 product limit.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-          }
+          if (Number(count?.total || 0) >= 500) return new Response(JSON.stringify({ error: 'This shop has reached the 500 product limit.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         }
-
         await db.prepare(
-          'UPDATE products SET name = ?, price = ?, image = ?, category = ?, description = ?, features = ?, colors = ?, sizes = ?, delivery_info = ?, shop_id = ?, stock = ?, brand = ?, display_zones = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
-        ).bind(name, price, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand, normalizeText(body?.display_zones || 'shopgrid', 'shopgrid'), productNumberId).run();
+          'UPDATE products SET name = ?, price = ?, image = ?, image_url = ?, category = ?, description = ?, features = ?, colors = ?, sizes = ?, delivery_info = ?, shop_id = ?, stock = ?, brand = ?, display_zones = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
+        ).bind(name, price, image, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand, normalizeText(body?.display_zones || 'shopgrid', 'shopgrid'), productNumberId).run();
       } else {
         const count = await db.prepare('SELECT COUNT(*) AS total FROM products WHERE shop_id = ?').bind(shopId).first();
-        if (Number(count?.total || 0) >= 500) {
-          return new Response(JSON.stringify({ error: 'This shop has reached the 500 product limit.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
-        }
-
+        if (Number(count?.total || 0) >= 500) return new Response(JSON.stringify({ error: 'This shop has reached the 500 product limit.' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         const insert = await db.prepare(
-          'INSERT INTO products (name, price, image, category, description, features, colors, sizes, delivery_info, shop_id, stock, brand, display_zones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        ).bind(name, price, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand, normalizeText(body?.display_zones || 'shopgrid', 'shopgrid')).run();
+          'INSERT INTO products (name, price, image, image_url, category, description, features, colors, sizes, delivery_info, shop_id, stock, brand, display_zones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        ).bind(name, price, image, image, category, description, features, colors, sizes, deliveryInfo, shopId, stock, brand, normalizeText(body?.display_zones || 'shopgrid', 'shopgrid')).run();
         const lastId = insert?.meta?.last_row_id ?? null;
         if (lastId) {
           await syncShopProductCount(db, shopId);
@@ -436,7 +386,6 @@ export async function onRequest(context) {
           return Response.json(normalizeProductRecord(productRecord));
         }
       }
-
       await syncShopProductCount(db, shopId);
       const saved = await db.prepare('SELECT * FROM products WHERE id = ?').bind(productNumberId || productIdValue).first();
       return Response.json(normalizeProductRecord(saved));
@@ -444,6 +393,5 @@ export async function onRequest(context) {
       return new Response(JSON.stringify({ error: error.message || 'Unable to update product.' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
   }
-
   return new Response(JSON.stringify({ error: 'Method not allowed.' }), { status: 405, headers: { 'Content-Type': 'application/json' } });
 }
