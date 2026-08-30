@@ -152,3 +152,10 @@ function renderBrand(app){
 function dtfT(){const v=document.getElementById('dtfArt').value;document.getElementById('dtfYes').style.display=v==='yes'?'block':'none';document.getElementById('dtfNo').style.display=v==='no'?'block':'none';}
 
 render();
+// REGALIA LOGO LOADING - every button click
+const s=document.createElement('style');
+s.innerHTML=`#rl{position:fixed;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;z-index:99999;background:rgba(255,255,255,0.8)}#rl img{width:130px;animation:p 1.2s infinite}@keyframes p{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}`;
+document.head.appendChild(s);
+const d=document.createElement('div');d.id='rl';d.innerHTML=`<img src="REGALIA LOGO.png">`;
+document.body.appendChild(d);
+document.addEventListener('click',e=>{if(e.target.closest('button')){d.style.display='flex';setTimeout(()=>d.style.display='none',3000)}});
