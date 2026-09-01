@@ -399,13 +399,13 @@ function renderBuy(){
     document.getElementById("grid").innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:80px 20px;font-weight:900;font-size:20px;letter-spacing:2px">ADD PRODUCT</div>`;
     return;
   }
+ const slice=filtered.slice(0,visible);
   document.getElementById("grid").innerHTML=slice.map(p=>{
     const shop=getShop(p.shopId);
     const safeImage = p.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80';
+    return `<div class="card" data-id="${p.id}"><div class="card-img"><img src="${safeImage}" loading="lazy"><div class="badge-shop"><div class="badge-logo">${shop.logoText}</div><div class="badge-text">${shop.logoText}</div></div><div class="type-badge">${p.type}</div></div><div class="card-body"><div class="card-name">${p.name}</div><div class="card-price"><div class="price">R${p.price}</div><div class="loc">📍${shop.location.split(",")[0]}</div></div></div></div>`;
   }).join('');
-  document.getElementById("loadMore").style.display=filtered.length>visible?'inline-block':'none';
   document.querySelectorAll(".card").forEach(c=>c.onclick=()=>openProduct(c.dataset.id));
-  document.getElementById("statusItems").textContent=filtered.length+" Items";
 }
 function renderPlains(){
   const list=allProducts.filter(p=>p.category==="BUY_PLAINS");
