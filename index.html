@@ -304,27 +304,47 @@ function updateCartBadge() {
 
 function addProductToCart(product, color = selectedColor, size = selectedSize) {
   const cart = getCart();
-  const item = {
-    id: String(product.id),
-    name: product.name,
-    price: Number(product.price || 0),
-    image: product.image || PLACEHOLDER_IMAGE,
-    color: color || (Array.isArray(product.colors) && product.colors[0] ? product.colors[0] : ''),
-    size: size || (Array.isArray(product.sizes) && product.sizes[0] ? product.sizes[0] : ''),
-    qty: 1,
-    shop_id: product.shopId || 'anc_regalia'
-  };
+  const isLong = document.getElementById('longSleeve')?.checked || false;
+  const col = color || (Array.isArray(product.colors) && product.colors[0]? product.colors[0] : selectedColor || '');
+  // NEW qty inputs you added
+  const qM = parseInt(document.getElementById('qty-M')?.value||0);
+  const q2XL = parseInt(document.getElementById('qty-2XL')?.value||0);
+  const q5XL = parseInt(document.getElementById('qty-5XL')?.value||0);
+  const multi = (qM+q2XL+q5XL) > 0;
 
-  const existingIndex = cart.findIndex(entry => entry.id === item.id && entry.color === item.color && entry.size === item.size);
-  if (existingIndex >= 0) {
-    cart[existingIndex].qty += 1;
+  const toAdd = [];
+  if(multi){
+    if(qM>0) toAdd.push({size:'M', qty:qM});
+    if(q2XL>0) toAdd.push({size:'2XL', qty:q2XL});
+    if(q5XL>0) toAdd.push({size:'5XL', qty:q5XL});
   } else {
-    cart.push(item);
+    // fallback single size old logic
+    toAdd.push({size:size || (Array.isArray(product.sizes) && product.sizes[0]? product.sizes[0] : 'M'), qty:1});
   }
+
+  toAdd.forEach(t=>{
+    const item = {
+      id: String(product.id),
+      name: product.name,
+      price: Number(product.price || 0),
+      image: product.image || PLACEHOLDER_IMAGE,
+      color: col,
+      size: t.size,
+      qty: t.qty,
+      longSleeve: isLong,
+      shop_id: product.shopId || 'anc_regalia'
+    };
+    const existingIndex = cart.findIndex(entry => entry.id === item.id && entry.color === item.color && entry.size === item.size && entry.longSleeve === item.longSleeve);
+    if (existingIndex >= 0) {
+      cart[existingIndex].qty += item.qty;
+    } else {
+      cart.push(item);
+    }
+  });
 
   saveCart(cart);
   updateCartBadge();
-  toast('Added to cart');
+  toast('Added ' + toAdd.reduce((s,x)=>s+x.qty,0) + ' to Mall Bag - Checkout in Mall');
 }
 
 function normalizeProduct(product, index) {
