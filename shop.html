@@ -100,98 +100,80 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:
 </div>
 
   <script>
-    const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80';
-    let allProducts = [];
-    let displayed = 0;
-    const LOAD_COUNT = 9;
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&auto=format&fit=crop&q=80';
+const fallbackProducts = [
+{id:"p1",name:"Heritage Black Dad Cap",price:249,image:"https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=600&fit=crop",brand:"ANC",stock:20,colors:"Black,Gold",sizes:"OSFM,S/M,L/XL",category:"Caps"},
+{id:"p2",name:"ANC Tri-Color Track Jacket",price:899,image:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=600&fit=crop",brand:"ANC",stock:15,colors:"Black,Yellow,Green",sizes:"S,M,L,XL,2XL",category:"Jackets"},
+{id:"p3",name:"Gold Emblem Heavy Hoodie",price:650,image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&h=600&fit=crop",brand:"CCC",stock:30,colors:"Black,Gold",sizes:"M,2XL,5XL",category:"Hoodies"}
+];
+let allProducts = [];
+let displayed = 0;
+const LOAD_COUNT = 9;
+const CART_KEY = 'regalia_cart';
+let selectedColor = '';
+let selectedSize = '';
+let selectedProduct = null;
 
-    async function loadProducts() {
-      try {
-        const response = await fetch('/api/products');
-        const data = await response.json();
-        allProducts = Array.isArray(data) ? data : [];
-        renderProducts();
-      } catch (error) {
-        console.error('Failed to load products', error);
-        allProducts = [];
-      }
-    }
+function getCart(){ try{return JSON.parse(localStorage.getItem(CART_KEY)||'[]')}catch{return[]} }
+function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)) }
+function updateCartBadge(){ const count=getCart().reduce((s,i)=>s+Number(i.qty||1),0); const b=document.getElementById('cartNum'); if(b) b.textContent=count; }
+function toast(m){ let t=document.getElementById('toast'); if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#000;color:#FFD700;padding:12px 20px;border-radius:9999px;z-index:9999;font-weight:700;font-size:12px';document.body.appendChild(t);} t.textContent=m; t.style.display='block'; setTimeout(()=>t.style.display='none',2500); }
 
-    function renderProducts() {
-      const grid = document.getElementById('grid');
-      const newItems = allProducts.slice(displayed, displayed + LOAD_COUNT);
-      displayed += newItems.length;
+async function loadProducts(){
+  try{
+    const response = await fetch('/api/products');
+    const data = await response.json();
+    allProducts = Array.isArray(data) && data.length>0? data : fallbackProducts;
+    renderProducts();
+  }catch(error){
+    allProducts = fallbackProducts;
+    renderProducts();
+  }
+  updateCartBadge();
+}
 
-      newItems.forEach(product => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        const colors = (product.colors || '').split(',').map(x => x.trim()).filter(Boolean);
-        const isCaps = (product.category || '').toLowerCase().includes('cap');
-        const sizes = isCaps 
-          ? ['OSFM', 'S/M', 'L/XL']
-          : (product.sizes || '').split(',').map(x => x.trim()).filter(Boolean);
-        
-        card.innerHTML = `
-          <div class="card-img">
-            <img src="${product.image || FALLBACK_IMAGE}" alt="${product.name}" />
-            <div class="badge">${product.views || 0} views</div>
-          </div>
-          <div class="card-body">
-            <div class="card-name">${product.brand || 'Brand'}</div>
-            <div class="card-price">R${Number(product.price || 0)}</div>
-            <div style="font-size:11px;color:#666;margin-top:4px">Stock: ${Number(product.stock || 0)}</div>
-          </div>
-        `;
-        
-        card.addEventListener('click', () => showModal(product, colors, sizes, isCaps));
-        grid.appendChild(card);
-      });
+function renderProducts(){
+  const grid = document.getElementById('grid');
+  const newItems = allProducts.slice(displayed, displayed + LOAD_COUNT);
+  displayed += newItems.length;
+  newItems.forEach(product => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const colors = (product.colors || '').split(',').map(x=>x.trim()).filter(Boolean);
+    const isCaps = (product.category || '').toLowerCase().includes('cap');
+    const sizes = isCaps? ['OSFM','S/M','L/XL'] : (product.sizes || '').split(',').map(x=>x.trim()).filter(Boolean);
+    card.innerHTML = `<div class="card-img"><img src="${product.image || FALLBACK_IMAGE}" alt="${product.name}" /><div class="badge">${product.views || 0} views</div></div><div class="card-body"><div class="card-name">${product.brand || 'Brand'}</div><div class="card-price">R${Number(product.price || 0)}</div><div style="font-size:11px;color:#666;margin-top:4px">Stock: ${Number(product.stock || 0)}</div></div>`;
+    card.addEventListener('click', () => showModal(product, colors, sizes, isCaps));
+    grid.appendChild(card);
+  });
+  document.getElementById('loadMore').style.display = displayed >= allProducts.length? 'none' : 'block';
+}
 
-      document.getElementById('loadMore').style.display = displayed >= allProducts.length ? 'none' : 'block';
-    }
-
-    function showModal(product, colors, sizes, isCaps) {
-      const modal = document.getElementById('productModal');
-      const body = document.getElementById('modalBody');
-      const features = (product.features || '').split(/\n|\r|,/).map(x => x.trim()).filter(Boolean);
-
-      body.innerHTML = `
-        <h2>${product.name}</h2>
-        <img src="${product.image || FALLBACK_IMAGE}" style="width:100%;height:250px;object-fit:cover;border-radius:12px;margin:16px 0;" />
-        <div style="margin:16px 0;">
-          <strong>Price:</strong> R${Number(product.price || 0)}<br/>
-          <strong>Brand:</strong> ${product.brand || 'N/A'}<br/>
-          <strong>Stock:</strong> ${Number(product.stock || 0)}<br/>
-        </div>
-        ${product.description ? `<div style="margin:16px 0;"><strong>Description:</strong><br/>${product.description}</div>` : ''}
-        ${features.length ? `<div style="margin:16px 0;"><strong>Features:</strong><ul>${features.map(f => `<li>${f}</li>`).join('')}</ul></div>` : ''}
-        
-        <div style="margin:16px 0;">
-          <strong>Colors:</strong>
-          <div>${colors.length ? colors.map(c => `<button class="color-pill">${c}</button>`).join('') : 'Not available'}</div>
-        </div>
-
-        <div style="margin:16px 0;">
-          <strong>Size:</strong>
-          <div>${sizes.length ? sizes.map(s => `<button class="size-pill">${s}</button>`).join('') : 'Not available'}</div>
-        </div>
-
-        <div style="margin:16px 0;">
-          <strong>Delivery:</strong> ${product.delivery_info || '5 working days before collection'}
-        </div>
-
-        <div style="margin:16px 0;display:flex;gap:8px;align-items:center">
-          <label>Quantity:</label>
-          <input type="number" class="qty-input" value="1" min="1" />
-          <button style="flex:1;padding:10px;background:#FFD700;color:#000;border:none;font-weight:900;border-radius:8px;cursor:pointer">Add to Cart</button>
-        </div>
-      `;
-      modal.classList.add('show');
-    }
-
-    document.getElementById('loadMore').addEventListener('click', renderProducts);
-
-    loadProducts();
-  </script>
+function showModal(product, colors, sizes, isCaps){
+  const modal = document.getElementById('productModal');
+  const body = document.getElementById('modalBody');
+  const features = (product.features || '').split(/\n|\r/).map(x=>x.trim()).filter(Boolean);
+  selectedProduct = product;
+  selectedColor = colors[0] || '';
+  selectedSize = sizes[0] || '';
+  body.innerHTML = `<h2>${product.name}</h2><img src="${product.image || FALLBACK_IMAGE}" style="width:100%;height:250px;object-fit:cover;border-radius:12px;margin:16px 0;" /><div style="margin:16px 0;"><strong>Price:</strong> R${Number(product.price || 0)}<br><strong>Brand:</strong> ${product.brand || 'N/A'}<br><strong>Stock:</strong> ${Number(product.stock || 0)}<br>${product.description? `<div style="margin:16px 0;"><strong>Description:</strong><br>${product.description}</div>` : ''}${features.length? `<div style="margin:16px 0;"><strong>Features:</strong><ul>${features.map(f=>`<li>${f}</li>`).join('')}</ul></div>` : ''}<div style="margin:16px 0;"><strong>Colors:</strong><div id="colorPills" style="margin-top:6px">${colors.length? colors.map(c=>`<button class="color-pill ${c===selectedColor?'active':''}" data-c="${c}">${c}</button>`).join('') : 'Not available'}</div></div><div style="margin:16px 0;"><strong>Size:</strong><div id="sizePills" style="margin-top:6px">${sizes.length? sizes.map(s=>`<button class="size-pill ${s===selectedSize?'active':''}" data-s="${s}">${s}</button>`).join('') : 'Not available'}</div></div><div style="margin:16px 0;"><strong>Delivery:</strong> ${product.delivery_info || '5 working days before collection'}</div><div style="display:flex;gap:8px;align-items:center;margin-top:16px"><label>Qty:</label><input id="modalQty" type="number" class="qty-input" value="1" min="1" style="width:60px;padding:8px;border:1px solid #ccc;border-radius:8px" /><button id="modalAddBtn" style="flex:1;padding:10px;background:#FFD700;color:#000;border:none;font-weight:900;border-radius:8px;cursor:pointer">Add to Cart</button></div>`;
+  modal.classList.add('show');
+  body.querySelectorAll('.color-pill').forEach(b=>b.onclick=()=>{ selectedColor=b.dataset.c; body.querySelectorAll('.color-pill').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
+  body.querySelectorAll('.size-pill').forEach(b=>b.onclick=()=>{ selectedSize=b.dataset.s; body.querySelectorAll('.size-pill').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
+  document.getElementById('modalAddBtn').onclick=()=>{
+    const qty = parseInt(document.getElementById('modalQty').value||'1')||1;
+    const cart = getCart();
+    const id = `${product.id||product.name}-${selectedColor}-${selectedSize}`;
+    const existing = cart.findIndex(i=>i.id===id);
+    if(existing>=0){ cart[existing].qty+=qty; } else{ cart.push({id, name:product.name, price:Number(product.price||0), image:product.image||FALLBACK_IMAGE, color:selectedColor, size:selectedSize, qty}); }
+    saveCart(cart);
+    updateCartBadge();
+    toast(`Added ${qty} to Mall Bag`);
+    modal.classList.remove('show');
+  };
+}
+document.getElementById('loadMore').addEventListener('click', renderProducts);
+loadProducts();
+</script>
 </body>
 </html>
