@@ -610,7 +610,9 @@ document.querySelectorAll(".artBtn").forEach(b=>b.onclick=()=>{
   document.getElementById("artYes").classList.toggle("hidden", !yes);
   document.getElementById("artNo").classList.toggle("hidden", yes);
 });
-
+// ZOOM + SIZES FIX
+const zc=document.getElementById('zoomContainer'),zi=document.getElementById('detailImg');
+if(zc&&zi){zc.onmousemove=e=>{let r=zc.getBoundingClientRect();zi.style.transformOrigin=`${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`;zi.style.transform='scale(2.2)'};zc.onmouseleave=()=>zi.style.transform='scale(1)';zc.ontouchmove=e=>{let r=zc.getBoundingClientRect();zi.style.transformOrigin=`${(e.touches[0].clientX-r.left)/r.width*100}% ${(e.touches[0].clientY-r.top)/r.height*100}%`;zi.style.transform='scale(2.2)'};zc.ontouchend=()=>zi.style.transform='scale(1)';}
 updateCartBadge();
 loadProducts();
 renderSizeGrid();
