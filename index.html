@@ -234,9 +234,8 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;background:
 <footer style="position:relative;z-index:10;border-top:1px solid rgba(255,255,255,0.1);margin-top:60px;padding:40px 16px">
   <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px">
     <div>
-       
       <h4 style="font-weight:900;font-size:13px;letter-spacing:0.1em;margin-bottom:12px;color:#FFD700">REGALIA MALL V2</h4>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8">Luxury fashion & branding p  latform for African brands. EST 2024.</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.8">Luxury fashion & branding platform for African brands. EST 2024.</p>
     </div>
     <div>
       <h4 style="font-weight:900;font-size:13px;letter-spacing:0.1em;margin-bottom:12px;color:#FFD700">DOORS</h4>
@@ -265,28 +264,7 @@ const fallbackProducts=[
 {id:"p2",name:"ANC Tri-Color Track Jacket",price:899,image:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY",type:"Jackets",fabric:"Polyester tricot with mesh lining, water-resistant coating",features:["Full zip","Side pockets","Ribbed cuffs"]},
 {id:"p3",name:"Gold Emblem Heavy Hoodie",price:650,image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY",type:"Hoodies",fabric:"320gsm Brushed fleece, 80% cotton 20% polyester",features:["Kangaroo pocket","Drawcord hood","DTF chest print"]},
 {id:"p4",name:"Vintage Washed Hoodie - Cream",price:599,image:"https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&h=600&fit=crop",shopId:"jozi_street",category:"BUY",type:"Hoodies",fabric:"280gsm French terry, garment washed",features:["Drop shoulder","Soft hand feel","Pre-shrunk"]},
-{id:"p5",name:"Trucker Mesh Cap - Gold/Black",price:279,image:"https://images.unsplash.com/photo-1534217461336-aed54af6bb0c?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY",type:"Caps",fabric:"Front foam + rear polyester mesh, snapback",features:["High crown","Curved brim"]},
-{id:"p6",name:"Varsity Jacket - Black Wool",price:1250,image:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=600&fit=crop",shopId:"jozi_street",category:"BUY",type:"Jackets",fabric:"24oz wool body + genuine leather sleeves, quilted lining",features:["Chenille patches","Snap buttons"]},
-{id:"p7",name:"Essential Oversized Tee",price:320,image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY",type:"Apparel",fabric:"200gsm 100% combed cotton, oversized fit",features:["Crew neck","Side seamed"]},
-{id:"p8",name:"Bucket Hat - Sable",price:199,image:"https://images.unsplash.com/photo-1529391409740-59f1cea3f4c2?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY",type:"Headwear",fabric:"Washed canvas cotton, 57cm",features:["Embroidered eyelets","Reversible option"]},
-{id:"p9",name:"Plain Black Hoodie Blank - 280gsm",price:180,image:"https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY_PLAINS",type:"Blanks",fabric:"280gsm unbranded fleece blank for branding",features:["Ready for DTF/Screen","No tags"]},
-{id:"p10",name:"Plain White Tee Blank - 180gsm",price:85,image:"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=600&h=600&fit=crop",shopId:"anc_regalia",category:"BUY_PLAINS",type:"T-Shirt",fabric:"180gsm Captivity blank, 100% cotton",features:["Tubular","Bulk packs"]},
-{id:"p11",name:"Plain Grey Sweat Crew Blank",price:165,image:"https://images.unsplash.com/photo-1618354691792-d1d42acfd860?w=600&h=600&fit=crop",shopId:"cape_culture",category:"BUY_PLAINS",type:"Sweat",fabric:"240gsm grey melange crew",features:["Brushed inside"]},
-{id:"p12",name:"Plain Cap Blank - 5 Panel",price:65,image:"https://images.unsplash.com/photo-1556306535-38febf6782e7?w=600&h=600&fit=crop",shopId:"jozi_street",category:"BUY_PLAINS",type:"Blanks",fabric:"Unbranded 5-panel cap blank",features:["For embroidery"]}
-];
-const sizes=[{items:9,price:"R350 / month",label:"Starter"},{items:18,price:"R650 / month",label:"Growth"},{items:36,price:"R1,200 / month",label:"Standard"},{items:72,price:"R2,200 / month",label:"Mall"},{items:81,price:"R2,500 / month",label:"Mansion"}];
-const outdoors=[{name:"Banners",image:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400"},{name:"Flags",image:"https://images.unsplash.com/photo-1516331138075-f3adc1e149cd?w=400"},{name:"Gazebo",image:"https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?w=400"},{name:"Pull-up Banners",image:"https://images.unsplash.com/photo-1558655146-d09347e92766?w=400"},{name:"X-Banners",image:"https://images.unsplash.com/photo-1586714647609-aef50d86039a?w=400"},{name:"Table Cloths",image:"https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400"}];
-
-let currentDoor="BUY", currentFilter="All", visible=20, cart=2, selectedProduct=null, currentShop=null, selectedSize=9, hasProducts=true;
-let allProducts=[];
-const CART_KEY = 'regalia_cart';
-const PLACEHOLDER_IMAGE = 'https://placehold.co/600x600/111/FFD700?text=No+Image';
-let selectedColor = '';
-let selectedSize = '';
-
-function getCart() {
-  try {
-    return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+{id:"p5",N.parse(localStorage.getItem(CART_KEY) || '[]');
   } catch (error) {
     return [];
   }
