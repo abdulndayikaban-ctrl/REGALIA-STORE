@@ -161,17 +161,20 @@ function showModal(product, colors, sizes, isCaps){
   modal.classList.add('show');
   body.querySelectorAll('.color-pill').forEach(b=>b.onclick=()=>{ selectedColor=b.dataset.c; body.querySelectorAll('.color-pill').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
   body.querySelectorAll('.size-pill').forEach(b=>b.onclick=()=>{ selectedSize=b.dataset.s; body.querySelectorAll('.size-pill').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
-  document.getElementById('modalAddBtn').onclick=()=>{
-    const qty = parseInt(document.getElementById('modalQty').value||'1')||1;
-    const cart = getCart();
-    const id = `${product.id||product.name}-${selectedColor}-${selectedSize}`;
-    const existing = cart.findIndex(i=>i.id===id);
-    if(existing>=0){ cart[existing].qty+=qty; } else{ cart.push({id, name:product.name, price:Number(product.price||0), image:product.image||FALLBACK_IMAGE, color:selectedColor, size:selectedSize, qty}); }
-    saveCart(cart);
-    updateCartBadge();
-    toast(`Added ${qty} to Mall Bag`);
-    modal.classList.remove('show');
-  };
+ document.getElementById('modalAddBtn').onclick=()=>{
+ const qty=parseInt(document.getElementById('modalQty').value||'1')||1;
+ const cart=getCart(); const id=`${product.id||product.name}-${selectedColor}-${selectedSize}`;
+ const existing=cart.findIndex(i=>i.id===id);
+ if(existing>=0){ cart[existing].qty+=qty; } else{ cart.push({id, name:product.name, price:Number(product.price||0), image:product.image||FALLBACK_IMAGE, color:selectedColor, size:selectedSize, qty}); }
+ saveCart(cart); updateCartBadge();
+ const prodImg=body.querySelector('img'); const badge=document.getElementById('cartNum');
+ const fly=document.createElement('img'); fly.src=product.image||FALLBACK_IMAGE;
+ fly.style.cssText=`position:fixed;left:${prodImg.getBoundingClientRect().left}px;top:${prodImg.getBoundingClientRect().top}px;width:70px;height:70px;border-radius:12px;z-index:9999;transition:all .9s`;
+ document.body.appendChild(fly);
+ setTimeout(()=>{fly.style.left=badge.getBoundingClientRect().left+'px'; fly.style.top=badge.getBoundingClientRect().top+'px'; fly.style.width='20px'; fly.style.opacity='0';},100);
+ setTimeout(()=>fly.remove(),1000);
+ toast(`Added ${selectedSize} x${qty} — still open`);
+};
 }
 document.getElementById('loadMore').addEventListener('click', renderProducts);
 loadProducts();
