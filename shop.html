@@ -171,7 +171,7 @@ function showModal(product, colors, sizes, isCaps){
  toast('Added '+product.name);
 };
 function openCartDrawer(){var d=document.getElementById('cartDrawer'); if(d){d.style.right='0';} renderDrawer();}
-function renderDrawer(){var c=getCart();var e=document.getElementById('drawerItems');if(!e)return;if(c.length==0){e.innerHTML='<p style="text-align:center">Empty</p>';return;}e.innerHTML=c.map(function(i){return '<div style="display:flex;gap:10px;margin-bottom:12px"><img src="'+i.image+'" style="width:50px;height:50px"><div>'+i.name+' x'+i.qty+'<br>R'+i.price+'</div></div>'}).join('');}
+function renderDrawer(){var c=getCart();var e=document.getElementById('drawerItems');if(!e)return;if(c.length==0){e.innerHTML='<p style="text-align:center">Empty - add drip</p>';return;}e.innerHTML=c.map(function(i){return '<div style="display:flex;gap:10px;margin-bottom:12px"><img src="'+i.image+'" style="width:50px;height:50px;object-fit:cover"><div>'+i.name+' x'+i.qty+'<br>R'+i.price+'</div></div>';}).join('');}
 document.getElementById('loadMore').addEventListener('click', renderProducts);
 loadProducts();
 </script>
@@ -179,9 +179,5 @@ loadProducts();
 <div style="padding:16px;background:#000;color:#FFD700;display:flex;justify-content:space-between"><b>DRIP</b><span onclick="document.getElementById('cartDrawer').style.right='-420px'">X</span></div>
 <div id="drawerItems" style="flex:1;padding:16px;overflow:auto"></div>
 </div>
-</body>
-</html>
-</script>
- <div id="cartDrawer" style="position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#fff;z-index:99999;transition:.4s"></div>
 </body>
 </html>
