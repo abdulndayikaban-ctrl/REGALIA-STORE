@@ -1,150 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DRIP Shop</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REGALIA Shop - LIVE FINAL</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0a;color:#fff;font-family:Arial,Helvetica,sans-serif}
-header{position:sticky;top:0;z-index:1000;background:#000;border-bottom:1px solid #FFD700;padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
-header b{color:#FFD700;letter-spacing:2px;font-size:20px}
-#cartIcon{position:relative;cursor:pointer;font-size:22px;background:#111;border:1px solid #FFD700;padding:8px 14px;border-radius:20px}
-#cartBadge{position:absolute;top:-6px;right:-6px;background:#FFD700;color:#000;font-size:11px;font-weight:bold;padding:2px 6px;border-radius:10px}
-#productGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;padding:16px}
-.prod{background:#111;border:1px solid #222;border-radius:12px;overflow:hidden;cursor:pointer}
-.prod img{width:100%;height:180px;object-fit:cover;background:#222}
-.prod .info{padding:10px}
-.prod .info h3{font-size:14px;margin-bottom:4px}
-.prod .info p{color:#FFD700;font-weight:bold}
-#loadMore{display:block;margin:20px auto;padding:12px 24px;background:#FFD700;color:#000;border:none;border-radius:20px;font-weight:bold;cursor:pointer}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;z-index:10000;align-items:center;justify-content:center;padding:16px}
-.modal.show{display:flex}
-.modalBox{background:#fff;color:#000;width:100%;max-width:420px;border-radius:16px;overflow:hidden;max-height:90vh;overflow:auto}
-.color-pill,.size-pill{display:inline-block;padding:6px 12px;border:1px solid #000;border-radius:20px;margin:4px;cursor:pointer;font-size:13px}
-.color-pill.active,.size-pill.active{background:#000;color:#FFD700}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#000;color:#FFD700;padding:12px 22px;border-radius:24px;border:1px solid #FFD700;z-index:99999;display:none}
-#cartDrawer{position:fixed;top:0;right:-420px;width:400px;max-width:90vw;height:100vh;background:#fff;color:#000;z-index:99999;transition:right .4s;display:flex;flex-direction:column}
-#drawerHead{padding:16px;background:#000;color:#FFD700;display:flex;justify-content:space-between;align-items:center}
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Inter:wght@400;600&display=swap');
+*{font-family:'Inter',sans-serif}
+.drip-font{font-family:'Syne',sans-serif}
+.theme-transition{transition:all 0.4s ease !important}
+@keyframes bounceBadge{0%,100%{transform:scale(1)}25%{transform:scale(1.35)}50%{transform:scale(0.9)}75%{transform:scale(1.2)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes logoFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes shimmerSlide{0%{transform:translateX(-150%)}100%{transform:translateX(150%)}}
+@keyframes bronzeBorderFlow{0%{border-color:#CD7F32}33%{border-color:#A97142}66%{border-color:#8D6E63}100%{border-color:#CD7F32}}
+@keyframes glowBronze{0%,100%{box-shadow:0 0 0 rgba(205,127,50,0)}50%{box-shadow:0 0 22px rgba(205,127,50,0.6)}}
+@keyframes glowGreen{0%,100%{box-shadow:0 0 0 rgba(0,200,83,0)}50%{box-shadow:0 0 22px rgba(0,200,83,0.6)}}
+@keyframes cartAlive{0%{transform:scale(1)}20%{transform:scale(1.15) rotate(-3deg)}40%{transform:scale(1.15) rotate(3deg)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes confettiFall{0%{transform:translateY(-10vh) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.logo-anim{background:linear-gradient(90deg,#FFD700,#CD7F32,#00C853,#A97142,#FFD700);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:logoFlow 3.5s linear infinite}
+.banner-anim{background:linear-gradient(90deg,#FFD700,#CD7F32,#A97142,#00C853,#FFD700);background-size:300% 100%;animation:gradientShift 6s ease infinite}
+.ship-gradient{background:linear-gradient(90deg,#00C853,#1B5E20,#CD7F32,#A97142,#00C853);background-size:300% 100%;animation:gradientShift 4s ease infinite}
+.pill-shimmer{position:relative;overflow:hidden}.pill-shimmer::after{content:'';position:absolute;top:0;left:0;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);transform:translateX(-100%)}.pill-shimmer:hover::after{animation:shimmerSlide 0.7s ease}
+.size-active{border-color:#CD7F32 !important;background:rgba(205,127,50,0.14) !important;animation:bronzeBorderFlow 3s ease infinite, glowBronze 2s ease-in-out infinite;transform:scale(1.05)}
+.size-has-qty{border-color:#00C853 !important;background:rgba(0,200,83,0.12) !important;animation:glowGreen 1.8s ease-in-out infinite}
+.cart-alive{animation:cartAlive 0.6s ease}.badge-bounce{animation:bounceBadge 0.5s ease}
+.confetti{position:fixed;width:8px;height:14px;top:-10px;animation:confettiFall 2s linear forwards;z-index:9999;border-radius:2px}
+.scroll-hide::-webkit-scrollbar{display:none}.scroll-hide{-ms-overflow-style:none;scrollbar-width:none}
+.custom-scrollbar::-webkit-scrollbar{height:6px}.custom-scrollbar::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#FFD700,#CD7F32,#00C853);border-radius:999px}
+/* SEASON - 2-3 per 5 min very subtle */
+#seasonLayer{position:fixed;inset:0;pointer-events:none;z-index:9998;overflow:hidden}
+.leaf{position:absolute;top:-10vh;animation:leafFall 16s linear forwards;opacity:0.6}
+@keyframes leafFall{0%{transform:translateY(-10vh) translateX(0) rotate(0deg);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(110vh) translateX(30px) rotate(360deg);opacity:0}}
+.petal{position:absolute;top:-10vh;animation:petalFall 18s linear forwards;opacity:0.6}
+@keyframes petalFall{0%{transform:translateY(-10vh) translateX(0) rotate(0deg);opacity:0}15%{opacity:0.6}85%{opacity:0.6}100%{transform:translateY(110vh) translateX(-20px) rotate(360deg);opacity:0}}
+.snow{position:absolute;top:-10vh;animation:snowFall 20s linear forwards;opacity:0.5}
+@keyframes snowFall{0%{transform:translateY(-10vh) translateX(0);opacity:0}10%{opacity:0.5}90%{opacity:0.5}100%{transform:translateY(110vh) translateX(20px);opacity:0}}
+#modalImgWrap{position:relative;overflow:hidden;cursor:zoom-in}
+#modalImg.zoomed{transform:scale(2.5);transform-origin:var(--x) var(--y);transition:transform 0.15s ease}
+#zoomHint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:999px;font-size:10px;letter-spacing:0.1em;pointer-events:none}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-anim{animation:ticker 25s linear infinite}
 </style>
 </head>
-<body>
+<body id="body" class="bg-[#0a0a0a] text-white theme-transition">
+<div id="seasonLayer"></div>
+<div class="banner-anim h-[38px] text-black flex items-center justify-center font-[800] tracking-widest text-[12px] drip-font"><span id="bannerText">🔥 FREE SHIPPING OVER R800 — Sale ends in 02:14:33</span></div>
 
-<header>
-<b>DRIP</b>
-<div id="cartIcon" onclick="openCartDrawer()">🛒 <span id="cartBadge">0</span></div>
+<header id="header" class="sticky top-0 z-40 backdrop-blur-xl border-b flex items-center justify-between px-4 h-[64px]" style="background:rgba(10,10,10,0.92);border-color:rgba(255,255,255,0.1)">
+<div class="flex items-center gap-3">
+<button id="themeToggle" class="w-[58px] h-[32px] rounded-full border-2 flex items-center px-1 cursor-pointer relative" style="background:#1a1a1a;border-color:#CD7F32"><span class="text-[12px] absolute left-1">☀️</span><span class="text-[12px] absolute right-1">🌙</span><div id="toggleDot" class="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[10px] font-bold" style="background:linear-gradient(135deg,#222,#111);color:#FFD700;transform:translateX(0);transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1)">☾</div></button>
+<h1 class="drip-font text-[26px] font-[800] logo-anim">REGALIA</h1>
+<span id="seasonBadge" class="hidden md:inline-flex text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-full border font-bold" style="border-color:#CD7F32;color:#CD7F32">SPRING • SEP 3 SA • DARK</span>
+</div>
+<div class="flex items-center gap-2">
+<button id="catBtn" class="border px-4 h-9 rounded-full text-[11px] font-bold tracking-widest uppercase pill-shimmer cursor-pointer" style="border-color:#CD7F32">CATEGORIES ▼</button>
+<input id="searchInput" placeholder="Search regalia..." class="hidden md:block bg-[#161616] border rounded-full px-4 h-9 text-[13px] w-56 outline-none" style="border-color:rgba(255,255,255,0.1)">
+<button id="favBtn" class="relative w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-xl cursor-pointer" style="z-index:51">🤍<span id="favBadge" class="absolute -top-1 -right-1 min-w-[20px] h-5 rounded-full bg-[#00C853] text-black text-[11px] font-bold flex items-center justify-center hidden">0</span></button>
+<button id="cartBtn" class="relative w-11 h-11 rounded-full flex items-center justify-center text-xl cursor-pointer" style="background:linear-gradient(135deg,#FFD700,#CD7F32);z-index:52">🛒<span id="cartBadge" class="absolute -top-1 -right-1 min-w-[20px] h-5 rounded-full bg-white text-black text-[11px] font-bold flex items-center justify-center">0</span></button>
+</div>
 </header>
 
-<div id="productGrid"></div>
-<button id="loadMore">Load More Drip</button>
+<div id="catPanel" class="overflow-hidden max-h-0 transition-all duration-500 border-b" style="background:#111;border-color:rgba(255,255,255,0.08)"><div id="catPills" class="flex gap-2 p-3 overflow-x-auto scroll-hide"></div></div>
+<div id="grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 max-w-[1320px] mx-auto"></div>
+<div class="text-center py-6"><button id="loadMore" class="banner-anim px-8 h-12 rounded-full font-bold text-[13px] tracking-widest uppercase text-black pill-shimmer cursor-pointer">LOAD MORE REGALIA</button></div>
 
-<!-- PRODUCT MODAL -->
-<div id="productModal" class="modal" onclick="if(event.target==this)closeModal()">
-<div class="modalBox">
-<div id="modalBody" style="padding:16px"></div>
-<div style="padding:12px 16px;display:flex;gap:8px;align-items:center;border-top:1px solid #eee">
-<input id="modalQty" type="number" value="1" min="1" style="width:60px;padding:8px;border-radius:8px;border:1px solid #000">
-<button id="modalAddBtn" style="flex:1;background:#000;color:#FFD700;border:none;padding:12px;border-radius:10px;font-weight:bold;cursor:pointer">ADD TO DRIP</button>
-</div>
-</div>
-</div>
+<div id="favDrawer" class="fixed top-0 left-0 h-full w-[400px] max-w-[94vw] bg-[#101010] border-r z-[70] -translate-x-full transition-all duration-500 flex flex-col"><div class="h-[64px] px-6 flex items-center justify-between border-b"><span class="drip-font font-bold">FAVORITES 🤍 <span id="favCount">0</span></span><button id="closeFav" class="w-8 h-8 rounded-full bg-white/10 cursor-pointer">✕</button></div><div id="favItems" class="flex-1 overflow-auto p-3 space-y-3"></div><button id="moveAllFav" class="m-4 h-11 border rounded-full text-[12px] tracking-widest uppercase cursor-pointer" style="border-color:#CD7F32">MOVE ALL TO CART →</button></div>
+<div id="cartDrawer" class="fixed top-0 right-0 h-full w-[420px] max-w-[94vw] bg-[#101010] border-l z-[70] translate-x-full transition-all duration-500 flex flex-col"><div class="h-[64px] px-6 flex items-center justify-between border-b"><span class="drip-font font-bold">YOUR REGALIA 🛒</span><button id="closeCart" class="w-8 h-8 rounded-full bg-white/10 cursor-pointer">✕</button></div><div class="p-4 border-b" style="background:rgba(255,255,255,0.03)"><div id="freeShip" class="rounded-[14px] border p-3 cursor-pointer pill-shimmer" style="border-color:#00C853"><div class="flex justify-between text-[11px] tracking-widest uppercase font-bold"><span>Free shipping</span><span id="shipText">Add R800</span></div><div class="h-2.5 rounded-full overflow-hidden bg-white/10 mt-1"><div id="shipBar" class="h-full ship-gradient transition-all" style="width:0%"></div></div><div class="text-[10px] opacity-60 mt-1">Click bar to quick-add</div></div><div id="quickAdds" class="hidden mt-3 grid grid-cols-3 gap-2"></div></div><div id="cartItems" class="flex-1 overflow-auto p-3 space-y-3"></div><div class="p-5 border-t" style="background:#0f0f0f"><div class="flex justify-between"><span class="text-[11px] opacity-60">Total</span><span id="cartTotal" class="text-[20px] font-bold">R0</span></div><div id="bulkInfo" class="text-[11px] mt-1" style="color:#00C853"></div><button id="checkoutBtn" class="w-full mt-4 h-12 rounded-full font-[800] uppercase text-[12px] ship-gradient text-white pill-shimmer cursor-pointer">CHECKOUT — Complete before someone else does ⏳</button></div></div>
 
-<!-- CART DRAWER -->
-<div id="cartDrawer">
-<div id="drawerHead"><b>YOUR DRIP</b><span onclick="closeCartDrawer()" style="cursor:pointer;font-size:22px">✕</span></div>
-<div id="drawerItems" style="flex:1;overflow:auto;padding:16px"></div>
-<div style="padding:16px;border-top:1px solid #eee">
-<div style="display:flex;justify-content:space-between;font-weight:bold;margin-bottom:10px"><span>Total</span><span id="drawerTotal">R0</span></div>
-<button style="width:100%;background:#FFD700;color:#000;padding:14px;border:none;border-radius:10px;font-weight:bold" onclick="goCheckout()">CHECKOUT</button>
-</div>
-</div>
+<div id="modal" class="fixed inset-0 z-[80] hidden"><div id="modalBg" class="absolute inset-0 backdrop-blur-[12px]" style="background:rgba(0,0,0,0.75)"></div><div class="relative min-h-screen flex items-center justify-center p-2 md:p-4"><div class="w-full max-w-[1200px] rounded-[26px] border overflow-hidden flex flex-col max-h-[94vh]" style="background:#121212;border-color:#CD7F32"><div class="flex items-center justify-between px-6 h-[56px] border-b shrink-0" style="background:#0f0f0f"><span class="text-[11px] tracking-widest uppercase">Vault Sale — Ends <span id="modalTimer" class="font-mono font-bold" style="color:#00C853">02:14:33</span> • <span id="modalCat"></span></span><button id="closeModal" class="w-8 h-8 rounded-full bg-white/10 cursor-pointer">✕</button></div><div class="grid md:grid-cols-5 overflow-auto scroll-hide"><div class="md:col-span-2 border-b md:border-b-0 md:border-r flex flex-col" style="background:#0a0a0a"><div id="modalImgWrap" class="relative h-[380px] md:h-[520px] overflow-hidden bg-black"><img id="modalImg" class="w-full h-full object-cover"><div id="zoomHint">Tap to zoom close view</div><div class="absolute bottom-3 left-3 right-3 flex justify-between"><span class="px-3 py-1.5 rounded-full backdrop-blur text-[11px] border" style="background:rgba(0,0,0,0.7);border-color:#00C853">👁 <span id="modalViews">1.2k</span> • <span id="modalColorLabel">Black</span></span><span class="px-3 py-1.5 rounded-full text-[11px] font-bold ship-gradient text-white">FREE SHIP R800+</span></div></div><div class="p-4"><div id="modalFeatures" class="space-y-1 text-[13px] opacity-70"></div><div id="modalColorDots" class="mt-4 flex gap-2"></div><div id="colorTotal" class="mt-3 rounded-[12px] border p-3 text-[11px]" style="border-color:rgba(0,200,83,0.3);background:rgba(0,200,83,0.06)"></div></div></div><div class="md:col-span-3 p-5 md:p-6 flex flex-col gap-4"><div><div id="modalName" class="drip-font text-[28px] font-[800] leading-[0.95]"></div><div class="flex items-center gap-3 mt-2"><span id="modalPrice" class="text-[26px] font-bold">R0</span><span id="modalOrigPrice" class="text-[12px] line-through opacity-40">R0</span><span id="modalBulkBadge" class="px-2 py-1 rounded-full border text-[10px] font-bold" style="border-color:#00C853;color:#00C853">BULK</span></div><div class="mt-2 text-[12px]" style="color:#CD7F32">🔥 <span id="modalSold">0</span> copped today • <span id="colorSummaryTop">No selection</span></div></div><div><div class="text-[11px] tracking-widest uppercase opacity-40 mb-2">Color — image switches instantly • QTY memory active</div><div id="modalColors" class="flex gap-2 flex-wrap"></div></div><div><div class="flex justify-between items-center mb-2"><span class="text-[11px] tracking-widest uppercase opacity-40">Size — <span id="sizeLabel">S-6XL</span> • Gradient stroke flows</span><div class="flex gap-2 text-[11px]"><span class="px-2.5 py-1 rounded-full border flex items-center gap-1" style="border-color:#00C853;background:rgba(0,200,83,0.1)"><span class="w-2 h-2 rounded-full bg-[#00C853] animate-pulse"></span><span id="viewingNow">8 viewing now</span></span><span class="px-2.5 py-1 rounded-full border flex items-center gap-1" style="border-color:#FFD700;background:rgba(255,215,0,0.1)">❤️ <span id="likesNow">0</span> likes</span><span class="px-2.5 py-1 rounded-full border flex items-center gap-1" style="border-color:#CD7F32;background:rgba(205,127,50,0.1)">🔥 <span id="soldNow">0</span> copped</span></div></div><div id="modalSizes" class="flex gap-3 overflow-x-auto custom-scrollbar pb-3 snap-x"></div></div><div id="selectionSummary" class="rounded-[14px] border p-3 text-[11px]" style="border-color:rgba(0,200,83,0.3)"></div><button id="addToDrip" class="w-full h-[54px] rounded-full font-[800] tracking-[0.14em] uppercase text-[13px] drip-font pill-shimmer transition-all cursor-pointer" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.1)">ADD TO REGALIA — Select size qty first</button><div class="grid md:grid-cols-2 gap-4"><div class="rounded-[16px] border overflow-hidden" style="border-color:rgba(205,127,50,0.2)"><div class="px-4 py-3 border-b flex justify-between"><span class="text-[11px] font-bold tracking-widest uppercase">Bulk Price — auto unlocks</span><span id="bulkActiveLabel" class="text-[10px] px-2 py-0.5 rounded-full ship-gradient text-white">WHOLESALE</span></div><div id="bulkStatus" class="px-4 py-2 border-b text-[11px]" style="background:rgba(0,200,83,0.05)"></div><div id="bulkTable" class="divide-y"></div><div class="p-3"><button id="bulkQuote" class="w-full h-10 rounded-full bg-white text-black text-[11px] font-bold tracking-widest uppercase cursor-pointer">SEND FOR BULK QUOTE</button></div></div><div class="rounded-[16px] border p-4" style="border-color:rgba(205,127,50,0.2)"><div class="text-[11px] font-bold tracking-widest uppercase" style="color:#CD7F32">Reviews ⭐ 4.8 (128) • Performance</div><div id="reviews" class="mt-3 space-y-2 text-[11px]"></div><button id="likeSticky" class="mt-3 w-full h-10 border rounded-full text-[11px] tracking-widest uppercase pill-shimmer cursor-pointer" style="border-color:#FFD700">🤍 Like — <span id="likeCount">0</span> • Add to fav list</button></div></div></div></div></div></div></div>
 
-<div id="toast"></div>
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[90] pointer-events-none opacity-0 transition-all"><div id="toastInner" class="px-6 py-3 rounded-full border text-[13px] font-bold" style="background:black;border-color:#00C853;color:#00C853"></div></div>
+
+<footer class="mt-16 border-t relative overflow-hidden" style="background:#0a0a0a;border-color:rgba(255,255,255,0.08)"><div class="banner-anim h-[36px] flex items-center overflow-hidden"><div class="ticker-anim flex gap-8 whitespace-nowrap text-black font-[800] text-[11px] tracking-[0.18em] drip-font"><span>🔥 REGALIA VAULT • FREE SHIPPING OVER R800 • S-6XL + KIDS AGE 5/6-13/14YRS • COLOR QTY MEMORY • BULK 25-1000 • CART ALIVE • SOLD CORRECT • </span><span>🔥 REGALIA VAULT • FREE SHIPPING OVER R800 • S-6XL + KIDS AGE 5/6-13/14YRS • COLOR QTY MEMORY • BULK 25-1000 • CART ALIVE • SOLD CORRECT • </span></div></div><div class="max-w-[1320px] mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-10"><div><h3 class="drip-font font-[800] text-[13px] tracking-[0.18em] mb-4 logo-anim">REGALIA CULT</h3><p class="text-[12px] leading-relaxed opacity-60">Black base • Gold #FFD700 • Bronze #CD7F32 • Green #00C853. Every drop is vault locked — no restock, ever.</p><div class="mt-4 flex gap-2"><span class="px-2 py-1 rounded-full text-[10px] border" style="border-color:#FFD700;color:#FFD700">GOLD</span><span class="px-2 py-1 rounded-full text-[10px] border" style="border-color:#CD7F32;color:#CD7F32">BRONZE</span><span class="px-2 py-1 rounded-full text-[10px] border" style="border-color:#00C853;color:#00C853">GREEN</span></div></div><div><h3 class="text-[12px] tracking-[0.2em] mb-4 opacity-80 drip-font">COP</h3><ul class="space-y-2 text-[12px] opacity-60"><li>All Drops</li><li>Apparel S-6XL Gradient stroke</li><li>Kids AGE 5/6-13/14YRS</li><li>Special Bronze glow</li></ul></div><div><h3 class="text-[12px] tracking-[0.2em] mb-4 opacity-80 drip-font">HUSTLE</h3><ul class="space-y-2 text-[12px] opacity-60"><li>Size Guide</li><li>Color QTY Memory</li><li>Bulk 25-1000 auto</li><li>Cart Alive Clickable</li><li>Sold Correct</li></ul></div><div><h3 class="text-[12px] tracking-[0.2em] mb-4 opacity-80 drip-font">CONNECT</h3><ul class="space-y-2 text-[12px] opacity-60"><li>Instagram @regaliavault</li><li>WhatsApp Fast reply</li><li>regalia@vault.co.za</li></ul></div></div><div class="border-t py-5 px-6 flex flex-col md:flex-row justify-between gap-3 text-[10px] tracking-[0.14em] uppercase opacity-40 max-w-[1320px] mx-auto" style="border-color:rgba(255,255,255,0.08)"><span>© 2026 REGALIA Vault — Cart alive • Gradient stroke • 1 like per person • Sold correct • Sep 3 Spring • Image zoom</span><span class="flex gap-3"><span>No restock</span>•<span>QTY memory</span>•<span>Bulk 25-1000</span></span></div></footer>
 
 <script>
-const FALLBACK_IMAGE = 'https://via.placeholder.com/400x400?text=DRIP';
-let PRODUCTS = [
-{id:'1',name:'Drip Hoodie Black',price:450,image:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400',features:'Premium cotton\nGold embroidery\nOversized fit',colors:['Black','White'],sizes:['S','M','L','XL']},
-{id:'2',name:'Drip Tee Gold',price:250,image:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',features:'Soft tee\nStreetwear cut',colors:['Black','Gold','White'],sizes:['M','L','XL']},
-{id:'3',name:'Drip Cap',price:180,image:'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400',features:'Adjustable\nEmbroidered logo',colors:['Black'],sizes:['One Size']},
-{id:'4',name:'Drip Pants',price:380,image:'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=400',features:'Cargo style\nHeavy fabric',colors:['Black','Khaki'],sizes:['30','32','34','36']},
-{id:'5',name:'Drip Jacket',price:650,image:'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400',features:'Windbreaker\nWater resistant',colors:['Black'],sizes:['M','L','XL']},
-{id:'6',name:'Drip Shorts',price:220,image:'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400',features:'Summer drip',colors:['Black','White'],sizes:['S','M','L']}
+let audioCtx; function getCtx(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
+function playClick(){ try{ const ctx=getCtx(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.frequency.value=850; g.gain.setValueAtTime(0.25,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.06); o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.07);}catch{}}
+function playCelebrate(){ try{ const ctx=getCtx(); [261.63,329.63,392,523.25].forEach((f,i)=>{ const o=ctx.createOscillator(); const g=ctx.createGain(); o.frequency.value=f; g.gain.setValueAtTime(0.3,ctx.currentTime+i*0.09); g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+i*0.09+0.4); o.connect(g); g.connect(ctx.destination); o.start(ctx.currentTime+i*0.09); o.stop(ctx.currentTime+i*0.09+0.4); });}catch{}}
+function confetti(){ for(let i=0;i<22;i++){ const d=document.createElement('div'); d.className='confetti'; d.style.left=Math.random()*100+'vw'; d.style.background=['#FFD700','#00C853','#CD7F32'][Math.floor(Math.random()*3)]; document.body.appendChild(d); setTimeout(()=>d.remove(),2200); }}
+function toast(msg){ const t=document.getElementById('toast'); const inner=document.getElementById('toastInner'); inner.textContent=msg; t.style.opacity='1'; t.style.transform='translate(-50%,0)'; setTimeout(()=>{ t.style.opacity='0'; },2600); }
+
+const categories=["All","Apparel","Head Wears","Accessories","Kids","Signage","Camo","SA Supporter","Special"];
+const adultSizes=["S","M","L","XL","2XL","3XL","4XL","5XL","6XL"];
+const kidSizes=["5/6","7/8","9/10","11/12","13/14YRS"];
+const bulkTiers=[{label:"25-50 pcs",min:25,max:50,price:380},{label:"51-100 pcs",min:51,max:100,price:340},{label:"101-200 pcs",min:101,max:200,price:300},{label:"201-500 pcs",min:201,max:500,price:260},{label:"501-1000 pcs",min:501,max:1000,price:220}];
+const mkStock=(o)=>({S:4,M:3,L:2,XL:5,"2XL":3,"3XL":2,"4XL":1,"5XL":2,"6XL":1,...o});
+const mkKid=(o)=>({"5/6":4,"7/8":5,"9/10":3,"11/12":2,"13/14YRS":2,...o});
+const svg=(bg,fg,name)=>{ const s=`<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'><rect width='800' height='1000' fill='${bg}'/><text x='400' y='400' text-anchor='middle' font-family='Syne' font-weight='800' font-size='54' fill='${fg}'>${name}</text></svg>`; return `data:image/svg+xml,${encodeURIComponent(s)}`; };
+const co={Black:"#0a0a0a",White:"#f5f5f0",Gold:"#FFD700",Red:"#dc2626"}, fo={Black:"#FFD700",White:"#111",Gold:"#111",Red:"#fff"};
+const xe=(n)=>({Black:svg(co.Black,fo.Black,n),White:svg(co.White,fo.White,n),Gold:svg(co.Gold,fo.Gold,n),Red:svg(co.Red,fo.Red,n)});
+const products=[
+{id:1,name:"PHANTOM PUFFER v2",price:899,category:"Special",colors:["Black","White","Gold","Red"],imagesByColor:xe("PHANTOM PUFFER"),stockByColor:{Black:mkStock({S:2,M:0,XL:5}),White:mkStock({S:5}),Gold:mkStock({S:1}),Red:mkStock({M:2})},features:["Water-repellent shell","Gold embroidered REGALIA"],sold:14,baseLikes:247},
+{id:2,name:"NOIR CARGO REGALIA",price:649,category:"Apparel",colors:["Black","White","Gold","Red"],imagesByColor:xe("NOIR CARGO"),stockByColor:{Black:mkStock(),White:mkStock(),Gold:mkStock(),Red:mkStock()},features:["6-pocket utility"],sold:19,baseLikes:189},
+{id:3,name:"GOLD THREAD HOODIE",price:549,category:"Apparel",colors:["Black","White","Gold","Red"],imagesByColor:xe("GOLD HOODIE"),stockByColor:{Black:mkStock(),White:mkStock(),Gold:mkStock(),Red:mkStock()},features:["480GSM French terry"],sold:22,baseLikes:312},
+{id:4,name:"REGALIA SIGNATURE TEE",price:299,category:"Apparel",colors:["Black","White","Gold","Red"],imagesByColor:xe("SIGNATURE TEE"),stockByColor:{Black:mkStock({S:6,M:6,L:6}),White:mkStock({S:8}),Gold:mkStock({S:2}),Red:mkStock({"6XL":0})},features:["Heavyweight cotton"],sold:31,baseLikes:421},
+{id:9,name:"KIDS REGALIA HOODIE",price:399,category:"Kids",colors:["Black","White","Gold","Red"],imagesByColor:xe("KIDS HOODIE"),stockByColor:{Black:mkKid({"5/6":5}),White:mkKid({"5/6":2}),Gold:mkKid({"7/8":1}),Red:mkKid({"9/10":0})},features:["Kids fit 5-14YRS"],sold:18,baseLikes:156},
 ];
-let visibleCount = 4;
-let selectedProduct=null,selectedColor='',selectedSize='';
 
-function getCart(){try{return JSON.parse(localStorage.getItem('dripCart')||'[]')}catch(e){return []}}
-function saveCart(c){localStorage.setItem('dripCart',JSON.stringify(c))}
-function updateCartBadge(){var b=document.getElementById('cartBadge');if(b){b.textContent=getCart().reduce((s,i)=>s+i.qty,0)}}
-function toast(m){var t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2000)}
-function closeModal(){document.getElementById('productModal').classList.remove('show')}
+let visible=8, selectedProduct=null, selectedColor="Black", selectedQtys={}, cart=JSON.parse(localStorage.getItem('regaliaCart')||'[]'), fav=JSON.parse(localStorage.getItem('regaliaFav')||'[]'), filterCat="All", searchQ="", currentBulk=null, saleSec=8073, viewing=8, productLikes=JSON.parse(localStorage.getItem('regaliaProductLikes')||'{}'), productSold=JSON.parse(localStorage.getItem('regaliaProductSold')||'{}'), regaliaLikes=JSON.parse(localStorage.getItem('regaliaLikes')||'{}');
 
-function renderProducts(){
-var grid=document.getElementById('productGrid');
-var slice=PRODUCTS.slice(0,visibleCount);
-grid.innerHTML=slice.map(p=>`
-<div class="prod" onclick="showModalById('${p.id}')">
-<img src="${p.image||FALLBACK_IMAGE}" onerror="this.src='${FALLBACK_IMAGE}'">
-<div class="info"><h3>${p.name}</h3><p>R${p.price}</p></div>
-</div>`).join('');
-document.getElementById('loadMore').style.display = visibleCount>=PRODUCTS.length?'none':'block';
-updateCartBadge();
+function mo(q){ if(q>=501) return bulkTiers[4]; if(q>=201) return bulkTiers[3]; if(q>=101) return bulkTiers[2]; if(q>=51) return bulkTiers[1]; if(q>=25) return bulkTiers[0]; return null; }
+function Wd(q){ if(q<25) return {need:25-q,next:bulkTiers[0]}; for(let i=0;i<bulkTiers.length-1;i++){ if(q>=bulkTiers[i].min && q<bulkTiers[i+1].min) return {need:bulkTiers[i+1].min-q,next:bulkTiers[i+1]} } return null; }
+function getSizes(p){ return p.category==="Kids"?kidSizes:adultSizes; }
+function getLikes(p){ return (p.baseLikes||200) + (productLikes[p.id]||0); }
+function getSold(p){ return (p.sold||0) + (productSold[p.id]||0); }
+function isLiked(pid){ return !!regaliaLikes[pid]; }
+
+function renderCats(){ document.getElementById('catPills').innerHTML=categories.map(c=>`<button onclick="setCat('${c}');playClick()" class="px-4 h-9 rounded-full border text-[11px] font-bold tracking-widest uppercase pill-shimmer ${filterCat===c?'size-active':''}" style="background:${filterCat===c?'linear-gradient(90deg,#CD7F32,#A97142)':'rgba(255,255,255,0.06)'};border-color:${filterCat===c?'#CD7F32':'rgba(255,255,255,0.1)'}">${c}</button>`).join(''); }
+function setCat(c){ filterCat=c; renderGrid(); renderCats(); }
+function getFiltered(){ return products.filter(p=> (filterCat==="All"||p.category===filterCat) && p.name.toLowerCase().includes(searchQ.toLowerCase())); }
+function renderGrid(){
+const f=getFiltered().slice(0,visible);
+document.getElementById('grid').innerHTML=f.map(p=>`<div class="group relative rounded-[22px] overflow-hidden cursor-pointer hover:-translate-y-[2px] transition-all" style="background:#141414;border:1px solid rgba(255,255,255,0.1)" onclick="openModal(${p.id});playClick()"><div class="relative aspect-[4/5] overflow-hidden bg-[#0a0a0a]"><img src="${p.imagesByColor.Black}" class="w-full h-full object-cover group-hover:scale-[1.06] transition duration-700"><button onclick="event.stopPropagation();toggleFav(${p.id});playClick()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center">${fav.find(x=>x.id===p.id)?'❤️':'🤍'}</button><span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] border" style="background:rgba(0,0,0,0.8);border-color:#CD7F32">${p.category}</span></div><div class="p-3"><div class="font-bold text-[13px]">${p.name}</div><div class="flex justify-between text-[10px] opacity-60 mt-1"><span>🔥 ${getSold(p)} copped</span><span>❤️ ${getLikes(p)} likes • 👁 viewing</span></div></div></div>`).join('');
+}
+function openModal(id){
+selectedProduct=products.find(p=>p.id===id);
+selectedColor=selectedProduct.colors[0];
+if(!selectedQtys[selectedProduct.id]){ selectedQtys[selectedProduct.id]={}; selectedProduct.colors.forEach(c=> selectedQtys[selectedProduct.id][c]={}); }
+document.getElementById('modal').classList.remove('hidden');
+document.getElementById('modalName').textContent=selectedProduct.name;
+document.getElementById('modalCat').textContent=selectedProduct.category;
+document.getElementById('modalSold').textContent=getSold(selectedProduct);
+document.getElementById('soldNow').textContent=getSold(selectedProduct);
+document.getElementById('sizeLabel').textContent=selectedProduct.category==="Kids"?'5/6 to 13/14YRS':'S to 6XL — gradient stroke flows';
+document.getElementById('modalFeatures').innerHTML=selectedProduct.features.map(f=>`<li>• ${f}</li>`).join('');
+document.getElementById('reviews').innerHTML=`<div class="bg-[#222] p-2 rounded">⭐⭐⭐⭐⭐ Thabo — "Size glow insane! Sold correct!"</div><div class="bg-[#222] p-2 rounded">⭐⭐⭐⭐⭐ Nolo — "Cart alive + zoom"</div>`;
+renderColors(); renderSizes(); renderBulk(); updateTotals(); updateLikeUI(); initImageZoom();
+}
+function renderColors(){
+document.getElementById('modalColors').innerHTML=selectedProduct.colors.map(c=>{
+const qty=Object.values(selectedQtys[selectedProduct.id][c]||{}).reduce((a,b)=>a+b,0);
+return `<button onclick="changeColor('${c}');playClick()" class="px-5 h-10 rounded-full border text-[12px] font-bold uppercase pill-shimmer ${selectedColor===c?'size-active':qty>0?'size-has-qty':''}" style="background:${selectedColor===c?'linear-gradient(90deg,#CD7F32,#A97142)':qty>0?'rgba(0,200,83,0.12)':'rgba(255,255,255,0.06)'};border-color:${selectedColor===c?'#CD7F32':qty>0?'#00C853':'rgba(255,255,255,0.1)'}">${c} ${qty>0?`(${qty})`:''}</button>`;
+}).join('');
+document.getElementById('modalColorDots').innerHTML=selectedProduct.colors.map(c=>`<div class="w-10 h-10 rounded-full border-2 overflow-hidden cursor-pointer ${selectedColor===c?'size-active':''}" style="border-color:${selectedColor===c?'#CD7F32':'rgba(255,255,255,0.1)'}" onclick="changeColor('${c}');playClick()"><img src="${selectedProduct.imagesByColor[c]}" class="w-full h-full object-cover"></div>`).join('');
+document.getElementById('modalImg').src=selectedProduct.imagesByColor[selectedColor];
+document.getElementById('modalColorLabel').textContent=selectedColor;
+}
+function changeColor(c){ selectedColor=c; const img=document.getElementById('modalImg'); img.style.opacity=0; setTimeout(()=>{ img.src=selectedProduct.imagesByColor[c]; img.style.opacity=1; },180); renderColors(); renderSizes(); updateTotals(); }
+function renderSizes(){
+const sizes=getSizes(selectedProduct);
+const qtys=selectedQtys[selectedProduct.id][selectedColor]||{};
+document.getElementById('modalSizes').innerHTML=sizes.map(sz=>{
+const stock=selectedProduct.stockByColor[selectedColor]?.[sz]??0;
+const qty=qtys[sz]||0;
+const isOut=stock===0;
+return `<div class="snap-start shrink-0 w-[132px] rounded-[16px] border p-3 flex flex-col gap-2 pill-shimmer ${qty>0?'size-active':isOut?'opacity-50':''}" style="border-color:${qty>0?'#CD7F32':'rgba(255,255,255,0.1)'}"><div class="flex justify-between"><div class="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold border" style="background:${qty>0?'linear-gradient(135deg,#CD7F32,#A97142)':'rgba(255,255,255,0.08)'}">${sz}</div>${isOut?'<span class="text-[9px] text-red-400">OUT</span>':`<span class="text-[9px] flex items-center gap-1" style="color:#00C853">${stock} left</span>`}</div><div><div class="text-[11px] font-semibold uppercase">${selectedProduct.category==='Kids'?`AGE ${sz}`:`Size ${sz}`}</div><div class="text-[10px] opacity-60">${isOut?`Out in ${selectedColor}`:`${stock} in ${selectedColor}`}</div></div><div class="flex items-center justify-between mt-1"><button ${isOut?'disabled':''} onclick="updateQty('${sz}',-1);playClick()" class="w-7 h-7 rounded-full border cursor-pointer">-</button><span class="w-6 text-center font-mono text-[13px] font-bold">${qty}</span><button ${isOut?'disabled':''} onclick="updateQty('${sz}',1);playClick()" class="w-7 h-7 rounded-full bg-white text-black cursor-pointer">+</button></div></div>`;
+}).join('');
+}
+function updateQty(sz,delta){
+const qtys=selectedQtys[selectedProduct.id][selectedColor];
+let v=(qtys[sz]||0)+delta; if(v<0) v=0; const stock=selectedProduct.stockByColor[selectedColor]?.[sz]??0; if(v>stock) v=stock; if(v===0) delete qtys[sz]; else qtys[sz]=v;
+renderSizes(); renderColors(); updateTotals(); renderBulk();
+const btn=document.getElementById('addToDrip');
+const total=Object.values(selectedQtys[selectedProduct.id]).reduce((a,col)=>a+Object.values(col).reduce((x,y)=>x+y,0),0);
+if(total>0){ btn.style.background='linear-gradient(90deg,#CD7F32,#A97142,#00C853,#FFD700)'; btn.style.backgroundSize='300% 100%'; btn.style.animation='gradientShift 3s ease infinite'; btn.style.color='white'; btn.textContent=`ADD TO REGALIA — ${total} pcs`; } else { btn.style.background='rgba(255,255,255,0.08)'; btn.style.animation='none'; btn.style.color='rgba(255,255,255,0.3)'; btn.textContent='ADD TO REGALIA — Select size qty first'; }
+}
+function updateTotals(){
+let total=0; let details={};
+Object.entries(selectedQtys[selectedProduct.id]||{}).forEach(([col,sizes])=>{ const sum=Object.values(sizes).reduce((a,b)=>a+b,0); if(sum>0){ details[col]=sum; total+=sum; } });
+const el=document.getElementById('colorTotal'); const top=document.getElementById('colorSummaryTop'); const summ=document.getElementById('selectionSummary');
+if(total>0){ const txt=Object.entries(details).map(([c,q])=>`${q} ${c}`).join(' + '); el.innerHTML=`Total across colors: <span style="color:#00C853;font-weight:bold">${txt} = ${total} pcs</span>`; top.innerHTML=`<span style="color:#00C853">${txt} = ${total}</span>`; summ.innerHTML=`<div class="font-bold" style="color:#00C853">Selection — will add ALL colors</div><div class="mt-2 flex flex-wrap gap-2">${Object.entries(selectedQtys[selectedProduct.id]).flatMap(([col,sizes])=> Object.entries(sizes).map(([sz,qty])=> `<span class="px-2 py-1 rounded-full border text-[11px]" style="background:black">${col} ${sz} x${qty}</span>`)).join('')}</div>`; } else { el.textContent='No selection yet — set qty per size'; top.textContent='No selection'; summ.innerHTML='<div class="opacity-60">No selection yet</div>'; }
+}
+function renderBulk(){
+const cartCount=cart.reduce((a,b)=>a+b.qty,0);
+const modalCount=Object.values(selectedQtys[selectedProduct.id]||{}).reduce((a,col)=>a+Object.values(col).reduce((x,y)=>x+y,0),0);
+const total=cartCount+modalCount;
+let html=''; let active=mo(total);
+bulkTiers.forEach(t=>{ const isActive=active?.label===t.label; html+=`<div class="flex justify-between items-center px-4 py-2.5 text-[13px] ${isActive?'size-active':''}" style="background:${isActive?'rgba(205,127,50,0.12)':''}"><span>${t.label} ${isActive?'<span class="text-[10px] px-1.5 py-0.5 rounded-full bg-[#00C853] text-white">ACTIVE</span>':''}</span><span class="font-mono font-bold" style="color:${isActive?'#00C853':'#CD7F32'}">R${t.price} each</span></div>`; });
+document.getElementById('bulkTable').innerHTML=html;
+const status=document.getElementById('bulkStatus');
+const next=Wd(total);
+if(active){ status.innerHTML=`<span style="color:#00C853;font-weight:bold">🎉 ${active.label} unlocked — R${active.price} each</span> ${next?`• Add ${next.need} more → ${next.next.label}`:''}`; if(currentBulk!==active.label){ currentBulk=active.label; confetti(); playCelebrate(); toast(`🎉 BULK UNLOCKED! ${active.label} R${active.price}`); document.getElementById('modalPrice').innerHTML=`<span class="line-through text-sm opacity-40">R${selectedProduct.price}</span> R${active.price}`; } } else { status.innerHTML=`Total now ${total} pcs • ${next?`Add <span style="color:#CD7F32;font-weight:bold">${next.need}</span> more to unlock ${next.next.label} R${next.next.price}`:''}`; document.getElementById('modalPrice').textContent='R'+selectedProduct.price; }
+document.getElementById('bulkActiveLabel').textContent=active?`ACTIVE ${active.label}`:'WHOLESALE';
+document.getElementById('modalOrigPrice').textContent='R'+(selectedProduct.price+250);
 }
 
-function showModalById(id){
-var p=PRODUCTS.find(x=>x.id==id);
-if(p) showModal(p,p.colors||['Black'],p.sizes||['M'])
+// SEASON - 2-3 per 5 min very subtle - SEP 3 = SPRING SA
+function getCurrentSeason(){ const m=new Date().getMonth(); if(m===11||m===0||m===1) return 'summer'; if(m>=2&&m<=4) return 'autumn'; if(m>=5&&m<=7) return 'winter'; return 'spring'; }
+let currentSeason=getCurrentSeason(); let isLight=false;
+function spawnSeasonParticles(season, count){
+  const layer=document.getElementById('seasonLayer'); if(!layer) return;
+  const icons={autumn:['🍂','🍁'], spring:['🌸','🌷','💮'], summer:['✨','☀️'], winter:['❄️']};
+  for(let i=0;i<count;i++){
+    const el=document.createElement('div');
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.animationDelay=(Math.random()*2)+'s';
+    el.className=season==='autumn'?'leaf':season==='spring'?'petal':'snow';
+    el.textContent=icons[season][Math.floor(Math.random()*icons[season].length)];
+    el.style.fontSize=(12+Math.random()*8)+'px';
+    el.style.opacity='0.6';
+    layer.appendChild(el);
+    setTimeout(()=>el.remove(),20000);
+  }
+}
+function launchSeasonTransition(){ const layer=document.getElementById('seasonLayer'); if(layer) layer.innerHTML=''; spawnSeasonParticles(currentSeason, 3); }
+
+function initImageZoom(){
+  const wrap=document.getElementById('modalImgWrap');
+  const img=document.getElementById('modalImg');
+  const hint=document.getElementById('zoomHint');
+  if(!wrap||!img) return;
+  let zoomed=false;
+  function setZoom(e){
+    const rect=wrap.getBoundingClientRect();
+    const clientX=e.touches?e.touches[0].clientX:e.clientX;
+    const clientY=e.touches?e.touches[0].clientY:e.clientY;
+    const x=((clientX-rect.left)/rect.width)*100;
+    const y=((clientY-rect.top)/rect.height)*100;
+    img.style.setProperty('--x', x+'%');
+    img.style.setProperty('--y', y+'%');
+  }
+  wrap.onmousemove=(e)=>{ if(!zoomed) return; setZoom(e); };
+  wrap.ontouchmove=(e)=>{ if(!zoomed) return; setZoom(e); e.preventDefault(); };
+  wrap.onclick=(e)=>{
+    playClick(); zoomed=!zoomed;
+    if(zoomed){ img.classList.add('zoomed'); if(hint) hint.textContent='Tap again to exit • Move finger for close view'; setZoom(e); }
+    else { img.classList.remove('zoomed'); if(hint) hint.textContent='Tap to zoom close view'; }
+  };
 }
 
-function showModal(product,colors,sizes){
-selectedProduct=product;
-selectedColor=colors[0]||'';
-selectedSize=sizes[0]||'';
-const modal=document.getElementById('productModal');
-const body=document.getElementById('modalBody');
-const features=(product.features||'').split(/\n|\r/).map(x=>x.trim()).filter(Boolean);
-body.innerHTML=`
-<h2>${product.name}</h2>
-<img src="${product.image||FALLBACK_IMAGE}" onerror="this.src='${FALLBACK_IMAGE}'" style="width:100%;height:250px;object-fit:cover;border-radius:12px;margin:10px 0">
-<p style="color:#FFD700;font-weight:bold;font-size:18px;margin-bottom:8px">R${product.price}</p>
-<div style="margin:10px 0"><b>Color:</b><br>${colors.map(c=>`<span class="color-pill ${c==selectedColor?'active':''}" data-c="${c}">${c}</span>`).join('')}</div>
-<div style="margin:10px 0"><b>Size:</b><br>${sizes.map(s=>`<span class="size-pill ${s==selectedSize?'active':''}" data-s="${s}">${s}</span>`).join('')}</div>
-<ul style="margin-top:10px;font-size:13px;color:#555">${features.map(f=>`<li>${f}</li>`).join('')}</ul>
-`;
-modal.classList.add('show');
-body.querySelectorAll('.color-pill').forEach(b=>b.onclick=()=>{selectedColor=b.dataset.c;body.querySelectorAll('.color-pill').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
-body.querySelectorAll('.size-pill').forEach(b=>b.onclick=()=>{selectedSize=b.dataset.s;body.querySelectorAll('.size-pill').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
-document.getElementById('modalAddBtn').onclick=function(){
-const qty=parseInt(document.getElementById('modalQty').value||'1')||1;
-const cart=getCart();
-const id=(product.id||product.name)+'-'+selectedColor+'-'+selectedSize;
-const ex=cart.findIndex(a=>a.id===id);
-if(ex>=0){cart[ex].qty+=qty;}else{cart.push({id:id,name:product.name,price:product.price,image:product.image||FALLBACK_IMAGE,color:selectedColor,size:selectedSize,qty:qty})}
-saveCart(cart);updateCartBadge();openCartDrawer();toast('Added '+product.name);closeModal();
+function updateLikeUI(){
+  if(!selectedProduct) return;
+  const liked=isLiked(selectedProduct.id);
+  const baseLikes=getLikes(selectedProduct);
+  const baseSold=getSold(selectedProduct);
+  const countEl=document.getElementById('likeCount');
+  const likesNow=document.getElementById('likesNow');
+  const soldNow=document.getElementById('soldNow');
+  const modalSold=document.getElementById('modalSold');
+  if(likesNow) likesNow.textContent=baseLikes;
+  if(soldNow) soldNow.textContent=baseSold;
+  if(modalSold) modalSold.textContent=baseSold;
+  if(countEl) countEl.textContent=baseLikes;
+  const btn=document.getElementById('likeSticky');
+  if(!btn) return;
+  if(liked){
+    btn.innerHTML='❤️ Liked — <span id="likeCount">'+baseLikes+'</span> • In your fav list';
+    btn.style.borderColor='#00C853'; btn.style.background='rgba(0,200,83,0.1)'; btn.style.color='#00C853';
+  } else {
+    btn.innerHTML='🤍 Like — <span id="likeCount">'+baseLikes+'</span> • Add to fav list';
+    btn.style.borderColor='#FFD700'; btn.style.background='transparent'; btn.style.color='';
+  }
+  const vn=document.getElementById('viewingNow');
+  if(vn) vn.textContent=viewing+' viewing now';
+}
+
+document.getElementById('likeSticky').onclick=()=>{
+  playClick(); if(!selectedProduct) return; const pid=selectedProduct.id;
+  if(isLiked(pid)){
+    delete regaliaLikes[pid];
+    productLikes[pid]=Math.max(0,(productLikes[pid]||1)-1);
+    localStorage.setItem('regaliaLikes',JSON.stringify(regaliaLikes));
+    localStorage.setItem('regaliaProductLikes',JSON.stringify(productLikes));
+    fav=fav.filter(f=>f.id!==pid); localStorage.setItem('regaliaFav',JSON.stringify(fav)); renderFav(); renderGrid();
+    toast('Unliked — removed from fav list');
+  } else {
+    regaliaLikes[pid]=true;
+    productLikes[pid]=(productLikes[pid]||0)+1;
+    localStorage.setItem('regaliaLikes',JSON.stringify(regaliaLikes));
+    localStorage.setItem('regaliaProductLikes',JSON.stringify(productLikes));
+    if(!fav.find(f=>f.id===pid)){ fav.push({id:selectedProduct.id,name:selectedProduct.name,price:selectedProduct.price,image:selectedProduct.imagesByColor.Black}); localStorage.setItem('regaliaFav',JSON.stringify(fav)); renderFav(); renderGrid(); }
+    toast('❤️ Liked — added to fav list (1 like per person)');
+  }
+  updateLikeUI();
 };
-}
 
-function openCartDrawer(){var d=document.getElementById('cartDrawer');if(d){d.style.right='0';}renderDrawer();}
-function closeCartDrawer(){var d=document.getElementById('cartDrawer');if(d){d.style.right='-420px';}}
-function renderDrawer(){
-var c=getCart();var e=document.getElementById('drawerItems');var t=document.getElementById('drawerTotal');
-if(!e)return;
-if(c.length==0){e.innerHTML='<p style="text-align:center;padding:40px;color:#999">Your drip is empty<br>add some heat 🔥</p>';if(t)t.textContent='R0';return;}
-e.innerHTML=c.map(i=>`<div style="display:flex;gap:10px;margin-bottom:14px;border-bottom:1px solid #eee;padding-bottom:10px">
-<img src="${i.image||FALLBACK_IMAGE}" style="width:60px;height:60px;object-fit:cover;border-radius:8px">
-<div style="flex:1"><b style="font-size:13px">${i.name}</b><div style="font-size:11px;color:#777">${i.color} / ${i.size}</div><div>R${i.price} x ${i.qty}</div></div>
-<div style="cursor:pointer" onclick="removeItem('${i.id}')">✕</div>
-</div>`).join('');
-var total=c.reduce((s,i)=>s+(i.price*i.qty),0);
-if(t)t.textContent='R'+total;
-}
-function removeItem(id){var c=getCart().filter(i=>i.id!==id);saveCart(c);renderDrawer();updateCartBadge();}
-function goCheckout(){if(getCart().length==0){toast('Cart empty');return;}window.location.href='checkout.html';}
-function loadProducts(){renderProducts();}
+document.getElementById('addToDrip').onclick=()=>{
+playClick(); let added=0;
+Object.entries(selectedQtys[selectedProduct.id]||{}).forEach(([col,sizes])=>{
+Object.entries(sizes).forEach(([sz,qty])=>{
+if(qty>0){ const key=`${selectedProduct.id}-${col}-${sz}`; const ex=cart.find(c=>c.key===key); if(ex) ex.qty+=qty; else cart.push({key,id:selectedProduct.id,name:selectedProduct.name,color:col,size:sz,qty,price:mo((cart.reduce((a,b)=>a+b.qty,0)+qty))?.price||selectedProduct.price,image:selectedProduct.imagesByColor[col]}); added+=qty; }
+});
+});
+if(added===0){ toast('Select size qty first'); return; }
+productSold[selectedProduct.id]=(productSold[selectedProduct.id]||0)+added;
+localStorage.setItem('regaliaProductSold',JSON.stringify(productSold));
+localStorage.setItem('regaliaCart',JSON.stringify(cart)); 
+renderCart(); renderGrid();
+animateCartAlive(); 
+const soldEl=document.getElementById('modalSold'); if(soldEl) soldEl.textContent=getSold(selectedProduct);
+const soldNowEl=document.getElementById('soldNow'); if(soldNowEl) soldNowEl.textContent=getSold(selectedProduct);
+toast(`🔥 Added ${added} pcs — ${getSold(selectedProduct)} total copped • cart alive!`); 
+document.getElementById('cartDrawer').classList.remove('translate-x-full');
+};
 
-document.getElementById('loadMore').addEventListener('click',function(){visibleCount+=4;renderProducts();});
-loadProducts();
+function renderCart(){
+let total=0,count=0;
+document.getElementById('cartItems').innerHTML=cart.map((c,i)=>{ total+=c.qty*c.price; count+=c.qty; return `<div class="rounded-[16px] border p-3 flex gap-3" style="background:rgba(255,255,255,0.04)"><img src="${c.image}" class="w-16 h-16 rounded-[12px] object-cover"><div class="flex-1"><div class="flex justify-between"><span class="text-[12px] font-bold">${c.name} ${c.color} ${c.size}</span><button onclick="event.stopPropagation();removeCart(${i});playClick()" class="w-6 h-6 rounded-full bg-white/10 cursor-pointer">✕</button></div><div class="text-[10px] opacity-60">${c.color} / ${c.size}</div><div class="flex justify-between items-center mt-2"><div class="flex items-center gap-2"><button onclick="event.stopPropagation();chgCart(${i},-1);playClick()" class="w-6 h-6 rounded-full bg-white/10 cursor-pointer">-</button><span class="font-mono text-[12px]">${c.qty}</span><button onclick="event.stopPropagation();chgCart(${i},1);playClick()" class="w-6 h-6 rounded-full bg-white text-black cursor-pointer">+</button></div><span class="text-[12px] font-bold">R${c.price*c.qty}</span></div></div></div>`; }).join('');
+document.getElementById('cartTotal').textContent='R'+total;
+document.getElementById('cartBadge').textContent=count;
+const pct=Math.min(total/800*100,100); document.getElementById('shipBar').style.width=pct+'%'; document.getElementById('shipText').textContent=total>=800?'FREE SHIPPING UNLOCKED!':`Add R${800-total} for free shipping`;
+const bulk=mo(count); document.getElementById('bulkInfo').textContent=bulk?`🎉 Bulk active ${count} pcs @ R${bulk.price}`:'';
+if(selectedProduct) renderBulk();
+}
+function chgCart(i,d){ cart[i].qty+=d; if(cart[i].qty<=0) cart.splice(i,1); localStorage.setItem('regaliaCart',JSON.stringify(cart)); renderCart(); animateCartAlive(); }
+function removeCart(i){ cart.splice(i,1); localStorage.setItem('regaliaCart',JSON.stringify(cart)); renderCart(); }
+function toggleFav(id){ const ex=fav.find(f=>f.id===id); if(ex) fav=fav.filter(f=>f.id!==id); else { const p=products.find(p=>p.id===id); fav.push({id:p.id,name:p.name,price:p.price,image:p.imagesByColor.Black}); } localStorage.setItem('regaliaFav',JSON.stringify(fav)); renderFav(); renderGrid(); }
+function renderFav(){ document.getElementById('favItems').innerHTML=fav.map((f,i)=>`<div class="flex gap-2 bg-white/5 p-2 rounded"><img src="${f.image}" class="w-12 h-12 rounded"><div class="flex-1"><p class="text-xs">${f.name}</p><p class="text-xs" style="color:#FFD700">R${f.price}</p></div><button onclick="moveFav(${i});playClick()" class="text-[10px] bg-[#CD7F32] px-2 py-1 rounded cursor-pointer">Move to Cart</button><button onclick="toggleFav(${f.id});playClick()" class="text-[10px] ml-1">✕</button></div>`).join(''); const b=document.getElementById('favBadge'); b.textContent=fav.length; b.classList.toggle('hidden',fav.length===0); document.getElementById('favCount').textContent=fav.length; }
+function moveFav(i){ const f=fav[i]; cart.push({key:`${f.id}-fav-${Date.now()}`,id:f.id,name:f.name,color:'Black',size:'M',qty:1,price:f.price,image:f.image}); localStorage.setItem('regaliaCart',JSON.stringify(cart)); renderCart(); animateCartAlive(); toast('Moved to cart — cart alive!'); }
+function animateCartAlive(){ const btn=document.getElementById('cartBtn'); const badge=document.getElementById('cartBadge'); if(!btn) return; btn.classList.remove('cart-alive'); void btn.offsetWidth; btn.classList.add('cart-alive'); if(badge){ badge.classList.remove('badge-bounce'); void badge.offsetWidth; badge.classList.add('badge-bounce'); } setTimeout(()=>{ btn.classList.remove('cart-alive'); },700); }
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const catBtn=document.getElementById('catBtn'); if(catBtn) catBtn.onclick=()=>{ playClick(); const p=document.getElementById('catPanel'); if(p.style.maxHeight && p.style.maxHeight!=='0px'){ p.style.maxHeight='0px'; catBtn.textContent='CATEGORIES ▼'; } else { p.style.maxHeight='120px'; catBtn.textContent='CATEGORIES ▲'; } };
+  const searchInput=document.getElementById('searchInput'); if(searchInput) searchInput.oninput=(e)=>{ searchQ=e.target.value; renderGrid(); };
+  const loadMore=document.getElementById('loadMore'); if(loadMore) loadMore.onclick=()=>{ playClick(); visible+=4; renderGrid(); };
+  const cartBtn=document.getElementById('cartBtn'); if(cartBtn) cartBtn.addEventListener('click',(e)=>{ e.stopPropagation(); playClick(); const drawer=document.getElementById('cartDrawer'); if(drawer) drawer.classList.remove('translate-x-full'); const favD=document.getElementById('favDrawer'); if(favD) favD.classList.add('-translate-x-full'); });
+  const closeCart=document.getElementById('closeCart'); if(closeCart) closeCart.onclick=()=>{ playClick(); const d=document.getElementById('cartDrawer'); if(d) d.classList.add('translate-x-full'); };
+  const favBtn=document.getElementById('favBtn'); if(favBtn) favBtn.addEventListener('click',(e)=>{ e.stopPropagation(); playClick(); const fd=document.getElementById('favDrawer'); if(fd) fd.classList.remove('-translate-x-full'); const cd=document.getElementById('cartDrawer'); if(cd) cd.classList.add('translate-x-full'); });
+  const closeFav=document.getElementById('closeFav'); if(closeFav) closeFav.onclick=()=>{ playClick(); const fd=document.getElementById('favDrawer'); if(fd) fd.classList.add('-translate-x-full'); };
+  const closeModal=document.getElementById('closeModal'); if(closeModal) closeModal.onclick=()=>{ playClick(); const m=document.getElementById('modal'); if(m) m.classList.add('hidden'); };
+  const modalBg=document.getElementById('modalBg'); if(modalBg) modalBg.onclick=()=>{ playClick(); const m=document.getElementById('modal'); if(m) m.classList.add('hidden'); };
+  const freeShip=document.getElementById('freeShip'); if(freeShip) freeShip.onclick=()=>{ playClick(); const qa=document.getElementById('quickAdds'); if(qa) qa.classList.toggle('hidden'); };
+  const bulkQuote=document.getElementById('bulkQuote'); if(bulkQuote) bulkQuote.onclick=()=>{ playClick(); toast('Bulk quote sent'); };
+  const moveAllFav=document.getElementById('moveAllFav'); if(moveAllFav) moveAllFav.onclick=()=>{ playClick(); fav.forEach(f=> cart.push({key:`${f.id}-fav-all-${Date.now()}`,id:f.id,name:f.name,color:'Black',size:'M',qty:1,price:f.price,image:f.image})); localStorage.setItem('regaliaCart',JSON.stringify(cart)); renderCart(); animateCartAlive(); toast('All favorites moved'); const cd=document.getElementById('cartDrawer'); if(cd) cd.classList.remove('translate-x-full'); };
+  const checkoutBtn=document.getElementById('checkoutBtn'); if(checkoutBtn) checkoutBtn.onclick=()=>{ playClick(); toast(`Checkout ${document.getElementById('cartTotal').textContent} — demo`); };
+  const themeToggle=document.getElementById('themeToggle'); if(themeToggle) themeToggle.onclick=()=>{
+    playClick(); const dot=document.getElementById('toggleDot'); const body=document.getElementById('body'); const header=document.getElementById('header');
+    if(body.classList.contains('bg-[#0a0a0a]')){ body.className='bg-[#F5F5F0] text-[#111] theme-transition'; if(header) header.style.background='rgba(245,245,240,0.88)'; if(dot){ dot.style.transform='translateX(26px)'; dot.textContent='☀'; dot.style.background='linear-gradient(135deg,#FFD700,#CD7F32)'; } const lm=document.getElementById('loadMore'); if(lm) lm.className='banner-anim px-8 h-12 rounded-full font-bold text-[13px] tracking-widest uppercase text-black pill-shimmer cursor-pointer'; isLight=true; launchSeasonTransition(); } else { body.className='bg-[#0a0a0a] text-white theme-transition'; if(header) header.style.background='rgba(10,10,10,0.92)'; if(dot){ dot.style.transform='translateX(0px)'; dot.textContent='☾'; dot.style.background='linear-gradient(135deg,#222,#111)'; } const lm=document.getElementById('loadMore'); if(lm) lm.className='banner-anim px-8 h-12 rounded-full font-bold text-[13px] tracking-widest uppercase text-black pill-shimmer cursor-pointer'; isLight=false; launchSeasonTransition(); }
+    const badge=document.getElementById('seasonBadge'); if(badge) badge.textContent=currentSeason.toUpperCase()+' • '+(isLight?'LIGHT':'DARK')+' • SEP 3 SA SPRING';
+  };
+  renderCats(); renderGrid(); renderCart(); renderFav(); renderQuick();
+  const sb=document.getElementById('seasonBadge'); if(sb) sb.textContent=getCurrentSeason().toUpperCase()+' • DARK • SEP 3 SA SPRING';
+  setTimeout(()=>{ spawnSeasonParticles(currentSeason, 3); }, 2000);
+  setInterval(()=>{ spawnSeasonParticles(currentSeason, Math.random()>0.5?2:3); }, 300000);
+  setInterval(()=>{ viewing=Math.max(3,viewing+(Math.random()>0.5?1:-1)); const vn=document.getElementById('viewingNow'); if(vn) vn.textContent=viewing+' viewing now'; }, 8000);
+});
 </script>
 </body>
 </html>
