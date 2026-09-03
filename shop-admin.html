@@ -1,250 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shop Admin</title>
-  <style>
-    :root { --bg:#0b0d12; --panel:#141922; --line: rgba(255,255,255,0.12); --text:#f3f5f8; --muted:#9ba8b6; --gold:#f4c95d; --gold-strong:#d7aa2d; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family:Arial, Helvetica, sans-serif; background:linear-gradient(180deg,#0b0d12,#101923); color:var(--text); }
-    .wrap { max-width: 760px; margin: 0 auto; padding: 40px 16px; }
-    .panel { background: rgba(20,25,34,0.96); border:1px solid var(--line); border-radius:18px; padding:24px; }
-    h1 { margin-top:0; }
-    label { display:block; color:var(--muted); font-size:0.82rem; margin: 14px 0 8px; }
-    input { width:100%; border:1px solid var(--line); background:#1b2330; color:var(--text); border-radius:10px; padding:12px 14px; }
-    .panel { background: rgba(20,25,34,0.96); border:1px solid var(--line); border-radius:18px; padding:24px; }
-    h1 { margin-top:0; }
-    label { display:block; color:var(--muted); font-size:0.82rem; margin: 14px 0 8px; }
-    input, textarea, select { width:100%; border:1px solid var(--line); background:#1b2330; color:var(--text); border-radius:10px; padding:12px 14px; }
-    textarea { min-height:90px; resize:vertical; }
-    .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .logo-box { display:flex; align-items:center; gap:16px; margin-top:16px; }
-    .logo-preview { width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-strong)); color:#111; display:flex; align-items:center; justify-content:center; font-weight:900; }
-    button { margin-top:18px; width:100%; border:none; border-radius:10px; background:linear-gradient(135deg,var(--gold),var(--gold-strong)); color:#111; font-weight:900; padding:12px 18px; cursor:pointer; }
-    .status { min-height: 20px; color: var(--gold); margin-top: 12px; }
-    .hidden { display:none !important; }
-    .divider { border-top:1px solid var(--line); margin:24px 0; padding-top:24px; }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REGALIA SHOP ADMIN - FINAL PUSH</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Inter:wght@400;600&display=swap');
+.drip-font{font-family:'Syne',sans-serif}*{font-family:'Inter',sans-serif}
+</style>
 </head>
-<body>
-  <div id="shopLoginShell" class="wrap">
-    <div class="panel">
-      <h1>Shop Admin Login</h1>
-      <label>Shop slug</label>
-      <input id="shopSlugLogin" placeholder="Enter any shop slug" />
-      <button id="shopLoginBtn">Open shop admin</button>
-      <div id="shopLoginError" class="status" style="color: #ff6b6b;"></div>
-    </div>
-  </div>
+<body class="bg-[#0a0a0a] text-white">
+<div id="login" class="min-h-screen flex items-center justify-center p-6">
+<div class="bg-[#161616] border border-[#CD7F32]/30 rounded-[20px] p-8 max-w-[440px] w-full">
+<h1 class="drip-font text-[22px] font-[800] bg-gradient-to-r from-[#FFD700] via-[#CD7F32] to-[#00C853] bg-clip-text text-transparent">RENT SHOP DOOR - SHOP ADMIN</h1>
+<p class="text-[10px] opacity-60 mt-1 uppercase tracking-widest">Email + Password • REGALIA Vault</p>
+<div class="mt-5 space-y-3">
+<input id="email" type="email" placeholder="Email" value="abdul.kabika.bant@gmail.com" class="w-full bg-black border border-white/10 rounded-full px-4 h-11 text-[13px]">
+<input id="pass" type="password" placeholder="Password" value="12345" class="w-full bg-black border border-white/10 rounded-full px-4 h-11 text-[13px]">
+<button onclick="login()" class="w-full h-11 rounded-full bg-[#FFD700] text-black font-bold uppercase text-[12px]">Login</button>
+</div>
+<div class="mt-4 text-[9px] opacity-60 bg-[#111] rounded-[12px] p-3">
+<strong>NO NEED TO PASTE shop.html AGAIN</strong> — your shop.html is already FINAL.<br>
+Only push THIS shopadmin.html (new) + products.json<br>
+Steps: Login → Edit → Image URL + Upload both → Colors BLACK GREEN WHITE GOLD default (uncheck = hide live) → Stock 0 = PREORDER min 3 → SAVE & UPDATE ONLINE
+</div>
+</div>
+</div>
 
-  <div id="shopAdminShell" class="wrap hidden">
-    <div class="panel">
-      <h1>Shop Admin</h1>
-      <div class="row">
-        <div>
-          <label>Shop Name</label>
-          <input id="shopName" placeholder="ANC REGALIA STYLE" />
-        </div>
-        <div>
-          <label>Slug</label>
-          <input id="shopSlug" placeholder="anc-regalia-style" />
-        </div>
-      </div>
-      <label>Owner Name</label>
-      <input id="ownerName" placeholder="Abdul Divad Kabika" />
-      <label>Logo URL</label>
-      <input id="logoUrl" placeholder="https://example.com/logo.png" />
-      <div class="logo-box">
-        <div id="logoPreview" class="logo-preview">ANC</div>
-        <input id="logoFile" type="file" accept="image/*" />
-      </div>
-      <button id="saveShopBtn">Save Shop Info</button>
-      <div id="status" class="status"></div>
+<div id="admin" class="hidden">
+<header class="sticky top-0 z-40 bg-[#0a0a0a] border-b border-white/10 flex items-center justify-between px-4 h-[64px]">
+<div><h1 class="drip-font font-[800] text-[15px]">REGALIA SHOP ADMIN — FINAL</h1><p class="text-[8px] opacity-60">Rent Door: <span id="userEmail"></span> • BLACK GREEN WHITE GOLD default • URL + Upload • 0 = PREORDER min 3</p></div>
+<div class="flex gap-2"><button onclick="saveOnline()" class="px-4 h-9 rounded-full bg-[#00C853] text-black text-[10px] font-bold uppercase">SAVE & UPDATE ONLINE</button><button onclick="addNew()" class="px-3 h-9 rounded-full bg-white text-black text-[10px] font-bold">+ NEW</button></div>
+</header>
 
-      <div class="divider">
-        <h2>Add Product</h2>
-        <label>Product Name</label>
-        <input id="productName" placeholder="Product Name" />
-        <div class="row">
-          <div><label>Price</label><input id="productPrice" type="number" placeholder="0" value="0" /></div>
-          <div><label>Stock</label><input id="productStock" type="number" placeholder="0" value="0" /></div>
-        </div>
-        <div class="row">
-          <div><label>Category</label><input id="productCategory" placeholder="BUY" value="BUY" /></div>
-          <div><label>Brand</label><input id="productBrand" placeholder="ANC Regalia" value="ANC Regalia" /></div>
-        </div>
-        <label>Description</label>
-        <textarea id="productDescription" placeholder="Product description"></textarea>
-        <label>Features (one per line)</label>
-        <textarea id="productFeatures" placeholder="Feature 1&#10;Feature 2"></textarea>
-        <label>Colors (comma-separated)</label>
-        <input id="productColors" placeholder="e.g. Yellow, Green, Black" />
-        <label>Sizes (comma-separated)</label>
-        <input id="productSizes" placeholder="e.g. S, M, L, XL, XXL" />
-        <label>Expected Delivery</label>
-        <input id="productDelivery" value="4 working days before collection" />
-        <label>Upload Image</label>
-        <input type="file" id="productImageUpload" accept="image/*" />
-        <img id="productImagePreview" src="https://placehold.co/200x200/111/FFD700?text=No+Image" style="width:100%; height:120px; object-fit:cover; border-radius:10px; margin-top:8px;" />
-        <button id="saveProductBtn">Add Product</button>
-        <div id="productStatus" class="status"></div>
-      </div>
-    </div>
-  </div>
+<div class="p-4 max-w-[1320px] mx-auto">
+<div class="bg-[#111] border border-white/10 rounded-[16px] p-4">
+<h3 class="text-[11px] uppercase font-bold tracking-widest">Your Products — Only checked colors show live • Click Edit</h3>
+<div id="productList" class="mt-3 space-y-3"></div>
+</div>
+<div id="onlineStatus" class="mt-4 text-[11px] p-3 bg-black border border-[#00C853]/30 rounded-[12px]">Not saved yet — Click SAVE & UPDATE ONLINE after edit → shop.html reads fast automatically</div>
+</div>
+</div>
 
-  <script>
-    const STORAGE_KEY = 'regalia_shop_profile';
-    const SHOP_LOGIN_KEY = 'regalia_shop_slug';
-    const defaultProfile = {
-      shopName: 'ANC REGALIA STYLE',
-      shopSlug: 'anc-regalia-style',
-      ownerName: 'Abdul Divad Kabika',
-      logoUrl: ''
-    };
+<div id="editModal" class="fixed inset-0 z-[80] hidden"><div class="absolute inset-0 bg-black/80" onclick="closeEdit()"></div>
+<div class="relative min-h-screen flex items-center justify-center p-3"><div class="w-full max-w-[1000px] bg-[#121212] border border-[#CD7F32] rounded-[20px] overflow-hidden max-h-[95vh] flex flex-col">
+<div class="px-5 h-[50px] flex items-center justify-between border-b"><span class="font-bold text-[11px]">EDIT — BLACK GREEN WHITE GOLD default • URL + Upload • 0 = PREORDER min 3</span><button onclick="closeEdit()" class="w-8 h-8 rounded-full bg-white/10">✕</button></div>
+<div class="overflow-auto p-5 space-y-5" id="editForm"></div>
+<div class="p-3 border-t flex gap-2"><button onclick="saveEdit()" class="flex-1 h-10 rounded-full bg-white/10 text-[10px] uppercase">Save Local</button><button onclick="saveOnlineFromEdit()" class="flex-1 h-10 rounded-full bg-[#00C853] text-black font-bold uppercase text-[10px]">SAVE & UPDATE ONLINE (Fast)</button></div>
+</div></div></div>
 
-    function readProfile() {
-      try {
-        return { ...defaultProfile, ...JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') };
-      } catch (error) {
-        return { ...defaultProfile };
-      }
-    }
-
-    function saveProfile(profile) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-    }
-
-    function updatePreview() {
-      const name = document.getElementById('shopName').value.trim() || 'ANC';
-      const logo = document.getElementById('logoUrl').value.trim();
-      const preview = document.getElementById('logoPreview');
-      preview.textContent = logo ? 'IMG' : name.slice(0, 3).toUpperCase();
-    }
-
-    function applyProfile() {
-      const profile = readProfile();
-      document.getElementById('shopName').value = profile.shopName;
-      document.getElementById('shopSlug').value = profile.shopSlug;
-      document.getElementById('ownerName').value = profile.ownerName;
-      document.getElementById('logoUrl').value = profile.logoUrl || '';
-      updatePreview();
-    }
-
-    function openShopAdmin(slug) {
-      const normalizedSlug = String(slug || '').trim();
-      if (!normalizedSlug) {
-        document.getElementById('shopLoginError').textContent = 'Please enter a shop slug.';
-        return;
-      }
-
-      localStorage.setItem(SHOP_LOGIN_KEY, normalizedSlug);
-      document.getElementById('shopLoginShell').classList.add('hidden');
-      document.getElementById('shopAdminShell').classList.remove('hidden');
-      document.getElementById('shopSlug').value = normalizedSlug;
-      document.getElementById('shopLoginError').textContent = '';
-    }
-
-    document.getElementById('shopLoginBtn').addEventListener('click', () => {
-      openShopAdmin(document.getElementById('shopSlugLogin').value);
-    });
-
-    document.getElementById('shopName').addEventListener('input', updatePreview);
-    document.getElementById('logoUrl').addEventListener('input', updatePreview);
-
-    document.getElementById('logoFile').addEventListener('change', async (event) => {
-      const [file] = event.target.files || [];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      document.getElementById('logoUrl').value = url;
-      updatePreview();
-    });
-
-    document.getElementById('saveShopBtn').addEventListener('click', () => {
-      const profile = {
-        shopName: document.getElementById('shopName').value.trim() || defaultProfile.shopName,
-        shopSlug: document.getElementById('shopSlug').value.trim() || defaultProfile.shopSlug,
-        ownerName: document.getElementById('ownerName').value.trim() || defaultProfile.ownerName,
-        logoUrl: document.getElementById('logoUrl').value.trim()
-      };
-      saveProfile(profile);
-      document.getElementById('status').textContent = 'Shop profile saved.';
-    });
-
-    let uploadedProductImage = '';
-    document.getElementById('productImageUpload').addEventListener('change', async (event) => {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
-      const formData = new FormData();
-      formData.append('file', file);
-      try {
-        const response = await fetch('/api/upload', { method: 'POST', body: formData });
-        const data = await response.json();
-        uploadedProductImage = data.url;
-        document.getElementById('productImagePreview').src = uploadedProductImage;
-        document.getElementById('productStatus').textContent = 'Image uploaded';
-      } catch (error) {
-        document.getElementById('productStatus').textContent = 'Upload failed: ' + error.message;
-      }
-    });
-
-    document.getElementById('saveProductBtn').addEventListener('click', async () => {
-      const name = document.getElementById('productName').value.trim();
-      if (!name) {
-        document.getElementById('productStatus').textContent = 'Product name is required.';
-        return;
-      }
-
-      const slug = document.getElementById('shopSlug').value.trim() || 'anc-regalia';
-      const payload = {
-        name,
-        price: Number(document.getElementById('productPrice').value || 0),
-        category: document.getElementById('productCategory').value || 'BUY',
-        brand: document.getElementById('productBrand').value || 'ANC Regalia',
-        description: document.getElementById('productDescription').value || '',
-        features: document.getElementById('productFeatures').value || '',
-        colors: document.getElementById('productColors').value || '',
-        sizes: document.getElementById('productSizes').value || '',
-        delivery_info: document.getElementById('productDelivery').value || '4 working days before collection',
-        stock: Number(document.getElementById('productStock').value || 0),
-        shop_id: slug,
-        image_url: uploadedProductImage
-      };
-
-      try {
-        const response = await fetch('/api/products', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || 'Save failed');
-
-        document.getElementById('productStatus').textContent = 'Product saved!';
-        document.getElementById('productName').value = '';
-        document.getElementById('productPrice').value = '0';
-        document.getElementById('productStock').value = '0';
-        document.getElementById('productCategory').value = 'BUY';
-        document.getElementById('productBrand').value = 'ANC Regalia';
-        document.getElementById('productDescription').value = '';
-        document.getElementById('productFeatures').value = '';
-        document.getElementById('productColors').value = '';
-        document.getElementById('productSizes').value = '';
-        document.getElementById('productDelivery').value = '4 working days before collection';
-        document.getElementById('productImageUpload').value = '';
-        document.getElementById('productImagePreview').src = 'https://placehold.co/200x200/111/FFD700?text=No+Image';
-        uploadedProductImage = '';
-      } catch (error) {
-        document.getElementById('productStatus').textContent = 'Error: ' + error.message;
-      }
-    });
-
-    const storedSlug = localStorage.getItem(SHOP_LOGIN_KEY);
-    if (storedSlug) {
-      openShopAdmin(storedSlug);
-    }
-
-    applyProfile();
-  </script>
+<script>
+const adultSizes=["S","M","L","XL","2XL","3XL","4XL","5XL","6XL"];
+const kidSizes=["5/6","7/8","9/10","11/12","13/14YRS"];
+const defaultColors=["Black","Green","White","Gold"];
+let products=JSON.parse(localStorage.getItem('regaliaShopAdminProducts')||'null') || [
+{id:1,name:"PHANTOM PUFFER v2",price:899,category:"Special",colors:["Black","Green","Gold"],imagesByColor:{Black:"",Green:"",Gold:""},stockByColor:{Black:{S:0,M:0},Green:{S:5},Gold:{S:1}},features:["Water-repellent"],sold:14,baseLikes:247,allowPreorder:true,preorderMin:3},
+{id:4,name:"REGALIA SIGNATURE TEE",price:299,category:"Apparel",colors:["Black","White","Gold"],imagesByColor:{Black:"",White:"",Gold:""},stockByColor:{Black:{S:6,M:6},White:{S:0},Gold:{S:2}},features:["Heavyweight cotton"],sold:31,baseLikes:421,allowPreorder:true,preorderMin:3},
+{id:9,name:"KIDS REGALIA HOODIE",price:399,category:"Kids",colors:["Black","White","Gold"],imagesByColor:{Black:"",White:"",Gold:""},stockByColor:{Black:{"5/6":0},White:{"5/6":2}},features:["Kids 5-14YRS"],sold:18,baseLikes:156,allowPreorder:true,preorderMin:3},
+];
+let editing=null;
+function login(){
+ const email=document.getElementById('email').value.trim(); const pass=document.getElementById('pass').value.trim();
+ if(!email||!pass) return alert('Enter email + password');
+ localStorage.setItem('regaliaShopAdminUser',email); document.getElementById('userEmail').textContent=email;
+ document.getElementById('login').style.display='none'; document.getElementById('admin').classList.remove('hidden'); renderList();
+}
+function renderList(){
+ document.getElementById('productList').innerHTML=products.map(p=>{
+   const total=Object.values(p.stockByColor).reduce((a,col)=>a+Object.values(col).reduce((x,y)=>x+y,0),0); const isPre=total===0;
+   return `<div class="bg-black border ${isPre?'border-[#00C853]/40':'border-white/10'} rounded-[14px] p-3 flex gap-3 cursor-pointer" onclick="openEdit(${p.id})">
+     <div class="w-14 h-14 rounded bg-[#222] overflow-hidden flex items-center justify-center text-[8px]">${p.imagesByColor[p.colors[0]]?`<img src="${p.imagesByColor[p.colors[0]]}" class="w-full h-full object-cover">`:p.category}</div>
+     <div class="flex-1"><div class="flex justify-between"><b class="text-[12px]">${p.name}</b><span class="text-[11px] text-[#FFD700]">R${p.price}</span></div><div class="text-[10px] opacity-60">Colors: ${p.colors.join(', ')} (only these show live) • Stock: ${total} ${isPre?'<span class="text-[#00C853]">→ PREORDER min 3</span>':''}</div><div class="text-[9px] opacity-40">Sold ${p.sold} correct • Likes ${p.baseLikes} correct • ${p.category==='Kids'?'AGE':'S-6XL'} • 0 = PREORDER min 3</div></div><span class="text-[9px] px-2 py-1 rounded-full border border-[#00C853] text-[#00C853] self-start">Edit</span></div>`;
+ }).join('');
+}
+function openEdit(id){
+ editing=products.find(p=>p.id===id);
+ document.getElementById('editForm').innerHTML=`
+ <div class="grid grid-cols-2 gap-3">
+   <div><label class="text-[9px] uppercase opacity-60">Name</label><input id="editName" value="${editing.name}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 text-[12px] mt-1"></div>
+   <div><label class="text-[9px] uppercase opacity-60">Price R</label><input id="editPrice" type="number" value="${editing.price}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 text-[12px] mt-1"></div>
+   <div><label class="text-[9px] uppercase opacity-60">Category</label><select id="editCat" onchange="onCatChange()" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 text-[12px] mt-1">${["Apparel","Head Wears","Accessories","Kids","Signage","Camo","SA Supporter","Special"].map(c=>`<option value="${c}" ${editing.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+   <div><label class="text-[9px] uppercase opacity-60">Preorder if 0 stock</label><div class="flex gap-2 mt-1"><label class="flex items-center gap-1 text-[10px]"><input type="checkbox" id="editPreorder" ${editing.allowPreorder?'checked':''}> Allow</label><input id="editPreMin" type="number" value="${editing.preorderMin||3}" class="w-16 bg-black border border-white/10 rounded-full px-2 h-7 text-[11px]"></div></div>
+   <div><label class="text-[9px] uppercase opacity-60">Sold Base Correct</label><input id="editSold" type="number" value="${editing.sold}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 text-[12px] mt-1"></div>
+   <div><label class="text-[9px] uppercase opacity-60">Likes Base Correct</label><input id="editLikes" type="number" value="${editing.baseLikes}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 text-[12px] mt-1"></div>
+ </div>
+ <div><label class="text-[9px] uppercase opacity-60">Features (comma)</label><input id="editFeatures" value="${editing.features.join(',')}" class="w-full bg-black border border-white/10 rounded-full px-3 h-8 text-[11px] mt-1"></div>
+ <div class="bg-black border border-white/10 rounded-[12px] p-3"><div class="flex justify-between"><label class="text-[10px] uppercase font-bold">Colors — BLACK GREEN WHITE GOLD default — uncheck = hide live</label><button onclick="addCustomColor()" class="text-[9px] px-2 py-1 rounded-full border border-[#FFD700]">+ Custom</button></div><div id="colorChecks" class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2"></div></div>
+ <div id="imageSections" class="space-y-3"></div>
+ <div><label class="text-[10px] uppercase font-bold">Stock — If 0 all sizes → PREORDER min 3</label><div id="stockEdit" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2"></div></div>
+ `;
+ renderColorChecks(); renderImageSections(); renderStockEdit();
+ document.getElementById('editModal').classList.remove('hidden');
+}
+function renderColorChecks(){
+ const all=[...new Set([...defaultColors, ...editing.colors])];
+ document.getElementById('colorChecks').innerHTML=all.map(c=>`<label class="flex items-center gap-2 bg-[#111] border ${editing.colors.includes(c)?'border-[#CD7F32]':'border-white/10'} rounded-full px-3 h-8 text-[10px] cursor-pointer"><input type="checkbox" value="${c}" ${editing.colors.includes(c)?'checked':''} onchange="toggleColor('${c}',this.checked)"><span>${c}</span>${defaultColors.includes(c)?'<span class="text-[7px] bg-[#CD7F32]/20 px-1 rounded">DEFAULT</span>':''}</label>`).join('');
+}
+function toggleColor(col,checked){
+ if(checked){ if(!editing.colors.includes(col)) editing.colors.push(col); if(!editing.imagesByColor[col]) editing.imagesByColor[col]=''; if(!editing.stockByColor[col]) editing.stockByColor[col]={}; }
+ else { editing.colors=editing.colors.filter(c=>c!==col); }
+ renderColorChecks(); renderImageSections(); renderStockEdit();
+}
+function addCustomColor(){ const c=prompt('Custom color (Navy, Red, Grey):'); if(!c) return; const col=c.trim(); if(!col) return; if(!editing.colors.includes(col)) editing.colors.push(col); if(!editing.imagesByColor[col]) editing.imagesByColor[col]=''; if(!editing.stockByColor[col]) editing.stockByColor[col]={}; renderColorChecks(); renderImageSections(); renderStockEdit(); }
+function renderImageSections(){
+ document.getElementById('imageSections').innerHTML=editing.colors.map(c=>`
+ <div class="bg-black border border-white/10 rounded-[12px] p-3">
+   <div class="text-[10px] font-bold mb-2">${c} Image — URL + Upload Both</div>
+   <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+     <div><label class="text-[8px] uppercase opacity-60">Image URL from web (fastest)</label><input id="imgUrl-${c}" value="${editing.imagesByColor[c]&&!editing.imagesByColor[c].startsWith('data:')?editing.imagesByColor[c]:''}" placeholder="https://..." class="w-full bg-[#111] border border-white/10 rounded-full px-3 h-7 text-[10px] mt-1" oninput="onUrlChange('${c}',this.value)"><p class="text-[7px] opacity-40 mt-1">Paste web link — fastest read</p></div>
+     <div><label class="text-[8px] uppercase opacity-60">Upload from memory (phone/computer)</label><input type="file" accept="image/*" onchange="onFileUpload('${c}',this)" class="w-full text-[10px] mt-1"><div class="mt-2 w-16 h-16 rounded bg-[#111] overflow-hidden border border-white/10">${editing.imagesByColor[c]?`<img src="${editing.imagesByColor[c]}" class="w-full h-full object-cover">`:'No preview'}</div></div>
+   </div>
+   <button onclick="clearImage('${c}')" class="mt-2 text-[8px] px-2 py-1 rounded-full border border-white/20">Clear Image</button>
+ </div>`).join('');
+}
+function onUrlChange(col,url){ if(url.trim()) editing.imagesByColor[col]=url.trim(); }
+function onFileUpload(col,input){ if(!input.files[0]) return; const reader=new FileReader(); reader.onload=e=>{ editing.imagesByColor[col]=e.target.result; renderImageSections(); }; reader.readAsDataURL(input.files[0]); }
+function clearImage(col){ editing.imagesByColor[col]=''; renderImageSections(); }
+function renderStockEdit(){
+ const sizes=editing.category==='Kids'?kidSizes:adultSizes;
+ document.getElementById('stockEdit').innerHTML=editing.colors.map(col=>`<div class="bg-black border border-white/10 rounded-[10px] p-2"><div class="text-[10px] font-bold mb-1">${col} Stock — 0 = PREORDER min 3</div><div class="grid grid-cols-3 gap-1">${sizes.map(sz=>{ const val=editing.stockByColor[col]?.[sz]??0; return `<div class="flex flex-col"><span class="text-[8px] opacity-60">${sz}</span><input type="number" value="${val}" id="stock-${col}-${sz}" class="w-full bg-[#111] border ${val===0?'border-[#00C853]/50':'border-white/10'} rounded-full px-1 h-6 text-[10px]"></div>`; }).join('')}</div></div>`).join('');
+}
+function onCatChange(){ editing.category=document.getElementById('editCat').value; renderStockEdit(); }
+function closeEdit(){ document.getElementById('editModal').classList.add('hidden'); }
+function saveEdit(){
+ editing.name=document.getElementById('editName').value; editing.price=parseInt(document.getElementById('editPrice').value)||0; editing.category=document.getElementById('editCat').value; editing.features=document.getElementById('editFeatures').value.split(',').map(s=>s.trim()).filter(Boolean); editing.allowPreorder=document.getElementById('editPreorder')?.checked; editing.preorderMin=parseInt(document.getElementById('editPreMin')?.value)||3; editing.sold=parseInt(document.getElementById('editSold').value)||0; editing.baseLikes=parseInt(document.getElementById('editLikes').value)||0;
+ editing.colors.forEach(col=>{ if(!editing.stockByColor[col]) editing.stockByColor[col]={}; const sizes=editing.category==='Kids'?kidSizes:adultSizes; sizes.forEach(sz=>{ const inp=document.getElementById(`stock-${col}-${sz}`); if(inp) editing.stockByColor[col][sz]=parseInt(inp.value)||0; }); });
+ localStorage.setItem('regaliaShopAdminProducts',JSON.stringify(products)); closeEdit(); renderList();
+}
+function addNew(){ const id=Date.now(); products.push({id,name:"NEW REGALIA",price:299,category:"Apparel",colors:["Black","Green","White","Gold"],imagesByColor:{Black:"",Green:"",White:"",Gold:""},stockByColor:{Black:{S:4},Green:{S:4},White:{S:4},Gold:{S:4}},features:["New"],sold:0,baseLikes:100,allowPreorder:true,preorderMin:3}); localStorage.setItem('regaliaShopAdminProducts',JSON.stringify(products)); renderList(); }
+function saveOnline(){
+ const status=document.getElementById('onlineStatus');
+ localStorage.setItem('regaliaShopAdminProducts',JSON.stringify(products));
+ localStorage.setItem('regaliaProductsOnline',JSON.stringify(products));
+ fetch('/api/products',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(products)}).catch(()=>{});
+ const blob=new Blob([JSON.stringify(products,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob);
+ status.innerHTML=`✅ SAVED & UPDATED ONLINE! Shop.html reads fast now.<br>Only checked colors show live. 0 stock = PREORDER min 3.<br><br><a href="${url}" download="products.json" class="text-[#00C853] underline font-bold">DOWNLOAD products.json → Upload to hosting (same folder as shop.html) for fastest</a><br><br>Now open shop.html in new tab → Refresh → See update. No need to paste shop.html again.`;
+}
+function saveOnlineFromEdit(){ saveEdit(); saveOnline(); }
+</script>
 </body>
 </html>
