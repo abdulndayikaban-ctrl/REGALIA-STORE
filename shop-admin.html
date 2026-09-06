@@ -52,10 +52,15 @@ button{cursor:pointer !important}
 </div>
 
 <div class="bg-black border border-white/10 rounded-[10px] p-3">
-<p class="text-[9px] font-bold">Step 2 — Turnstile — I am human — Bot protection</p>
+<p class="text-[9px] font-bold">Step 2 — Turnstile — I am human — Bot protection — If Troubleshoot click Dev Bypass</p>
 <div class="mt-2 flex justify-center">
 <div class="cf-turnstile" data-sitekey="0x4AAAAAAAEqR7Rb8kttW86ZV" data-callback="onTurnstileSuccess" data-theme="dark"></div>
 </div>
+<p class="text-[7px] opacity-60 mt-1 text-center">If you see Troubleshoot blue link = Turnstile domain not allowed — Click below Dev Bypass — Worker in dev mode will accept — Set real Turnstile keys in Cloudflare later</p>
+<div class="mt-2 flex justify-center">
+<button onclick="bypassTurnstile()" class="px-3 h-7 rounded-full bg-[#FFD700] text-black text-[9px] font-bold">Bypass Turnstile — Dev Mode — Use if Troubleshoot appears</button>
+</div>
+<p id="turnstileStatus" class="text-[7px] opacity-60 mt-1 text-center">Turnstile status: Waiting for human check</p>
 </div>
 
 <div class="bg-black border border-[#25D366]/30 rounded-[10px] p-3">
@@ -111,7 +116,8 @@ button{cursor:pointer !important}
 
 <script>
 let turnstileToken=null, jwtToken=null, currentShopId='regalia';
-function onTurnstileSuccess(token){ turnstileToken=token; checkLoginReady(); document.getElementById('otpStatus').textContent='Turnstile verified — Human — Bot blocked'; }
+function onTurnstileSuccess(token){ turnstileToken=token; document.getElementById('turnstileStatus').textContent='✅ Turnstile verified — Human — Token '+token.substring(0,20)+'...'; checkLoginReady(); document.getElementById('otpStatus').textContent='Turnstile verified — Human — Bot blocked — Now request OTP'; }
+function bypassTurnstile(){ turnstileToken='dev-bypass-token-'+Date.now(); document.getElementById('turnstileStatus').textContent='⚠️ Dev Bypass — Turnstile skipped — Worker dev mode — Token '+turnstileToken.substring(0,20); checkLoginReady(); document.getElementById('otpStatus').textContent='Dev Bypass active — Worker will accept if TURNSTILE_SECRET not set — Now request OTP'; }
 function checkLoginReady(){ const terms=document.getElementById('termsCheck').checked; const btn=document.getElementById('enterBtn'); if(turnstileToken && jwtToken && terms){ btn.disabled=false; btn.className='flex-1 h-9 rounded-full bg-[#25D366] text-black text-[10px] font-bold'; btn.textContent='✅ Enter Admin — JWT Verified — '+currentShopId+'-images — OTP+Turnstile+JWT'; } else { btn.disabled=true; btn.className='flex-1 h-9 rounded-full bg-white/10 text-white/30 text-[10px] font-bold'; } }
 
 async function requestOTP(){
@@ -119,7 +125,9 @@ async function requestOTP(){
   const shopId=document.getElementById('shopId').value.trim()||'regalia';
   const workerUrl=document.getElementById('r2WorkerUrl').value.trim();
   if(!identifier){ alert('Enter Phone +2782... or Email'); return; }
-  if(!turnstileToken){ alert('Complete Turnstile — I am human'); return; }
+  if(!turnstileToken){ 
+    if(confirm('Turnstile not done — Use Dev Bypass? Worker dev mode will accept if TURNSTILE_SECRET not set — Click OK to bypass')){ bypassTurnstile(); } else { alert('Complete Turnstile — I am human — Or click Bypass Turnstile button'); return; }
+  }
   document.getElementById('otpStatus').textContent='Requesting OTP — Shop '+shopId+' — Bucket '+shopId+'-images — OTP 6 digits via WhatsApp...';
   try{
     const res=await fetch(workerUrl+'/api/otp/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, shopId, turnstileToken})});
