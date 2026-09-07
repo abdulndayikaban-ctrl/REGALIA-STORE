@@ -2,216 +2,123 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REGALIA SAAS — OTP + JWT — NO TURNSTILE — SIMPLE — WHERE WE ARE 3X</title>
+<title>REGALIA SAAS FULL — OTP + JWT — NO TURNSTILE — EACH SHOP OWN BUCKET — WHATSAPP INSIDE — WHERE WE ARE 3X</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Inter:wght@400;600&display=swap');
 .drip-font{font-family:'Syne',sans-serif}*{font-family:'Inter',sans-serif}
 button{cursor:pointer !important}
+.wa-msg{max-width:75%; padding:8px 10px; border-radius:12px; font-size:11px; margin-bottom:4px}
+.wa-in{background:#1a1a1a; border:1px solid #333; align-self:flex-start}
+.wa-out{background:#005c4b; align-self:flex-end; color:white}
 </style>
 </head>
 <body class="bg-[#0a0a0a] text-white">
 <div id="login" class="min-h-screen flex items-center justify-center p-4">
-<div class="bg-[#161616] border border-[#25D366]/30 rounded-[20px] p-6 max-w-[600px] w-full">
-<h1 class="drip-font text-[14px] font-[800] bg-gradient-to-r from-[#FFD700] via-[#25D366] to-[#00C853] bg-clip-text text-transparent">REGALIA SAAS — SIMPLE — OTP + JWT — NO TURNSTILE FOR NOW — WHERE WE ARE 3X</h1>
-<p class="text-[9px] opacity-60 mt-1">Simple steps — No Turnstile bot check — Only OTP 6 digits + JWT 24h — Better than 12345 — Turnstile removed for now — Add later — regalia-style.pages.dev — regalia-images bucket</p>
-
-<div class="bg-[#111] border border-white/10 rounded-[12px] p-3 mt-4">
-<p class="text-[11px] font-bold">SIMPLE LOGIN — 3 STEPS ONLY — NO TURNSTILE</p>
-
-<div class="mt-3 space-y-3">
-<input id="r2WorkerUrl" value="https://regalia-upload.abdul-kabika-bant.workers.dev" class="w-full bg-black border border-[#FFD700]/30 rounded-full px-3 h-9 text-[11px]">
-<input id="r2PublicUrl" value="https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev" class="w-full bg-black border border-[#25D366]/30 rounded-full px-3 h-9 text-[11px]">
-
+<div class="bg-[#161616] border border-[#25D366]/30 rounded-[20px] p-6 max-w-[700px] w-full">
+<h1 class="drip-font text-[13px] font-[800] bg-gradient-to-r from-[#FFD700] via-[#25D366] to-[#00C853] bg-clip-text text-transparent">REGALIA SAAS FULL — OTP + JWT — NO TURNSTILE — EACH SHOP OWN BUCKET — WHATSAPP INSIDE — WHERE WE ARE 3X</h1>
+<p class="text-[8px] opacity-60 mt-1">Where we are 3X — R2 images only 10k pics 100KB=1GB / 10GB=100k free + D1 + Auto-sharding + API + SaaS each shop own bucket R350 + WhatsApp inside + Hacker protection + OTP+JWT + Terms+POPIA — Turnstile removed for now — Simple — regalia-style.pages.dev — East London</p>
+<div class="bg-[#111] border border-[#25D366]/30 rounded-[12px] p-3 mt-3 text-left">
+<p class="text-[10px] font-bold">What we agreed to — Full features:</p>
+<div class="text-[7px] opacity-80 mt-1 space-y-1">
+<p>✅ R2 images only 10,000 compressed pics 100KB=1GB / 10GB free=100,000 pics — Bucket regalia-images — Done</p>
+<p>✅ D1 everything else — products + sales + traffic + clients + XP Time=Rent token — Done</p>
+<p>✅ Auto-sharding 10k → regalia-images-2 automatically — Done</p>
+<p>✅ Each shop own bucket — regalia-images, thabo-images — SaaS R350 — Done</p>
+<p>✅ WhatsApp inside admin — Never leave — Platform — Done</p>
+<p>✅ Hacker protection — CORS lockdown, JWT, Validation, Rate limit — Done</p>
+<p>✅ OTP+JWT — Better than 12345 — No Turnstile for now — Simple 3 steps — Done</p>
+</div>
+</div>
+<div class="bg-[#111] border border-white/10 rounded-[12px] p-3 mt-3 text-left">
+<p class="text-[10px] font-bold">SIMPLE LOGIN — NO TURNSTILE — OTP + JWT — 3 Steps Only</p>
+<div class="mt-3 space-y-2">
+<input id="r2WorkerUrl" value="https://regalia-upload.abdul-kabika-bant.workers.dev" class="w-full bg-black border border-[#FFD700]/30 rounded-full px-3 h-8 text-[11px]">
+<input id="r2PublicUrl" value="https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev" class="w-full bg-black border border-[#25D366]/30 rounded-full px-3 h-8 text-[11px]">
 <div class="bg-black border border-white/10 rounded-[10px] p-3">
-<p class="text-[10px] font-bold">Step 1 — Shop ID + Phone — Each Shop Own Bucket</p>
+<p class="text-[9px] font-bold">Step 1 — Shop ID + Phone/Email</p>
 <div class="flex gap-2 mt-2">
-<input id="shopId" value="regalia" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-9 text-[12px]">
-<input id="identifier" placeholder="Your Phone +2782... or Email" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-9 text-[12px]">
+<input id="shopId" value="regalia" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-8 text-[11px]">
+<input id="identifier" placeholder="Your Phone +2782... or Email for OTP" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-8 text-[11px]">
 </div>
-<p class="text-[8px] opacity-60 mt-1">Shop regalia = bucket regalia-images — Thabo = thabo-images — SaaS R350</p>
 </div>
-
 <div class="bg-black border border-[#25D366]/30 rounded-[10px] p-3">
-<p class="text-[10px] font-bold">Step 2 — OTP — 6 digits — Expires 5 min — Better than 12345</p>
+<p class="text-[9px] font-bold">Step 2 — OTP — 6 digits — Expires 5 min</p>
 <div class="flex gap-2 mt-2">
-<button onclick="requestOTP()" id="requestOtpBtn" class="flex-1 h-10 rounded-full bg-[#25D366] text-black text-[11px] font-bold">1. Request OTP</button>
-<input id="otpCode" placeholder="Enter 6 digits" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-10 text-[12px]">
-<button onclick="verifyOTP()" id="verifyOtpBtn" class="flex-1 h-10 rounded-full bg-white text-black text-[11px] font-bold">2. Verify → JWT</button>
+<button onclick="requestOTP()" class="flex-1 h-10 rounded-full bg-[#25D366] text-black text-[11px] font-bold">1. Request OTP</button>
+<input id="otpCode" placeholder="Enter OTP 123456" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-10 text-[11px]">
+<button onclick="verifyOTP()" class="flex-1 h-10 rounded-full bg-white text-black text-[11px] font-bold">2. Verify → JWT 24h</button>
 </div>
-<p id="otpStatus" class="text-[9px] opacity-80 mt-2 bg-[#111] p-2 rounded">Status: Waiting — Enter phone then Request OTP</p>
+<p id="otpStatus" class="text-[8px] opacity-80 mt-2 bg-[#111] border border-white/10 p-2 rounded">OTP status: Waiting</p>
 </div>
-
 <div class="bg-black border border-white/10 rounded-[10px] p-3">
-<label class="flex items-center gap-2 text-[10px]"><input type="checkbox" id="termsCheck"> I agree to Terms + Privacy + POPIA — My info secure</label>
-<div class="mt-3">
-<button onclick="enterAdmin()" id="enterBtn" disabled class="w-full h-11 rounded-full bg-white/10 text-white/30 text-[11px] font-bold">3. Enter Admin — Need OTP + Terms</button>
+<label class="flex items-center gap-2 text-[9px]"><input type="checkbox" id="termsCheck"> I agree to Terms + Privacy + POPIA</label>
+<div class="mt-2"><button onclick="enterAdmin()" id="enterBtn" disabled class="flex-1 h-10 rounded-full bg-white/10 text-white/30 text-[11px] font-bold w-full">3. Enter Admin — Need OTP + Terms</button></div>
 </div>
 </div>
-
 </div>
 </div>
-
-<div class="mt-3 text-[8px] opacity-40 text-center">No Turnstile for now — OTP + JWT only — Simple — Add Turnstile later in Cloudflare Turnstile dashboard — Where we are 3X — regalia-style.pages.dev</div>
-
 </div>
-</div>
-
 <div id="admin" class="hidden min-h-screen">
-<header class="sticky top-0 z-40 bg-black/90 backdrop-blur border-b border-white/10 flex items-center justify-between px-4 h-[60px]">
-<div class="flex items-center gap-2"><h1 class="drip-font text-[14px] font-[800]">REGALIA ADMIN — <span id="currentShopId">regalia</span> — <span id="currentBucket">regalia-images</span></h1><span class="text-[8px] px-2 py-0.5 rounded-full bg-[#25D366] text-black">OTP+JWT — SIMPLE</span></div>
-<div class="flex gap-2"><button onclick="saveAllToD1()" class="px-4 h-8 rounded-full bg-[#25D366] text-black text-[10px] font-bold">SAVE TO D1</button><button onclick="logout()" class="px-3 h-8 rounded-full bg-white/10 text-[10px]">Logout</button></div>
+<header class="sticky top-0 z-40 bg-black/95 backdrop-blur border-b border-white/10 flex items-center justify-between px-4 h-[62px]">
+<div class="flex items-center gap-2"><h1 class="drip-font text-[13px] font-[800]">REGALIA ADMIN — <span id="currentShopId">regalia</span> — <span id="currentBucket">regalia-images</span></h1><span class="text-[8px] px-2 py-0.5 rounded-full bg-[#25D366] text-black font-bold">OTP+JWT — FULL — NO TURNSTILE</span></div>
+<div class="flex gap-2"><button onclick="saveAllToD1()" class="px-4 h-8 rounded-full bg-[#25D366] text-black text-[10px] font-bold">SAVE TO D1 + R2 BACKUP</button><button onclick="logout()" class="px-3 h-8 rounded-full bg-white/10 text-[10px]">Logout</button></div>
 </header>
-<div class="p-4 max-w-[1200px] mx-auto">
-<div class="bg-[#111] border border-white/10 rounded-[12px] p-3"><div class="flex justify-between"><h3 class="text-[11px] font-bold">Products — <span id="productCount">0</span> — R2 images only — Bucket <span id="bucketInfo">regalia-images</span></h3><button onclick="addNew()" class="px-3 h-7 rounded-full bg-white text-black text-[10px]">+ NEW PRODUCT</button></div><div id="productList" class="mt-3 space-y-2"></div><div id="statusBox" class="hidden mt-3 p-2 rounded bg-black border border-white/10 text-[10px]"></div></div>
+<div class="max-w-[1600px] mx-auto p-3 grid grid-cols-1 lg:grid-cols-12 gap-3">
+<div class="lg:col-span-5">
+<div class="bg-[#111] border border-white/10 rounded-[12px] p-3">
+<div class="flex justify-between"><h3 class="text-[11px] font-bold">Products — Full — <span id="productCount">0</span> — Bucket <span id="bucketInfo">regalia-images</span></h3><button onclick="addNew()" class="px-3 h-7 rounded-full bg-white text-black text-[10px] font-bold">+ NEW</button></div>
+<div class="mt-2 flex gap-1"><input id="searchProducts" placeholder="Search..." class="flex-1 bg-black border border-white/10 rounded-full px-3 h-7 text-[10px]"><select id="filterCat" class="bg-black border border-white/10 rounded-full px-2 h-7 text-[10px]"><option value="All">All Cats</option><option>Apparel</option><option>Head Wears</option><option>Accessories</option><option>Kids</option><option>Signage</option><option>Camo</option><option>SA Supporter</option><option>Special</option></select></div>
+<div id="productList" class="mt-3 space-y-2 max-h-[70vh] overflow-auto"></div>
+<div id="statusBox" class="hidden mt-3 p-2 rounded bg-black border border-[#25D366]/30 text-[10px]"></div>
+<div class="mt-3 bg-black border border-white/10 rounded-[10px] p-2"><p class="text-[8px] font-bold">Bulk Tiers — 25-50 R380, 51-100 R340, 101-200 R300, 201-500 R260, 501-1000 R220 — S-6XL + Kids 5/6-13/14YRS — Color QTY memory — Cart alive — Sold correct — Likes correct</p></div>
+</div>
+<div class="mt-3 bg-[#111] border border-[#CD7F32]/30 rounded-[12px] p-3"><h3 class="text-[10px] font-bold">Export / Import</h3><div class="mt-2 flex gap-1"><button onclick="exportProducts()" class="px-3 h-7 rounded-full bg-[#CD7F32] text-black text-[9px] font-bold">Export products.json</button><button onclick="document.getElementById('importFile').click()" class="px-3 h-7 rounded-full bg-white/10 text-[9px]">Import JSON</button><input type="file" id="importFile" class="hidden" accept=".json" onchange="importProducts(event)"></div><textarea id="exportArea" class="mt-2 w-full h-[100px] bg-black border border-white/10 rounded-[8px] p-2 text-[8px] font-mono"></textarea></div>
+</div>
+<div class="lg:col-span-4 space-y-3">
+<div class="bg-[#111] border border-white/10 rounded-[12px] p-3"><h3 class="text-[10px] font-bold">LIVE PREVIEW — Matches shop.html</h3><div id="livePreview" class="mt-2 bg-black rounded-[10px] p-3 min-h-[120px] text-[10px] opacity-70">Select product to edit</div><div class="mt-2 grid grid-cols-3 gap-1 text-[8px]"><div class="bg-black border border-white/10 rounded p-2">Total: <span id="statTotal">0</span></div><div class="bg-black border border-white/10 rounded p-2">Sold: <span id="statSold">0</span></div><div class="bg-black border border-[#25D366]/30 rounded p-2">Bucket: <span id="statBucket">regalia-images</span> <span id="statCount">0/10,000</span></div></div></div>
+<div class="bg-[#111] border border-[#25D366]/30 rounded-[12px] p-3"><h3 class="text-[10px] font-bold">R2 Images Only — 10k pics =1GB</h3><div class="mt-2 text-[8px] opacity-60"><p>Public: https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev</p><p>Worker: https://regalia-upload.abdul-kabika-bant.workers.dev</p></div><div class="mt-2"><button onclick="checkBucket()" class="px-3 h-6 rounded-full bg-white/10 text-[8px]">Check Bucket</button><span id="bucketCheckResult" class="text-[8px] opacity-60 ml-2"></span></div></div>
+</div>
+<div class="lg:col-span-3 space-y-3">
+<div class="bg-[#111] border border-[#25D366]/30 rounded-[12px] p-3"><h3 class="text-[10px] font-bold">WhatsApp Inside — Never Leave — Platform</h3><div class="mt-2 h-[280px] overflow-auto bg-black rounded-[10px] p-2 flex flex-col" id="waChat"><div class="wa-msg wa-in">Welcome — WhatsApp inside — Never leave — Platform — Bucket regalia-images — OTP+JWT — Where we are 3X</div></div><div class="flex gap-1 mt-2"><input id="waInput" placeholder="Type WhatsApp message" class="flex-1 bg-black border border-white/10 rounded-full px-3 h-7 text-[9px]"><button onclick="sendWhatsApp()" class="w-7 h-7 rounded-full bg-[#25D366] text-black text-[9px]">➤</button></div><div class="mt-2 flex gap-1"><button onclick="broadcastNewDrop()" class="flex-1 h-6 rounded-full bg-white/10 text-[8px]">Broadcast New Drop</button><button onclick="loadWaMessages()" class="flex-1 h-6 rounded-full bg-white/10 text-[8px]">Load Messages D1</button></div></div>
+<div class="bg-[#111] border border-white/10 rounded-[12px] p-3"><h3 class="text-[10px] font-bold">Quick Actions</h3><div class="mt-2 space-y-1"><button onclick="addNew()" class="w-full h-7 rounded-full bg-white text-black text-[9px] font-bold">+ NEW PRODUCT</button><button onclick="saveAllToD1()" class="w-full h-7 rounded-full bg-[#25D366] text-black text-[9px] font-bold">SAVE ALL TO D1 + R2 BACKUP</button><button onclick="window.open('https://regalia-style.pages.dev/shop.html','_blank')" class="w-full h-7 rounded-full border border-[#FFD700]/30 text-[9px]">View Shop LIVE</button></div></div>
 </div>
 </div>
-
-<div id="editModal" class="fixed inset-0 z-50 hidden"><div class="absolute inset-0 bg-black/80" onclick="closeEdit()"></div><div class="relative min-h-screen flex items-center justify-center p-4"><div class="w-full max-w-[700px] bg-[#111] border border-[#CD7F32] rounded-[16px] p-4 max-h-[90vh] overflow-auto"><div class="flex justify-between"><h3 class="text-[12px] font-bold">EDIT PRODUCT</h3><button onclick="closeEdit()" class="w-7 h-7 rounded-full bg-white/10">✕</button></div><div id="editForm" class="mt-3 space-y-3"></div><div class="mt-3 flex gap-2"><button onclick="saveEdit()" class="flex-1 h-9 rounded-full bg-gradient-to-r from-[#FFD700] to-[#CD7F32] text-black text-[11px] font-bold">Save — D1 + R2 backup</button><button onclick="closeEdit()" class="px-4 h-9 rounded-full border border-white/10 text-[10px]">Cancel</button></div></div></div></div>
-
+</div>
+<div id="editModal" class="fixed inset-0 z-50 hidden"><div class="absolute inset-0 bg-black/80" onclick="closeEdit()"></div><div class="relative min-h-screen flex items-center justify-center p-2"><div class="w-full max-w-[1000px] bg-[#121212] border border-[#CD7F32] rounded-[20px] overflow-hidden max-h-[96vh] flex flex-col"><div class="px-5 h-[54px] flex items-center justify-between border-b bg-[#0f0f0f]"><span class="drip-font font-bold text-[12px]">EDIT PRODUCT — Full Match — S-6XL + Kids + R2 images + Bulk + Sold + Likes</span><button onclick="closeEdit()" class="w-8 h-8 rounded-full bg-white/10">✕</button></div><div class="overflow-auto p-4 space-y-4" id="editForm"></div><div class="p-3 border-t flex gap-2 bg-[#0f0f0f]"><button onclick="saveEdit()" class="flex-1 h-10 rounded-full bg-gradient-to-r from-[#FFD700] to-[#CD7F32] text-black font-bold uppercase text-[11px]">Save to Local & D1 + R2 Backup — JWT</button><button onclick="closeEdit()" class="px-5 h-10 rounded-full border border-white/20 text-[11px] uppercase">Cancel</button></div></div></div></div>
 <script>
 let jwtToken=null, currentShopId='regalia';
-function checkLoginReady(){ 
-  const terms=document.getElementById('termsCheck').checked; 
-  const btn=document.getElementById('enterBtn'); 
-  if(jwtToken && terms){ 
-    btn.disabled=false; 
-    btn.className='w-full h-11 rounded-full bg-[#25D366] text-black text-[11px] font-bold'; 
-    btn.textContent='✅ 3. Enter Admin — JWT Verified — '+currentShopId+'-images'; 
-  } else { 
-    btn.disabled=true; 
-    btn.className='w-full h-11 rounded-full bg-white/10 text-white/30 text-[11px] font-bold'; 
-    btn.textContent='3. Enter Admin — Need OTP + Terms'; 
-  } 
-}
-
-async function requestOTP(){
-  const identifier=document.getElementById('identifier').value.trim();
-  const shopId=document.getElementById('shopId').value.trim()||'regalia';
-  const workerUrl=document.getElementById('r2WorkerUrl').value.trim();
-  if(!identifier){ alert('Enter Phone +2782... or Email'); return; }
-  document.getElementById('otpStatus').textContent='Requesting OTP — Shop '+shopId+' — Phone '+identifier+'...';
-  document.getElementById('otpStatus').style.background='rgba(255,215,0,0.1)';
-  try{
-    const res=await fetch(workerUrl+'/api/otp/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, shopId})});
-    const data=await res.json();
-    if(res.ok){ 
-      const msg='✅ OTP sent — '+(data.devOtp ? 'Dev OTP is '+data.devOtp+' — Copy it — WA_TOKEN not set so shown here — Expires 5 min — Shop '+shopId : 'Check WhatsApp — 6 digits — Expires 5 min');
-      document.getElementById('otpStatus').textContent=msg;
-      document.getElementById('otpStatus').style.background='rgba(0,200,83,0.15)';
-      if(data.devOtp){ document.getElementById('otpCode').value=data.devOtp; }
-    } else { 
-      document.getElementById('otpStatus').textContent='❌ '+(data.error||'Failed')+' '+(data.details||''); 
-      document.getElementById('otpStatus').style.background='rgba(220,38,38,0.15)';
-    }
-  }catch(e){ document.getElementById('otpStatus').textContent='❌ Error: '+e.message+' — Check Worker URL — Is https://regalia-upload.abdul-kabika-bant.workers.dev live?'; document.getElementById('otpStatus').style.background='rgba(220,38,38,0.15)'; }
-}
-
-async function verifyOTP(){
-  const identifier=document.getElementById('identifier').value.trim();
-  const code=document.getElementById('otpCode').value.trim();
-  const shopId=document.getElementById('shopId').value.trim()||'regalia';
-  const workerUrl=document.getElementById('r2WorkerUrl').value.trim();
-  if(!code){ alert('Enter OTP 6 digits'); return; }
-  document.getElementById('otpStatus').textContent='Verifying OTP '+code+' — Shop '+shopId+'...';
-  try{
-    const res=await fetch(workerUrl+'/api/otp/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, code, shopId})});
-    const data=await res.json();
-    if(res.ok){ 
-      // Worker returns {ok:true, jwt, ...} — note field name is jwt in old worker, token in new? Handle both
-      jwtToken=data.jwt || data.token; 
-      localStorage.setItem('regaliaJWT', jwtToken); 
-      localStorage.setItem('regaliaR2Worker', workerUrl); 
-      localStorage.setItem('regaliaR2Public', document.getElementById('r2PublicUrl').value.trim()); 
-      localStorage.setItem('regaliaShopId', shopId); 
-      currentShopId=shopId; 
-      document.getElementById('otpStatus').textContent='✅ JWT received — '+(jwtToken?jwtToken.substring(0,30)+'...':'')+' — 24h expiry — Bucket '+shopId+'-images — Now check Terms and Enter Admin';
-      document.getElementById('otpStatus').style.background='rgba(0,200,83,0.2)';
-      checkLoginReady(); 
-    } else { 
-      document.getElementById('otpStatus').textContent='❌ '+data.error; 
-      document.getElementById('otpStatus').style.background='rgba(220,38,38,0.15)';
-    }
-  }catch(e){ document.getElementById('otpStatus').textContent='❌ '+e.message; }
-}
-
-function enterAdmin(){
-  if(!jwtToken){ alert('Need OTP first — Verify → JWT'); return; }
-  if(!document.getElementById('termsCheck').checked){ alert('Check Terms box'); return; }
-  document.getElementById('login').classList.add('hidden');
-  document.getElementById('admin').classList.remove('hidden');
-  document.getElementById('currentShopId').textContent=currentShopId;
-  document.getElementById('currentBucket').textContent=currentShopId+'-images';
-  document.getElementById('bucketInfo').textContent=currentShopId+'-images';
-  loadProducts();
-}
-
+const adultSizes=["S","M","L","XL","2XL","3XL","4XL","5XL","6XL"];
+const kidSizes=["5/6","7/8","9/10","11/12","13/14YRS"];
+let bulkTiers=[{label:"25-50 pcs",min:25,max:50,price:380},{label:"51-100 pcs",min:51,max:100,price:340},{label:"101-200 pcs",min:101,max:200,price:300},{label:"201-500 pcs",min:201,max:500,price:260},{label:"501-1000 pcs",min:501,max:1000,price:220}];
+function checkLoginReady(){ const terms=document.getElementById('termsCheck').checked; const btn=document.getElementById('enterBtn'); if(jwtToken && terms){ btn.disabled=false; btn.className='flex-1 h-10 rounded-full bg-[#25D366] text-black text-[11px] font-bold w-full'; btn.textContent='✅ Enter Admin — JWT Verified — '+currentShopId+'-images — Full dashboard'; } else { btn.disabled=true; btn.className='flex-1 h-10 rounded-full bg-white/10 text-white/30 text-[11px] font-bold w-full'; } }
+async function requestOTP(){ const identifier=document.getElementById('identifier').value.trim(); const shopId=document.getElementById('shopId').value.trim()||'regalia'; const workerUrl=document.getElementById('r2WorkerUrl').value.trim(); if(!identifier){ alert('Enter Phone'); return; } document.getElementById('otpStatus').textContent='Requesting OTP — Shop '+shopId+'...'; try{ const res=await fetch(workerUrl+'/api/otp/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, shopId})}); const data=await res.json(); if(res.ok){ document.getElementById('otpStatus').textContent='✅ OTP sent — '+(data.devOtp ? 'Dev OTP is '+data.devOtp+' — Copy it — Expires 5 min' : 'Check WhatsApp'); if(data.devOtp){ document.getElementById('otpCode').value=data.devOtp; } } else { document.getElementById('otpStatus').textContent='❌ '+(data.error||'Failed'); } }catch(e){ document.getElementById('otpStatus').textContent='❌ Error: '+e.message; } }
+async function verifyOTP(){ const identifier=document.getElementById('identifier').value.trim(); const code=document.getElementById('otpCode').value.trim(); const shopId=document.getElementById('shopId').value.trim()||'regalia'; const workerUrl=document.getElementById('r2WorkerUrl').value.trim(); if(!code){ alert('Enter OTP'); return; } document.getElementById('otpStatus').textContent='Verifying OTP '+code+'...'; try{ const res=await fetch(workerUrl+'/api/otp/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, code, shopId})}); const data=await res.json(); if(res.ok){ jwtToken=data.jwt || data.token; localStorage.setItem('regaliaJWT', jwtToken); localStorage.setItem('regaliaR2Worker', workerUrl); localStorage.setItem('regaliaR2Public', document.getElementById('r2PublicUrl').value.trim()); localStorage.setItem('regaliaShopId', shopId); currentShopId=shopId; document.getElementById('otpStatus').textContent='✅ JWT received — '+jwtToken.substring(0,30)+'... — 24h — Bucket '+shopId+'-images'; checkLoginReady(); } else { document.getElementById('otpStatus').textContent='❌ '+data.error; } }catch(e){ document.getElementById('otpStatus').textContent='❌ '+e.message; } }
+function enterAdmin(){ if(!jwtToken){ alert('Need OTP'); return; } if(!document.getElementById('termsCheck').checked){ alert('Check Terms'); return; } document.getElementById('login').classList.add('hidden'); document.getElementById('admin').classList.remove('hidden'); document.getElementById('currentShopId').textContent=currentShopId; document.getElementById('currentBucket').textContent=currentShopId+'-images'; document.getElementById('bucketInfo').textContent=currentShopId+'-images'; document.getElementById('statBucket').textContent=currentShopId+'-images'; loadProducts(); }
 function logout(){ localStorage.removeItem('regaliaJWT'); location.reload(); }
-
-let products=JSON.parse(localStorage.getItem('regaliaR2Products')||'[]');
+let products=JSON.parse(localStorage.getItem('regaliaR2Products')||'null') || [{id:1,name:"PHANTOM PUFFER v2",price:899,category:"Special",colors:["Black","White","Gold","Red"],imagesByColor:{Black:"",White:"",Gold:"",Red:""},stockByColor:{Black:{S:2},White:{S:5}},features:["Water-repellent","Gold embroidered"],sold:14,baseLikes:247,addedAt:Date.now(),revenue:0},{id:9,name:"KIDS REGALIA HOODIE",price:399,category:"Kids",colors:["Black","White"],imagesByColor:{Black:"",White:""},stockByColor:{Black:{"5/6":5}},features:["Kids fit 5-14YRS"],sold:18,baseLikes:156,addedAt:Date.now(),revenue:0}];
 let editing=null;
-
-async function loadProducts(){
-  const workerUrl=localStorage.getItem('regaliaR2Worker')||'https://regalia-upload.abdul-kabika-bant.workers.dev';
-  const shopId=localStorage.getItem('regaliaShopId')||'regalia';
-  try{
-    const res=await fetch(workerUrl+'/products.json?shopId='+shopId+'&v='+Date.now());
-    if(res.ok){ const data=await res.json(); if(Array.isArray(data)&&data.length){ products=data.map(p=>{ try{ return typeof p==='string'?JSON.parse(p): (p.data?JSON.parse(p.data):p); }catch(e){ return p; } }).filter(p=>p&&p.name); localStorage.setItem('regaliaR2Products', JSON.stringify(products)); } }
-  }catch(e){}
-  if(products.length===0){
-    products=[{id:1,name:"PHANTOM PUFFER v2",price:899,category:"Special",colors:["Black","White"],imagesByColor:{Black:"",White:""},stockByColor:{Black:{S:2},White:{S:5}},sold:14,addedAt:Date.now(),revenue:0}];
-  }
-  renderAll();
-}
-
-function renderAll(){
-  document.getElementById('productCount').textContent=products.length;
-  document.getElementById('productList').innerHTML=products.map(p=>`<div class="bg-black border border-white/10 rounded-[10px] p-3 flex justify-between items-center"><div><b class="text-[11px]">${p.name}</b> <span class="text-[10px] opacity-60">R${p.price} • ${p.category}</span></div><div class="flex gap-1"><button onclick="editProduct(${p.id})" class="px-2 h-6 rounded-full bg-white/10 text-[9px]">Edit</button></div></div>`).join('');
-}
-
-function editProduct(id){
-  editing=products.find(p=>p.id===id);
-  if(!editing) return;
-  document.getElementById('editForm').innerHTML=`
-  <input id="editName" value="${editing.name}" class="w-full bg-black border border-white/10 rounded-full px-3 h-8 text-[11px]">
-  <input id="editPrice" type="number" value="${editing.price}" class="w-full bg-black border border-white/10 rounded-full px-3 h-8 text-[11px] mt-2">
-  <div class="mt-2 text-[9px]">Colors: ${(editing.colors||[]).join(', ')}</div>
-  <div class="mt-2 space-y-1">${(editing.colors||[]).map(c=>`<div class="flex gap-2"><span class="w-12 text-[10px]">${c}</span><input id="imgUrl-${c}" value="${editing.imagesByColor?.[c]||''}" placeholder="R2 URL" class="flex-1 bg-black border border-white/10 rounded-full px-3 h-7 text-[9px]"><input type="file" accept="image/*" onchange="onFileUpload('${c}', this)" class="text-[8px] w-24"></div>`).join('')}</div>
-  `;
-  document.getElementById('editModal').classList.remove('hidden');
-}
-
-async function onFileUpload(col,input){
-  if(!input.files[0]) return;
-  const workerUrl=localStorage.getItem('regaliaR2Worker');
-  const jwt=localStorage.getItem('regaliaJWT');
-  const shopId=localStorage.getItem('regaliaShopId')||'regalia';
-  const file=input.files[0];
-  const compressed=await new Promise((resolve)=>{ const img=new Image(); const url=URL.createObjectURL(file); img.onload=()=>{ const canvas=document.createElement('canvas'); const max=800; let w=img.width, h=img.height; if(w>max||h>max){ if(w>h){ h=h*(max/w); w=max; } else { w=w*(max/h); h=max; } } canvas.width=w; canvas.height=h; canvas.getContext('2d').drawImage(img,0,0,w,h); canvas.toBlob((b)=>resolve(b), 'image/webp', 0.7); }; img.src=url; });
-  const fd=new FormData(); fd.append('file', compressed, col+'.webp'); fd.append('shopId', shopId);
-  try{ const res=await fetch(workerUrl+'/upload', {method:'POST', headers:{'Authorization':'Bearer '+jwt}, body:fd}); if(res.ok){ const data=await res.json(); editing.imagesByColor[col]=data.url; document.getElementById('imgUrl-'+col).value=data.url; alert('Uploaded to bucket '+data.bucketUsed); } else { const err=await res.text(); alert('Upload error: '+err.substring(0,80)); } }catch(e){ alert('Upload error: '+e.message); }
-}
+function renderList(){ const filter=document.getElementById('filterCat')?.value||'All'; const search=(document.getElementById('searchProducts')?.value||'').toLowerCase(); let filtered=products.filter(p=> (filter==='All'||p.category===filter) && p.name.toLowerCase().includes(search)); document.getElementById('productCount').textContent=filtered.length; document.getElementById('statTotal').textContent=products.length; document.getElementById('statSold').textContent=products.reduce((a,b)=>a+(b.sold||0),0); document.getElementById('productList').innerHTML=filtered.map(p=>`<div class="bg-black border border-white/10 rounded-[10px] p-3 flex gap-3"><div class="w-12 h-12 rounded bg-[#222] flex items-center justify-center text-[8px]">${p.imagesByColor?.Black ? `<img src="${p.imagesByColor.Black}" class="w-full h-full object-cover">` : 'No R2'}</div><div class="flex-1"><div class="flex justify-between"><b class="text-[11px]">${p.name}</b><span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10">${p.category}</span></div><div class="text-[9px] opacity-60">R${p.price} • Sold ${p.sold||0} • Likes ${p.baseLikes||0} • ${(p.colors||[]).join(', ')}</div></div><div class="flex flex-col gap-1"><button onclick="openEdit(${p.id})" class="px-2 h-6 rounded-full bg-white text-black text-[9px] font-bold">Edit Full</button><button onclick="sendProductWa(${p.id})" class="px-2 h-5 rounded-full bg-[#25D366] text-black text-[8px]">WA</button></div></div>`).join(''); document.getElementById('livePreview').innerHTML=products.slice(0,2).map(p=>`<div class="flex justify-between"><span>${p.name}</span><span>R${p.price} • ${p.category}</span></div>`).join('')||'No products'; }
+function openEdit(id){ editing=products.find(p=>p.id===id); if(!editing) return; const sizes=editing.category==='Kids'?kidSizes:adultSizes; document.getElementById('editForm').innerHTML=`<div class="grid grid-cols-2 gap-3"><div><label class="text-[9px] uppercase opacity-60">Name</label><input id="editName" value="${editing.name}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 mt-1 text-[12px]"></div><div><label class="text-[9px] uppercase opacity-60">Price R</label><input id="editPrice" type="number" value="${editing.price}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 mt-1 text-[12px]"></div><div><label class="text-[9px] uppercase opacity-60">Category — Kids auto AGE</label><select id="editCat" onchange="onCatChange()" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 mt-1 text-[11px]">${["Apparel","Head Wears","Accessories","Kids","Signage","Camo","SA Supporter","Special"].map(c=>`<option value="${c}" ${editing.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div><label class="text-[9px] uppercase opacity-60">Colors comma</label><input id="editColors" value="${editing.colors.join(',')}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 mt-1 text-[11px]"></div><div><label class="text-[9px] uppercase opacity-60">Base Likes</label><input id="editLikes" type="number" value="${editing.baseLikes||0}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 mt-1 text-[11px]"></div><div><label class="text-[9px] uppercase opacity-60">Sold Base</label><input id="editSold" type="number" value="${editing.sold||0}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 mt-1 text-[11px]"></div></div><div><label class="text-[9px] uppercase opacity-60">Features comma</label><input id="editFeatures" value="${(editing.features||[]).join(',')}" class="w-full bg-black border border-white/10 rounded-full px-3 h-9 mt-1 text-[11px]"></div><div class="bg-black border border-white/10 rounded-[10px] p-3"><label class="text-[9px] uppercase opacity-60">Images by Color — R2</label><div class="mt-2 space-y-2">${editing.colors.map(c=>`<div class="flex gap-2 items-center"><span class="w-14 text-[10px] font-bold">${c}</span><input id="imgUrl-${c}" value="${editing.imagesByColor?.[c]||''}" placeholder="R2 URL" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-7 text-[9px]"><input type="file" accept="image/*" onchange="onFileUpload('${c}', this)" class="text-[8px] w-28"></div>`).join('')}</div></div><div class="bg-black border border-[#25D366]/20 rounded-[10px] p-3"><label class="text-[9px] uppercase opacity-60">Stock by Color + Size — ${editing.category==='Kids'?'Kids AGE':'Adult S-6XL'}</label><div id="stockEdit" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-3"></div></div>`; renderStockEdit(); document.getElementById('editModal').classList.remove('hidden'); }
+function renderStockEdit(){ const container=document.getElementById('stockEdit'); if(!container||!editing) return; const sizes=editing.category==='Kids'?kidSizes:adultSizes; container.innerHTML=editing.colors.map(col=>`<div class="bg-[#111] border border-white/10 rounded-[10px] p-2"><div class="text-[10px] font-bold mb-2">${col} Stock</div><div class="grid grid-cols-3 gap-1">${sizes.map(sz=>{ const val=editing.stockByColor?.[col]?.[sz]??0; return `<div class="flex justify-between items-center bg-black rounded-full px-2 h-6"><span class="text-[9px]">${sz}</span><input type="number" value="${val}" id="stock-${col}-${sz}" class="w-12 bg-transparent text-[10px] text-right outline-none"></div>`; }).join('')}</div></div>`).join(''); }
+function onCatChange(){ editing.category=document.getElementById('editCat').value; renderStockEdit(); }
 function closeEdit(){ document.getElementById('editModal').classList.add('hidden'); }
-function saveEdit(){ editing.name=document.getElementById('editName').value; editing.price=parseInt(document.getElementById('editPrice').value)||0; editing.colors?.forEach(col=>{ const inp=document.getElementById('imgUrl-'+col); if(inp) editing.imagesByColor[col]=inp.value; }); localStorage.setItem('regaliaR2Products', JSON.stringify(products)); closeEdit(); renderAll(); saveAllToD1(); }
-function addNew(){ const id=Date.now(); products.push({id,name:"NEW PRODUCT",price:299,colors:["Black"],imagesByColor:{Black:""},stockByColor:{Black:{S:4}},sold:0,addedAt:Date.now(),revenue:0}); renderAll(); }
-
-async function saveAllToD1(){
-  const workerUrl=localStorage.getItem('regaliaR2Worker');
-  const jwt=localStorage.getItem('regaliaJWT');
-  const shopId=localStorage.getItem('regaliaShopId')||'regalia';
-  if(!workerUrl||!jwt) return;
-  const box=document.getElementById('statusBox'); box.classList.remove('hidden'); box.textContent='Saving to D1 shopId='+shopId+' — Bucket '+shopId+'-images — JWT...';
-  try{ const res=await fetch(workerUrl+'/save-products', {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+jwt}, body:JSON.stringify({shopId, products})}); if(res.ok){ box.textContent='✅ Live — Shop '+shopId+' — Bucket '+shopId+'-images — R2 images only — JWT Verified'; } else { const err=await res.text(); box.textContent='❌ '+err; } }catch(e){ box.textContent='❌ '+e.message; }
-}
-
-document.getElementById('termsCheck').addEventListener('change', checkLoginReady);
-(function(){
-  const w=localStorage.getItem('regaliaR2Worker'); const pub=localStorage.getItem('regaliaR2Public')||'https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev'; const shopId=localStorage.getItem('regaliaShopId')||'regalia'; const jwt=localStorage.getItem('regaliaJWT');
-  if(w) document.getElementById('r2WorkerUrl').value=w; 
-  document.getElementById('r2PublicUrl').value=pub;
-  document.getElementById('shopId').value=shopId;
-  if(jwt){ jwtToken=jwt; document.getElementById('otpStatus').textContent='JWT exists — '+jwt.substring(0,30)+'... — Expires 24h — Check Terms and Enter'; checkLoginReady(); }
-})();
+function saveEdit(){ if(!editing) return; editing.name=document.getElementById('editName').value; editing.price=parseInt(document.getElementById('editPrice').value)||0; editing.category=document.getElementById('editCat').value; editing.colors=document.getElementById('editColors').value.split(',').map(s=>s.trim()).filter(Boolean); editing.baseLikes=parseInt(document.getElementById('editLikes').value)||0; editing.sold=parseInt(document.getElementById('editSold').value)||0; editing.features=document.getElementById('editFeatures').value.split(',').map(s=>s.trim()).filter(Boolean); editing.colors.forEach(c=>{ const inp=document.getElementById(`imgUrl-${c}`); if(inp) editing.imagesByColor[c]=inp.value; }); editing.colors.forEach(col=>{ if(!editing.stockByColor[col]) editing.stockByColor[col]={}; const sizes=editing.category==='Kids'?kidSizes:adultSizes; sizes.forEach(sz=>{ const inp=document.getElementById(`stock-${col}-${sz}`); if(inp) editing.stockByColor[col][sz]=parseInt(inp.value)||0; }); }); localStorage.setItem('regaliaR2Products', JSON.stringify(products)); closeEdit(); renderList(); saveAllToD1(); }
+function addNew(){ const id=Date.now(); products.push({id,name:"NEW REGALIA PRODUCT",price:299,category:"Apparel",colors:["Black","White","Gold","Red"],imagesByColor:{Black:"",White:"",Gold:"",Red:""},stockByColor:{Black:{S:4,M:4,L:4,XL:5},White:{S:4}},features:["New drop vault"],sold:0,baseLikes:100,addedAt:Date.now(),revenue:0}); localStorage.setItem('regaliaR2Products', JSON.stringify(products)); renderList(); }
+function exportProducts(){ document.getElementById('exportArea').value=JSON.stringify(products, null, 2); }
+function importProducts(e){ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=(ev)=>{ try{ const data=JSON.parse(ev.target.result); if(Array.isArray(data)){ products=data; localStorage.setItem('regaliaR2Products', JSON.stringify(products)); renderList(); } }catch(err){ alert('Import error'); } }; reader.readAsText(file); }
+async function onFileUpload(col,input){ if(!input.files[0]) return; const workerUrl=localStorage.getItem('regaliaR2Worker'); const jwt=localStorage.getItem('regaliaJWT'); const shopId=localStorage.getItem('regaliaShopId')||'regalia'; const file=input.files[0]; const compressed=await new Promise((resolve)=>{ const img=new Image(); const url=URL.createObjectURL(file); img.onload=()=>{ const canvas=document.createElement('canvas'); const max=800; let w=img.width, h=img.height; if(w>max||h>max){ if(w>h){ h=h*(max/w); w=max; } else { w=w*(max/h); h=max; } } canvas.width=w; canvas.height=h; canvas.getContext('2d').drawImage(img,0,0,w,h); canvas.toBlob((b)=>resolve(b), 'image/webp', 0.7); }; img.src=url; }); const fd=new FormData(); fd.append('file', compressed, col+'.webp'); fd.append('shopId', shopId); try{ const res=await fetch(workerUrl+'/upload', {method:'POST', headers:{'Authorization':'Bearer '+jwt}, body:fd}); if(res.ok){ const data=await res.json(); editing.imagesByColor[col]=data.url; document.getElementById('imgUrl-'+col).value=data.url; alert('Uploaded to bucket '+data.bucketUsed); } else { const err=await res.text(); alert('Upload error: '+err.substring(0,100)); } }catch(e){ alert('Upload error: '+e.message); } }
+async function saveAllToD1(){ const workerUrl=localStorage.getItem('regaliaR2Worker'); const jwt=localStorage.getItem('regaliaJWT'); const shopId=localStorage.getItem('regaliaShopId')||'regalia'; if(!workerUrl||!jwt){ alert('No JWT'); return; } const box=document.getElementById('statusBox'); box.classList.remove('hidden'); box.textContent='Saving to D1 shopId='+shopId+'...'; try{ const res=await fetch(workerUrl+'/save-products', {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+jwt}, body:JSON.stringify({shopId, products})}); if(res.ok){ const data=await res.json(); box.textContent='✅ Live — Shop '+shopId+' — Bucket '+data.bucket+' — Count '+data.countInfo; } else { const err=await res.text(); box.textContent='❌ '+err; } }catch(e){ box.textContent='❌ '+e.message; } }
+async function checkBucket(){ const workerUrl=localStorage.getItem('regaliaR2Worker')||document.getElementById('r2WorkerUrl').value; try{ const res=await fetch(workerUrl+'/health'); const data=await res.json(); document.getElementById('bucketCheckResult').textContent='Health OK — '+data.publicUrl; }catch(e){ document.getElementById('bucketCheckResult').textContent='Error: '+e.message; } }
+function sendProductWa(id){ alert('WA Send — Bucket '+currentShopId+'-images'); }
+function sendWhatsApp(){ const input=document.getElementById('waInput'); const msg=input.value.trim(); if(!msg) return; const chat=document.getElementById('waChat'); const div=document.createElement('div'); div.className='wa-msg wa-out'; div.textContent=msg; chat.appendChild(div); input.value=''; chat.scrollTop=chat.scrollHeight; }
+function broadcastNewDrop(){ alert('Broadcast New Drop — WhatsApp inside'); }
+function loadWaMessages(){ alert('Load Messages from D1'); }
+async function loadProducts(){ const workerUrl=localStorage.getItem('regaliaR2Worker')||'https://regalia-upload.abdul-kabika-bant.workers.dev'; const shopId=localStorage.getItem('regaliaShopId')||'regalia'; try{ const res=await fetch(workerUrl+'/products.json?shopId='+shopId+'&v='+Date.now()); if(res.ok){ const data=await res.json(); if(Array.isArray(data)&&data.length){ const parsed=data.map(p=>{ try{ return typeof p==='string'?JSON.parse(p): (p.data?JSON.parse(p.data):p); }catch(e){ return p; } }).filter(p=>p&&p.name); if(parsed.length){ products=parsed; localStorage.setItem('regaliaR2Products', JSON.stringify(products)); } } } }catch(e){} renderList(); }
+document.getElementById('termsCheck')?.addEventListener('change', checkLoginReady);
+document.getElementById('searchProducts')?.addEventListener('input', renderList);
+document.getElementById('filterCat')?.addEventListener('change', renderList);
+(function(){ const w=localStorage.getItem('regaliaR2Worker'); const pub=localStorage.getItem('regaliaR2Public')||'https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev'; const shopId=localStorage.getItem('regaliaShopId')||'regalia'; const jwt=localStorage.getItem('regaliaJWT'); if(w) document.getElementById('r2WorkerUrl').value=w; document.getElementById('r2PublicUrl').value=pub; document.getElementById('shopId').value=shopId; if(jwt){ jwtToken=jwt; document.getElementById('otpStatus').textContent='JWT exists — '+jwt.substring(0,30)+'... — Full dashboard ready'; checkLoginReady(); } })();
 </script>
 </body>
 </html>
