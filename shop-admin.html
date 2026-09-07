@@ -2,139 +2,109 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REGALIA SAAS SECURE FINAL — OTP + TURNSTILE + JWT + EACH SHOP OWN BUCKET + WHATSAPP INSIDE — TERMS</title>
+<title>REGALIA SAAS — OTP + JWT — NO TURNSTILE — SIMPLE — WHERE WE ARE 3X</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Inter:wght@400;600&display=swap');
 .drip-font{font-family:'Syne',sans-serif}*{font-family:'Inter',sans-serif}
 button{cursor:pointer !important}
-.room-active{border-color:#25D366 !important; background:rgba(37,211,102,0.15)}
-.wa-msg{max-width:75%; padding:8px 10px; border-radius:12px; font-size:11px}
-.wa-in{background:#1a1a1a; border:1px solid #333; align-self:flex-start}
-.wa-out{background:#005c4b; align-self:flex-end; color:white}
 </style>
 </head>
 <body class="bg-[#0a0a0a] text-white">
-
 <div id="login" class="min-h-screen flex items-center justify-center p-4">
-<div class="bg-[#161616] border border-[#25D366]/30 rounded-[20px] p-6 max-w-[700px] w-full">
-<h1 class="drip-font text-[13px] font-[800] bg-gradient-to-r from-[#FFD700] via-[#25D366] to-[#00C853] bg-clip-text text-transparent">REGALIA SAAS SECURE FINAL — OTP + TURNSTILE + JWT — EACH SHOP OWN BUCKET — TERMS — WHERE WE ARE 3X</h1>
-<p class="text-[8px] opacity-60 mt-1">Where we are 3 times — Before: R2 images only — Now: R2+D1+Auto-sharding+API+SaaS each shop own bucket+WhatsApp inside+Hacker protection+OTP+Turnstile+JWT+Terms+POPIA — Platform — East London — regalia-style.pages.dev</p>
+<div class="bg-[#161616] border border-[#25D366]/30 rounded-[20px] p-6 max-w-[600px] w-full">
+<h1 class="drip-font text-[14px] font-[800] bg-gradient-to-r from-[#FFD700] via-[#25D366] to-[#00C853] bg-clip-text text-transparent">REGALIA SAAS — SIMPLE — OTP + JWT — NO TURNSTILE FOR NOW — WHERE WE ARE 3X</h1>
+<p class="text-[9px] opacity-60 mt-1">Simple steps — No Turnstile bot check — Only OTP 6 digits + JWT 24h — Better than 12345 — Turnstile removed for now — Add later — regalia-style.pages.dev — regalia-images bucket</p>
 
-<div class="bg-[#111] border border-[#25D366]/30 rounded-[12px] p-3 mt-3 text-left">
-<p class="text-[10px] font-bold">What we agreed to — 3X stronger:</p>
-<div class="text-[7px] opacity-80 mt-1 space-y-1">
-<p>✅ R2 images only 10k pics 100KB=1GB / 10GB free=100k pics free — Bucket regalia-images — https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev — Done</p>
-<p>✅ D1 everything else — products+sales+traffic+clients+XP Time=Rent — Done</p>
-<p>✅ Auto-sharding 10k → regalia-images-2 — Done</p>
-<p>✅ Each shop own bucket — regalia-images, thabo-images — SaaS R350/mo — Done</p>
-<p>✅ WhatsApp inside admin — Never leave — Platform — Done</p>
-<p>✅ Hacker protection — CORS lockdown, JWT, Validation, Rate limit — Done</p>
-<p>🔄 Now: OTP+Turnstile+JWT — Better than 12345 — OTP 6 digits WhatsApp, Turnstile human check, JWT 24h — Terms+Privacy — Secure</p>
-</div>
-</div>
+<div class="bg-[#111] border border-white/10 rounded-[12px] p-3 mt-4">
+<p class="text-[11px] font-bold">SIMPLE LOGIN — 3 STEPS ONLY — NO TURNSTILE</p>
 
-<div class="bg-[#111] border border-white/10 rounded-[12px] p-3 mt-3 text-left">
-<p class="text-[10px] font-bold">SECURE LOGIN — OTP + TURNSTILE + JWT — Better than 12345 — Where we are 3X</p>
-
-<div class="mt-3 space-y-2">
-<input id="r2WorkerUrl" value="https://regalia-upload.abdul-kabika-bant.workers.dev" class="w-full bg-black border border-[#FFD700]/30 rounded-full px-3 h-8 text-[11px]">
-<input id="r2PublicUrl" value="https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev" class="w-full bg-black border border-[#25D366]/30 rounded-full px-3 h-8 text-[11px]">
+<div class="mt-3 space-y-3">
+<input id="r2WorkerUrl" value="https://regalia-upload.abdul-kabika-bant.workers.dev" class="w-full bg-black border border-[#FFD700]/30 rounded-full px-3 h-9 text-[11px]">
+<input id="r2PublicUrl" value="https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev" class="w-full bg-black border border-[#25D366]/30 rounded-full px-3 h-9 text-[11px]">
 
 <div class="bg-black border border-white/10 rounded-[10px] p-3">
-<p class="text-[9px] font-bold">Step 1 — Shop ID + Phone/Email — Each Shop Own Bucket — SaaS</p>
+<p class="text-[10px] font-bold">Step 1 — Shop ID + Phone — Each Shop Own Bucket</p>
 <div class="flex gap-2 mt-2">
-<input id="shopId" value="regalia" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-8 text-[11px]">
-<input id="identifier" placeholder="Your Phone +2782... or Email for OTP" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-8 text-[11px]">
+<input id="shopId" value="regalia" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-9 text-[12px]">
+<input id="identifier" placeholder="Your Phone +2782... or Email" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-9 text-[12px]">
 </div>
-<p class="text-[7px] opacity-60 mt-1">regalia = bucket regalia-images, thabo = bucket thabo-images — Each shop own bucket — SaaS</p>
-</div>
-
-<div class="bg-black border border-white/10 rounded-[10px] p-3">
-<p class="text-[9px] font-bold">Step 2 — Turnstile — I am human — Bot protection — If Troubleshoot click Dev Bypass</p>
-<div class="mt-2 flex justify-center">
-<div class="cf-turnstile" data-sitekey="0x4AAAAAAAEqR7Rb8kttW86ZV" data-callback="onTurnstileSuccess" data-theme="dark"></div>
-</div>
-<p class="text-[7px] opacity-60 mt-1 text-center">If you see Troubleshoot blue link = Turnstile domain not allowed — Click below Dev Bypass — Worker in dev mode will accept — Set real Turnstile keys in Cloudflare later</p>
-<div class="mt-2 flex justify-center">
-<button onclick="bypassTurnstile()" class="px-3 h-7 rounded-full bg-[#FFD700] text-black text-[9px] font-bold">Bypass Turnstile — Dev Mode — Use if Troubleshoot appears</button>
-</div>
-<p id="turnstileStatus" class="text-[7px] opacity-60 mt-1 text-center">Turnstile status: Waiting for human check</p>
+<p class="text-[8px] opacity-60 mt-1">Shop regalia = bucket regalia-images — Thabo = thabo-images — SaaS R350</p>
 </div>
 
 <div class="bg-black border border-[#25D366]/30 rounded-[10px] p-3">
-<p class="text-[9px] font-bold">Step 3 — OTP — 6 digits — Expires 5 min — Better than 12345</p>
+<p class="text-[10px] font-bold">Step 2 — OTP — 6 digits — Expires 5 min — Better than 12345</p>
 <div class="flex gap-2 mt-2">
-<button onclick="requestOTP()" id="requestOtpBtn" class="flex-1 h-9 rounded-full bg-[#25D366] text-black text-[10px] font-bold">Request OTP via WhatsApp</button>
-<input id="otpCode" placeholder="Enter OTP 123456" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-9 text-[11px]">
-<button onclick="verifyOTP()" id="verifyOtpBtn" class="flex-1 h-9 rounded-full bg-white text-black text-[10px] font-bold">Verify → Get JWT 24h</button>
+<button onclick="requestOTP()" id="requestOtpBtn" class="flex-1 h-10 rounded-full bg-[#25D366] text-black text-[11px] font-bold">1. Request OTP</button>
+<input id="otpCode" placeholder="Enter 6 digits" class="flex-1 bg-[#111] border border-white/10 rounded-full px-3 h-10 text-[12px]">
+<button onclick="verifyOTP()" id="verifyOtpBtn" class="flex-1 h-10 rounded-full bg-white text-black text-[11px] font-bold">2. Verify → JWT</button>
 </div>
-<p id="otpStatus" class="text-[8px] opacity-60 mt-1">OTP status: Waiting</p>
+<p id="otpStatus" class="text-[9px] opacity-80 mt-2 bg-[#111] p-2 rounded">Status: Waiting — Enter phone then Request OTP</p>
 </div>
 
 <div class="bg-black border border-white/10 rounded-[10px] p-3">
-<label class="flex items-center gap-2 text-[9px]"><input type="checkbox" id="termsCheck"> I agree to Terms + Privacy + POPIA — My info secure — Platform will insure — Protect clients data</label>
-<div class="mt-2 flex gap-2">
-<button onclick="enterAdmin()" id="enterBtn" disabled class="flex-1 h-9 rounded-full bg-white/10 text-white/30 text-[10px] font-bold">Enter Admin — Need OTP+Turnstile+Terms — Taste hacker protection</button>
+<label class="flex items-center gap-2 text-[10px]"><input type="checkbox" id="termsCheck"> I agree to Terms + Privacy + POPIA — My info secure</label>
+<div class="mt-3">
+<button onclick="enterAdmin()" id="enterBtn" disabled class="w-full h-11 rounded-full bg-white/10 text-white/30 text-[11px] font-bold">3. Enter Admin — Need OTP + Terms</button>
 </div>
 </div>
 
-<div class="bg-black border border-[#FFD700]/20 rounded-[10px] p-2 mt-2">
-<p class="text-[8px] font-bold">Test Hacker Protection — OTP+Turnstile+JWT — Where we are 3X</p>
-<div class="flex gap-1 mt-1 flex-wrap">
-<button onclick="testNoJWT()" class="px-2 h-6 rounded-full bg-white/10 text-[8px]">Test 1 No JWT 401</button>
-<button onclick="testInvalidOTP()" class="px-2 h-6 rounded-full bg-white/10 text-[8px]">Test 2 Invalid OTP</button>
-<button onclick="testSQLInjection()" class="px-2 h-6 rounded-full bg-white/10 text-[8px]">Test 3 SQL Injection</button>
-<button onclick="testNoTurnstile()" class="px-2 h-6 rounded-full bg-white/10 text-[8px]">Test 4 No Turnstile</button>
 </div>
-<p id="securityTestResult" class="text-[7px] opacity-60 mt-1"></p>
 </div>
 
-</div>
-</div>
+<div class="mt-3 text-[8px] opacity-40 text-center">No Turnstile for now — OTP + JWT only — Simple — Add Turnstile later in Cloudflare Turnstile dashboard — Where we are 3X — regalia-style.pages.dev</div>
+
 </div>
 </div>
 
 <div id="admin" class="hidden min-h-screen">
 <header class="sticky top-0 z-40 bg-black/90 backdrop-blur border-b border-white/10 flex items-center justify-between px-4 h-[60px]">
-<div class="flex items-center gap-2"><h1 class="drip-font text-[16px] font-[800]">REGALIA ADMIN — <span id="currentShopId">regalia</span> — <span id="currentBucket">regalia-images</span></h1><span class="text-[8px] px-2 py-0.5 rounded-full bg-[#25D366] text-black">OTP+Turnstile+JWT — SECURE</span></div>
-<div class="flex gap-2"><button onclick="saveAllToD1()" class="px-4 h-8 rounded-full bg-[#25D366] text-black text-[10px] font-bold">SAVE TO D1 — JWT Verified</button><button onclick="logout()" class="px-3 h-8 rounded-full bg-white/10 text-[10px]">Logout</button></div>
+<div class="flex items-center gap-2"><h1 class="drip-font text-[14px] font-[800]">REGALIA ADMIN — <span id="currentShopId">regalia</span> — <span id="currentBucket">regalia-images</span></h1><span class="text-[8px] px-2 py-0.5 rounded-full bg-[#25D366] text-black">OTP+JWT — SIMPLE</span></div>
+<div class="flex gap-2"><button onclick="saveAllToD1()" class="px-4 h-8 rounded-full bg-[#25D366] text-black text-[10px] font-bold">SAVE TO D1</button><button onclick="logout()" class="px-3 h-8 rounded-full bg-white/10 text-[10px]">Logout</button></div>
 </header>
-<div class="p-4 max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4">
-<div class="lg:col-span-2">
-<div class="bg-[#111] border border-white/10 rounded-[12px] p-3"><div class="flex justify-between"><h3 class="text-[11px] font-bold">Products — R2 images only — D1 — Each shop own bucket — <span id="productCount">0</span> products</h3><button onclick="addNew()" class="px-3 h-7 rounded-full bg-white text-black text-[10px]">+ NEW</button></div><div id="productList" class="mt-3 space-y-2"></div><div id="statusBox" class="hidden mt-3 p-2 rounded bg-black border border-white/10 text-[10px]"></div></div>
-</div>
-<div class="space-y-3">
-<div class="bg-[#111] border border-[#25D366]/30 rounded-[12px] p-3"><h3 class="text-[10px] font-bold">WhatsApp Inside — Never Leave — Platform — JWT Verified</h3><div class="mt-2 h-[200px] overflow-auto bg-black rounded p-2 space-y-1" id="waChat"><div class="wa-msg wa-in">Welcome — WhatsApp inside — Platform — Manage all from same platform — Where we are 3X</div></div><div class="flex gap-1 mt-2"><input id="waInput" placeholder="Type WhatsApp — JWT" class="flex-1 bg-black border border-white/10 rounded-full px-3 h-7 text-[10px]"><button onclick="sendWhatsApp()" class="w-7 h-7 rounded-full bg-[#25D366] text-black text-[10px]">➤</button></div></div>
-<div class="bg-[#111] border border-white/10 rounded-[12px] p-3 text-[9px] opacity-60"><p>Shop ID regalia = bucket regalia-images — 10k pics 100KB=1GB — 10GB free=100k pics — Auto-sharding — API create bucket — SaaS R350 — Time=Rent token RT auto — POPIA Terms</p><p class="mt-2">Worker: https://regalia-upload.abdul-kabika-bant.workers.dev — Public: https://pub-13d67be493564a46be1d9e3ae79104fb.r2.dev — Health: /health — Products: /products.json?shopId=regalia</p></div>
-</div>
+<div class="p-4 max-w-[1200px] mx-auto">
+<div class="bg-[#111] border border-white/10 rounded-[12px] p-3"><div class="flex justify-between"><h3 class="text-[11px] font-bold">Products — <span id="productCount">0</span> — R2 images only — Bucket <span id="bucketInfo">regalia-images</span></h3><button onclick="addNew()" class="px-3 h-7 rounded-full bg-white text-black text-[10px]">+ NEW PRODUCT</button></div><div id="productList" class="mt-3 space-y-2"></div><div id="statusBox" class="hidden mt-3 p-2 rounded bg-black border border-white/10 text-[10px]"></div></div>
 </div>
 </div>
 
-<div id="editModal" class="fixed inset-0 z-50 hidden"><div class="absolute inset-0 bg-black/80" onclick="closeEdit()"></div><div class="relative min-h-screen flex items-center justify-center p-4"><div class="w-full max-w-[800px] bg-[#111] border border-[#CD7F32] rounded-[16px] p-4 max-h-[90vh] overflow-auto"><div class="flex justify-between"><h3 class="text-[12px] font-bold">EDIT PRODUCT — R2 images only — Own bucket SaaS</h3><button onclick="closeEdit()" class="w-7 h-7 rounded-full bg-white/10">✕</button></div><div id="editForm" class="mt-3 space-y-3"></div><div class="mt-3 flex gap-2"><button onclick="saveEdit()" class="flex-1 h-9 rounded-full bg-gradient-to-r from-[#FFD700] to-[#CD7F32] text-black text-[11px] font-bold">Save — D1 + R2 backup — JWT</button><button onclick="closeEdit()" class="px-4 h-9 rounded-full border border-white/10 text-[10px]">Cancel</button></div></div></div></div>
+<div id="editModal" class="fixed inset-0 z-50 hidden"><div class="absolute inset-0 bg-black/80" onclick="closeEdit()"></div><div class="relative min-h-screen flex items-center justify-center p-4"><div class="w-full max-w-[700px] bg-[#111] border border-[#CD7F32] rounded-[16px] p-4 max-h-[90vh] overflow-auto"><div class="flex justify-between"><h3 class="text-[12px] font-bold">EDIT PRODUCT</h3><button onclick="closeEdit()" class="w-7 h-7 rounded-full bg-white/10">✕</button></div><div id="editForm" class="mt-3 space-y-3"></div><div class="mt-3 flex gap-2"><button onclick="saveEdit()" class="flex-1 h-9 rounded-full bg-gradient-to-r from-[#FFD700] to-[#CD7F32] text-black text-[11px] font-bold">Save — D1 + R2 backup</button><button onclick="closeEdit()" class="px-4 h-9 rounded-full border border-white/10 text-[10px]">Cancel</button></div></div></div></div>
 
 <script>
-let turnstileToken=null, jwtToken=null, currentShopId='regalia';
-function onTurnstileSuccess(token){ turnstileToken=token; document.getElementById('turnstileStatus').textContent='✅ Turnstile verified — Human — Token '+token.substring(0,20)+'...'; checkLoginReady(); document.getElementById('otpStatus').textContent='Turnstile verified — Human — Bot blocked — Now request OTP'; }
-function bypassTurnstile(){ turnstileToken='dev-bypass-token-'+Date.now(); document.getElementById('turnstileStatus').textContent='⚠️ Dev Bypass — Turnstile skipped — Worker dev mode — Token '+turnstileToken.substring(0,20); checkLoginReady(); document.getElementById('otpStatus').textContent='Dev Bypass active — Worker will accept if TURNSTILE_SECRET not set — Now request OTP'; }
-function checkLoginReady(){ const terms=document.getElementById('termsCheck').checked; const btn=document.getElementById('enterBtn'); if(turnstileToken && jwtToken && terms){ btn.disabled=false; btn.className='flex-1 h-9 rounded-full bg-[#25D366] text-black text-[10px] font-bold'; btn.textContent='✅ Enter Admin — JWT Verified — '+currentShopId+'-images — OTP+Turnstile+JWT'; } else { btn.disabled=true; btn.className='flex-1 h-9 rounded-full bg-white/10 text-white/30 text-[10px] font-bold'; } }
+let jwtToken=null, currentShopId='regalia';
+function checkLoginReady(){ 
+  const terms=document.getElementById('termsCheck').checked; 
+  const btn=document.getElementById('enterBtn'); 
+  if(jwtToken && terms){ 
+    btn.disabled=false; 
+    btn.className='w-full h-11 rounded-full bg-[#25D366] text-black text-[11px] font-bold'; 
+    btn.textContent='✅ 3. Enter Admin — JWT Verified — '+currentShopId+'-images'; 
+  } else { 
+    btn.disabled=true; 
+    btn.className='w-full h-11 rounded-full bg-white/10 text-white/30 text-[11px] font-bold'; 
+    btn.textContent='3. Enter Admin — Need OTP + Terms'; 
+  } 
+}
 
 async function requestOTP(){
   const identifier=document.getElementById('identifier').value.trim();
   const shopId=document.getElementById('shopId').value.trim()||'regalia';
   const workerUrl=document.getElementById('r2WorkerUrl').value.trim();
   if(!identifier){ alert('Enter Phone +2782... or Email'); return; }
-  if(!turnstileToken){ 
-    if(confirm('Turnstile not done — Use Dev Bypass? Worker dev mode will accept if TURNSTILE_SECRET not set — Click OK to bypass')){ bypassTurnstile(); } else { alert('Complete Turnstile — I am human — Or click Bypass Turnstile button'); return; }
-  }
-  document.getElementById('otpStatus').textContent='Requesting OTP — Shop '+shopId+' — Bucket '+shopId+'-images — OTP 6 digits via WhatsApp...';
+  document.getElementById('otpStatus').textContent='Requesting OTP — Shop '+shopId+' — Phone '+identifier+'...';
+  document.getElementById('otpStatus').style.background='rgba(255,215,0,0.1)';
   try{
-    const res=await fetch(workerUrl+'/api/otp/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, shopId, turnstileToken})});
+    const res=await fetch(workerUrl+'/api/otp/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, shopId})});
     const data=await res.json();
-    if(res.ok){ document.getElementById('otpStatus').textContent='✅ OTP sent — '+ (data.devOtp ? 'Dev OTP '+data.devOtp+' — Set WA_TOKEN for real WhatsApp' : 'Check WhatsApp — 6 digits — 5 min expiry') + ' — Shop '+shopId; if(data.devOtp){ document.getElementById('otpCode').value=data.devOtp; } }
-    else { document.getElementById('otpStatus').textContent='❌ '+ (data.error||'Failed') + ' ' + (data.details||''); }
-  }catch(e){ document.getElementById('otpStatus').textContent='❌ '+e.message; }
+    if(res.ok){ 
+      const msg='✅ OTP sent — '+(data.devOtp ? 'Dev OTP is '+data.devOtp+' — Copy it — WA_TOKEN not set so shown here — Expires 5 min — Shop '+shopId : 'Check WhatsApp — 6 digits — Expires 5 min');
+      document.getElementById('otpStatus').textContent=msg;
+      document.getElementById('otpStatus').style.background='rgba(0,200,83,0.15)';
+      if(data.devOtp){ document.getElementById('otpCode').value=data.devOtp; }
+    } else { 
+      document.getElementById('otpStatus').textContent='❌ '+(data.error||'Failed')+' '+(data.details||''); 
+      document.getElementById('otpStatus').style.background='rgba(220,38,38,0.15)';
+    }
+  }catch(e){ document.getElementById('otpStatus').textContent='❌ Error: '+e.message+' — Check Worker URL — Is https://regalia-upload.abdul-kabika-bant.workers.dev live?'; document.getElementById('otpStatus').style.background='rgba(220,38,38,0.15)'; }
 }
 
 async function verifyOTP(){
@@ -147,18 +117,32 @@ async function verifyOTP(){
   try{
     const res=await fetch(workerUrl+'/api/otp/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier, code, shopId})});
     const data=await res.json();
-    if(res.ok){ jwtToken=data.token; localStorage.setItem('regaliaJWT', jwtToken); localStorage.setItem('regaliaR2Worker', workerUrl); localStorage.setItem('regaliaR2Public', document.getElementById('r2PublicUrl').value.trim()); localStorage.setItem('regaliaShopId', shopId); currentShopId=shopId; document.getElementById('otpStatus').textContent='✅ JWT received — '+jwtToken.substring(0,20)+'... — 24h expiry — Bucket '+shopId+'-images — Taste hacker protection — Where we are 3X'; checkLoginReady(); }
-    else { document.getElementById('otpStatus').textContent='❌ '+data.error; }
+    if(res.ok){ 
+      // Worker returns {ok:true, jwt, ...} — note field name is jwt in old worker, token in new? Handle both
+      jwtToken=data.jwt || data.token; 
+      localStorage.setItem('regaliaJWT', jwtToken); 
+      localStorage.setItem('regaliaR2Worker', workerUrl); 
+      localStorage.setItem('regaliaR2Public', document.getElementById('r2PublicUrl').value.trim()); 
+      localStorage.setItem('regaliaShopId', shopId); 
+      currentShopId=shopId; 
+      document.getElementById('otpStatus').textContent='✅ JWT received — '+(jwtToken?jwtToken.substring(0,30)+'...':'')+' — 24h expiry — Bucket '+shopId+'-images — Now check Terms and Enter Admin';
+      document.getElementById('otpStatus').style.background='rgba(0,200,83,0.2)';
+      checkLoginReady(); 
+    } else { 
+      document.getElementById('otpStatus').textContent='❌ '+data.error; 
+      document.getElementById('otpStatus').style.background='rgba(220,38,38,0.15)';
+    }
   }catch(e){ document.getElementById('otpStatus').textContent='❌ '+e.message; }
 }
 
 function enterAdmin(){
-  if(!jwtToken || !turnstileToken){ alert('Need OTP+Turnstile'); return; }
-  if(!document.getElementById('termsCheck').checked){ alert('Agree to Terms'); return; }
+  if(!jwtToken){ alert('Need OTP first — Verify → JWT'); return; }
+  if(!document.getElementById('termsCheck').checked){ alert('Check Terms box'); return; }
   document.getElementById('login').classList.add('hidden');
   document.getElementById('admin').classList.remove('hidden');
   document.getElementById('currentShopId').textContent=currentShopId;
   document.getElementById('currentBucket').textContent=currentShopId+'-images';
+  document.getElementById('bucketInfo').textContent=currentShopId+'-images';
   loadProducts();
 }
 
@@ -182,7 +166,7 @@ async function loadProducts(){
 
 function renderAll(){
   document.getElementById('productCount').textContent=products.length;
-  document.getElementById('productList').innerHTML=products.map(p=>`<div class="bg-black border border-white/10 rounded-[10px] p-3 flex justify-between items-center"><div><b class="text-[11px]">${p.name}</b> <span class="text-[10px] opacity-60">R${p.price} • ${p.category} • Bucket ${currentShopId}-images</span><div class="text-[9px] opacity-40">${(p.colors||[]).join(', ')} • Sold ${p.sold||0}</div></div><div class="flex gap-1"><button onclick="editProduct(${p.id})" class="px-2 h-6 rounded-full bg-white/10 text-[9px]">Edit</button><button onclick="sendProductWa(${p.id})" class="px-2 h-6 rounded-full bg-[#25D366] text-black text-[9px]">WA</button></div></div>`).join('');
+  document.getElementById('productList').innerHTML=products.map(p=>`<div class="bg-black border border-white/10 rounded-[10px] p-3 flex justify-between items-center"><div><b class="text-[11px]">${p.name}</b> <span class="text-[10px] opacity-60">R${p.price} • ${p.category}</span></div><div class="flex gap-1"><button onclick="editProduct(${p.id})" class="px-2 h-6 rounded-full bg-white/10 text-[9px]">Edit</button></div></div>`).join('');
 }
 
 function editProduct(id){
@@ -192,7 +176,7 @@ function editProduct(id){
   <input id="editName" value="${editing.name}" class="w-full bg-black border border-white/10 rounded-full px-3 h-8 text-[11px]">
   <input id="editPrice" type="number" value="${editing.price}" class="w-full bg-black border border-white/10 rounded-full px-3 h-8 text-[11px] mt-2">
   <div class="mt-2 text-[9px]">Colors: ${(editing.colors||[]).join(', ')}</div>
-  <div class="mt-2 space-y-1">${(editing.colors||[]).map(c=>`<div class="flex gap-2"><span class="w-12 text-[10px]">${c}</span><input id="imgUrl-${c}" value="${editing.imagesByColor?.[c]||''}" placeholder="R2 URL https://pub-.../regalia/images/..." class="flex-1 bg-black border border-white/10 rounded-full px-3 h-7 text-[9px]"><input type="file" accept="image/*" onchange="onFileUpload('${c}', this)" class="text-[8px] w-24"></div>`).join('')}</div>
+  <div class="mt-2 space-y-1">${(editing.colors||[]).map(c=>`<div class="flex gap-2"><span class="w-12 text-[10px]">${c}</span><input id="imgUrl-${c}" value="${editing.imagesByColor?.[c]||''}" placeholder="R2 URL" class="flex-1 bg-black border border-white/10 rounded-full px-3 h-7 text-[9px]"><input type="file" accept="image/*" onchange="onFileUpload('${c}', this)" class="text-[8px] w-24"></div>`).join('')}</div>
   `;
   document.getElementById('editModal').classList.remove('hidden');
 }
@@ -205,7 +189,7 @@ async function onFileUpload(col,input){
   const file=input.files[0];
   const compressed=await new Promise((resolve)=>{ const img=new Image(); const url=URL.createObjectURL(file); img.onload=()=>{ const canvas=document.createElement('canvas'); const max=800; let w=img.width, h=img.height; if(w>max||h>max){ if(w>h){ h=h*(max/w); w=max; } else { w=w*(max/h); h=max; } } canvas.width=w; canvas.height=h; canvas.getContext('2d').drawImage(img,0,0,w,h); canvas.toBlob((b)=>resolve(b), 'image/webp', 0.7); }; img.src=url; });
   const fd=new FormData(); fd.append('file', compressed, col+'.webp'); fd.append('shopId', shopId);
-  try{ const res=await fetch(workerUrl+'/upload', {method:'POST', headers:{'Authorization':'Bearer '+jwt}, body:fd}); if(res.ok){ const data=await res.json(); editing.imagesByColor[col]=data.url; document.getElementById('imgUrl-'+col).value=data.url; alert('Uploaded to bucket '+data.bucketUsed+' — JWT Verified — '+shopId+'-images'); } else { const err=await res.text(); alert('Upload error: '+err.substring(0,80)); } }catch(e){ alert('Upload error: '+e.message); }
+  try{ const res=await fetch(workerUrl+'/upload', {method:'POST', headers:{'Authorization':'Bearer '+jwt}, body:fd}); if(res.ok){ const data=await res.json(); editing.imagesByColor[col]=data.url; document.getElementById('imgUrl-'+col).value=data.url; alert('Uploaded to bucket '+data.bucketUsed); } else { const err=await res.text(); alert('Upload error: '+err.substring(0,80)); } }catch(e){ alert('Upload error: '+e.message); }
 }
 function closeEdit(){ document.getElementById('editModal').classList.add('hidden'); }
 function saveEdit(){ editing.name=document.getElementById('editName').value; editing.price=parseInt(document.getElementById('editPrice').value)||0; editing.colors?.forEach(col=>{ const inp=document.getElementById('imgUrl-'+col); if(inp) editing.imagesByColor[col]=inp.value; }); localStorage.setItem('regaliaR2Products', JSON.stringify(products)); closeEdit(); renderAll(); saveAllToD1(); }
@@ -216,28 +200,9 @@ async function saveAllToD1(){
   const jwt=localStorage.getItem('regaliaJWT');
   const shopId=localStorage.getItem('regaliaShopId')||'regalia';
   if(!workerUrl||!jwt) return;
-  const box=document.getElementById('statusBox'); box.classList.remove('hidden'); box.textContent='Saving to D1 shopId='+shopId+' — Bucket '+shopId+'-images — JWT Verified — OTP+Turnstile+JWT...';
-  try{ const res=await fetch(workerUrl+'/save-products', {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+jwt}, body:JSON.stringify({shopId, products})}); if(res.ok){ box.textContent='✅ Live — Shop '+shopId+' — Bucket '+shopId+'-images — Own bucket SaaS — R2 images only — JWT Verified — +100 XP'; } else { const err=await res.text(); box.textContent='❌ '+err; } }catch(e){ box.textContent='❌ '+e.message; }
+  const box=document.getElementById('statusBox'); box.classList.remove('hidden'); box.textContent='Saving to D1 shopId='+shopId+' — Bucket '+shopId+'-images — JWT...';
+  try{ const res=await fetch(workerUrl+'/save-products', {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+jwt}, body:JSON.stringify({shopId, products})}); if(res.ok){ box.textContent='✅ Live — Shop '+shopId+' — Bucket '+shopId+'-images — R2 images only — JWT Verified'; } else { const err=await res.text(); box.textContent='❌ '+err; } }catch(e){ box.textContent='❌ '+e.message; }
 }
-async function testNoJWT(){
-  const workerUrl=localStorage.getItem('regaliaR2Worker')||document.getElementById('r2WorkerUrl').value;
-  try{ const res=await fetch(workerUrl+'/api/create-client', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({shopId:'hacker-test'})}); const data=await res.text(); document.getElementById('securityTestResult').textContent='Test 1 No JWT: Status '+res.status+' — '+data.substring(0,200)+' — Should be 401 — Hacker blocked'; }catch(e){ document.getElementById('securityTestResult').textContent='Test 1 Error: '+e.message; }
-}
-async function testInvalidOTP(){
-  const workerUrl=localStorage.getItem('regaliaR2Worker')||document.getElementById('r2WorkerUrl').value;
-  try{ const res=await fetch(workerUrl+'/api/otp/verify', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({identifier:'+27820000000', code:'000000', shopId:'regalia'})}); const data=await res.text(); document.getElementById('securityTestResult').textContent='Test 2 Invalid OTP: Status '+res.status+' — '+data.substring(0,200)+' — Should be 400 Invalid OTP'; }catch(e){ document.getElementById('securityTestResult').textContent='Test 2 Error: '+e.message; }
-}
-async function testSQLInjection(){
-  const workerUrl=localStorage.getItem('regaliaR2Worker')||document.getElementById('r2WorkerUrl').value;
-  const jwt=localStorage.getItem('regaliaJWT');
-  try{ const res=await fetch(workerUrl+'/api/create-client', {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+jwt}, body:JSON.stringify({shopId:'regalia; DROP TABLE shops; --'})}); const data=await res.text(); document.getElementById('securityTestResult').textContent='Test 3 SQL Injection: Status '+res.status+' — '+data.substring(0,200)+' — Should be 400 Invalid shopId'; }catch(e){ document.getElementById('securityTestResult').textContent='Test 3 Error: '+e.message; }
-}
-async function testNoTurnstile(){
-  const workerUrl=localStorage.getItem('regaliaR2Worker')||document.getElementById('r2WorkerUrl').value;
-  try{ const res=await fetch(workerUrl+'/api/otp/request', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({identifier:'+27820000000', shopId:'regalia', turnstileToken:''})}); const data=await res.text(); document.getElementById('securityTestResult').textContent='Test 4 No Turnstile: Status '+res.status+' — '+data.substring(0,300)+' — Should be Turnstile failed'; }catch(e){ document.getElementById('securityTestResult').textContent='Test 4 Error: '+e.message; }
-}
-function sendProductWa(id){ alert('Quick send via WhatsApp — JWT Verified — Never leave — Platform — Bucket '+currentShopId+'-images'); }
-function sendWhatsApp(){ alert('WhatsApp send — JWT Verified — Never leave — Platform'); }
 
 document.getElementById('termsCheck').addEventListener('change', checkLoginReady);
 (function(){
@@ -245,7 +210,7 @@ document.getElementById('termsCheck').addEventListener('change', checkLoginReady
   if(w) document.getElementById('r2WorkerUrl').value=w; 
   document.getElementById('r2PublicUrl').value=pub;
   document.getElementById('shopId').value=shopId;
-  if(jwt){ jwtToken=jwt; document.getElementById('otpStatus').textContent='JWT exists — '+jwt.substring(0,20)+'... — Expires 24h — Where we are 3X'; }
+  if(jwt){ jwtToken=jwt; document.getElementById('otpStatus').textContent='JWT exists — '+jwt.substring(0,30)+'... — Expires 24h — Check Terms and Enter'; checkLoginReady(); }
 })();
 </script>
 </body>
