@@ -159,7 +159,7 @@ function calcBulkProgress(total){
   return {pct:100, need:0, next:null, label:`${total} pcs — Max bulk unlocked`};
 }
 function getSizes(p){ return p.category==="Kids"?kidSizes:adultSizes; }
-function getLikes(p){ return (p.baseLikes||200) + (productLikes[p.id]||0); }
+function getLikes(p){ return (productLikes[p.id]||0); }
 function getSold(p){ return (p.sold||0) + (productSold[p.id]||0); }
 function isLiked(pid){ return !!regaliaLikes[pid]; }
 function renderCats(){ document.getElementById('catPills').innerHTML=categories.map(c=>`<button onclick="setCat('${c}');playClick()" class="px-4 h-9 rounded-full border text-[11px] font-bold tracking-widest uppercase pill-shimmer ${filterCat===c?'size-active':''}" style="background:${filterCat===c?'linear-gradient(90deg,#CD7F32,#A97142)':'var(--card-bg)'};border-color:${filterCat===c?'#CD7F32':'var(--card-border)'};color:var(--text-main)">${c}</button>`).join(''); }
