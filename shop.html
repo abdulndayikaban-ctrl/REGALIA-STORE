@@ -130,13 +130,7 @@ const mkKid=(o)=>({"5/6":4,"7/8":5,"9/10":3,"11/12":2,"13/14YRS":2,...o});
 const svg=(bg,fg,name)=>{ const s=`<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'><rect width='800' height='1000' fill='${bg}'/><text x='400' y='400' text-anchor='middle' font-family='Syne' font-weight='800' font-size='54' fill='${fg}'>${name}</text></svg>`; return `data:image/svg+xml,${encodeURIComponent(s)}`; };
 const co={Black:"#0a0a0a",White:"#f5f5f0",Gold:"#FFD700",Red:"#dc2626"}, fo={Black:"#FFD700",White:"#111",Gold:"#111",Red:"#fff"};
 const xe=(n)=>({Black:svg(co.Black,fo.Black,n),White:svg(co.White,fo.White,n),Gold:svg(co.Gold,fo.Gold,n),Red:svg(co.Red,fo.Red,n)});
-let fallbackProducts=[
-{id:1,name:"PHANTOM PUFFER v2",price:899,category:"Special",colors:["Black","White","Gold","Red"],imagesByColor:xe("PHANTOM PUFFER"),stockByColor:{Black:mkStock({S:2,M:0,XL:5}),White:mkStock({S:5}),Gold:mkStock({S:1}),Red:mkStock({M:2})},features:["Water-repellent shell","Gold embroidered REGALIA"],sold:47,baseLikes:247},
-{id:2,name:"NOIR CARGO REGALIA",price:649,category:"Apparel",colors:["Black","White","Gold","Red"],imagesByColor:xe("NOIR CARGO"),stockByColor:{Black:mkStock(),White:mkStock(),Gold:mkStock(),Red:mkStock()},features:["6-pocket utility","Heavy duty"],sold:32,baseLikes:189},
-{id:3,name:"GOLD THREAD HOODIE",price:549,category:"Apparel",colors:["Black","White","Gold","Red"],imagesByColor:xe("GOLD HOODIE"),stockByColor:{Black:mkStock(),White:mkStock(),Gold:mkStock(),Red:mkStock()},features:["480GSM French terry"],sold:21,baseLikes:312},
-{id:4,name:"REGALIA SIGNATURE TEE",price:299,category:"Apparel",colors:["Black","White","Gold","Red"],imagesByColor:xe("SIGNATURE TEE"),stockByColor:{Black:mkStock({S:6,M:6,L:6}),White:mkStock({S:8}),Gold:mkStock({S:2}),Red:mkStock({"6XL":0})},features:["Heavyweight cotton"],sold:18,baseLikes:421},
-{id:9,name:"KIDS REGALIA HOODIE",price:399,category:"Kids",colors:["Black","White","Gold","Red"],imagesByColor:xe("KIDS HOODIE"),stockByColor:{Black:mkKid({"5/6":5}),White:mkKid({"5/6":2}),Gold:mkKid({"7/8":1}),Red:mkKid({"9/10":0})},features:["Kids fit 5-14YRS"],sold:12,baseLikes:156},
-];
+let fallbackProducts=[];
 let products=[...fallbackProducts];
 async function loadProductsFromR2(){
   try{
