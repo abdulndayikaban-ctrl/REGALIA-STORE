@@ -34,4 +34,4 @@ function editProduct(i){try{var list=getProducts();var p=list[i];if(!p){return};
 function deleteProduct(i){try{if(!confirm('Delete this product?')){return};var list=getProducts();list.splice(i,1);saveProducts(list);renderProducts()}catch(e){}}
 function saveProduct(){addProduct()}
 window.addProduct=addProduct;window.saveProduct=saveProduct;window.renderProducts=renderProducts;
-try{var _oldShowView2=showView;showView=function(v){_oldShowView2(v);if(v==='prod'){renderProducts()}}}catch(e){}
+try{var _oldShowView2=showView;showView=function(v){_oldShowView2(v);if(v==='prod'){renderProducts()}}}catch(e){};renderProducts();setTimeout(renderProducts,300);
