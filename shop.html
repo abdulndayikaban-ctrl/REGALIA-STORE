@@ -72,7 +72,7 @@ body{background:var(--bg-main); color:var(--text-main); transition:all 0.4s ease
 <button id="themeToggle" class="w-[58px] h-[32px] rounded-full border-2 flex items-center px-1 cursor-pointer relative" style="background:#1a1a1a;border-color:#CD7F32"><span class="text-[12px] absolute left-1">☀</span><span class="text-[12px] absolute right-1">🌙</span><div id="toggleDot" class="w-[22px] h-[22px] rounded-full flex items-center justify-center text-[10px] font-bold" style="background:linear-gradient(135deg,#222,#111);color:#FFD700;transform:translateX(0);transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1)">☾</div></button>
 <h1 class="drip-font text-[26px] font-[800] logo-anim">REGALIA</h1>
 <span id="seasonBadge" class="hidden md:inline-flex text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full border font-bold" style="border-color:#CD7F32;color:#CD7F32">SPRING • DARK</span>
-<span id="visitorsLive" class="hidden md:inline-flex text-[10px] px-2.5 py-1 rounded-full border ml-1 items-center gap-1" style="border-color:#25D366;color:#25D366"><span class="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse"></span> 124 visitors now</span>
+<span id="visitorsLive" class="hidden md:inline-flex text-[10px] px-2.5 py-1 rounded-full border ml-1 items-center gap-1" style="border-color:#25D366;color:#25D366"><span class="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse"></span> 0 visitors now</span>
 </div>
 <div class="flex items-center gap-2">
 <button id="catBtn" class="border px-4 h-9 rounded-full text-[11px] font-bold tracking-widest uppercase pill-shimmer cursor-pointer" style="border-color:#CD7F32;background:var(--card-bg)">CATEGORIES ▼</button>
@@ -275,7 +275,7 @@ function logTraffic(action, productId){
   const workerUrl=R2_WORKER_URL;
   fetch(workerUrl+'/api/traffic/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({shopId,visitorId,page:'shop',timeSpent:Math.floor(Math.random()*180)+10,action,productId,referrer:document.referrer})}).catch(()=>{});
   const live=document.getElementById('visitorsLive');
-  if(live){ const cur=parseInt(live.textContent.match(/\d+/)?.[0]||'124'); if(action!=='view') live.textContent='● '+(cur+1)+' visitors now'; }
+  if(live){ const cur=parseInt(live.textContent.match(/\d+/)?.[0]||'0'); if(action!=='view') live.textContent='● '+(cur+1)+' visitors now'; }
 }
 function applyTheme(isLight){
   const body=document.getElementById('body');
