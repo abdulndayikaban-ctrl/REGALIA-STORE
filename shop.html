@@ -275,7 +275,7 @@ function logTraffic(action, productId){
   const workerUrl=R2_WORKER_URL;
   fetch(workerUrl+'/api/traffic/log',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({shopId,visitorId,page:'shop',timeSpent:Math.floor(Math.random()*180)+10,action,productId,referrer:document.referrer})}).catch(()=>{});
   const live=document.getElementById('visitorsLive');
-  if(live){ const cur=parseInt(live.textContent.match(/\d+/)?.[0]||'0'); if(action!=='view') live.textContent='● '+(cur+1)+' visitors now'; }
+  if(live){ const cur=parseInt(live.textContent.match(/\d+/)?.[0]||'0'); if(action!=='view') live.textContent='● '+(cur)+' visitors now'; }
 }
 function applyTheme(isLight){
   const body=document.getElementById('body');
