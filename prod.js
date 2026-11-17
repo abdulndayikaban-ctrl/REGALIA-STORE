@@ -28,7 +28,7 @@ function renderProducts(){
       d.style.cssText='background:#141922;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:12px';
       var photo=p.photo?'<img src="'+p.photo+'" style="width:70px;height:70px;object-fit:cover;border-radius:10px">':'<div style="width:70px;height:70px;background:#d4af37;color:#0b0d12;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px">'+(p.name.charAt(0)||'R')+'</div>';
       var stockTxt=p.stock!==undefined?('Stock: '+p.stock+(p.stock<=3?' - Only '+p.stock+' left':' - In stock')):'';
-      var liveTxt=p.live===false?'Draft':'Live';
+      var liveTxt=p.status||(p.live===false?'Draft':'Live');
       d.innerHTML=photo+'<div style="flex:1"><b style="color:#f3f5f8">'+p.name+'</b> <span style="color:#d4af37">R'+p.price+'</span> <span style="background:#d4af37;color:#0b0d12;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:800">'+liveTxt+'</span><br><span style="color:#9ba8b6">'+(p.cat||'Cap')+' - '+(p.desc||'')+'</span><br><span style="color:#9ba8b6;font-size:13px">'+stockTxt+'</span><br><button onclick="editProduct('+realIdx+')" style="background:transparent;color:#f3f5f8;border:1px solid #333;border-radius:999px;padding:6px 12px;margin-top:8px">Edit</button> <button onclick="toggleLive('+realIdx+')" style="background:transparent;color:#f3f5f8;border:1px solid #333;border-radius:999px;padding:6px 12px;margin-top:8px">Live / Draft</button> <button onclick="buyProduct('+realIdx+')" style="background:#d4af37;color:#0b0d12;border:0;border-radius:999px;padding:6px 12px;margin-top:8px;font-weight:800">Buy on WhatsApp</button> <button onclick="deleteProduct('+realIdx+')" style="background:transparent;color:#f3f5f8;border:1px solid #333;border-radius:999px;padding:6px 12px;margin-top:8px">Delete</button></div>';
       listEl.appendChild(d);
     });
@@ -68,7 +68,7 @@ function editProduct(i){
   }catch(e){}
 }
 function cancelEdit(){editIndex=-1;renderProducts()}
-function toggleLive(i){try{var list=getProducts();list[i].live=list[i].live===false?true:false;saveProducts(list);renderProducts()}catch(e){}}
+function toggleLive(i){try{var list=getProducts();var order=['Live','Draft','Out of Stock','Hidden','Archived'];var cur=list[i].status||(list[i].live===false?'Draft':'Live');var n=order.indexOf(cur);list[i].status=order[(n+1)%order.length];list[i].live=(list[i].status==='Live');saveProducts(list);renderProducts()}catch(e){}}
 function buyProduct(i){
   try{
     var list=getProducts();var p=list[i];var whats=localStorage.getItem('regalia_whats')||'';
