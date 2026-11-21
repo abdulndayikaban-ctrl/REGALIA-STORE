@@ -134,13 +134,7 @@ let fallbackProducts=[];
 let products=[...fallbackProducts];
 async function loadProductsFromR2(){
   try{
-    var localReal=[];try{localReal=JSON.parse(localStorage.getItem('regalia_products')||'[]')}catch(e){localReal=[]}
-    if(localReal.length>0){
-      products=localReal.filter(function(p){return (p.status||'Live')==='Live'}).map(function(p,i){
-        return {id:100+i,name:p.name,price:Number(p.price||0),category:p.cat||'Cap',colors:['Black'],imagesByColor:{Black:p.photo||''},stockByColor:{Black:{'One Size':Number(p.stock||0)}},features:[p.desc||''],sold:0,baseLikes:0}
-      });
-      renderGrid();renderBestSelling();renderQuick();return;
-    }
+        // Live first - R2 only, no local first
     const r=await fetch(R2_WORKER_URL+'/products.json?shopId='+SHOP_ID+'&v='+Date.now());
     if(r.ok){
       const d=await r.json();
