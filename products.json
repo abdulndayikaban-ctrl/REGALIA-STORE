@@ -1,0 +1,14 @@
+[
+  {
+    "id": "rs-cap",
+    "name": "RS CAP",
+    "price": 0,
+    "category": "Accessories",
+    "status": "Live",
+    "featured": false,
+    "sold": 0,
+    "likes": 0,
+    "views": 0,
+    "image": "https://YOUR-BUCKET-URL/rs-cap.jpg"
+  }
+]
