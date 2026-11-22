@@ -147,7 +147,7 @@ async function loadProductsFromR2(){
   products.sort((a,b)=>(b.sold||0)-(a.sold||0));
   renderGrid(); renderBestSelling(); renderQuick();
 }
-let visible=8, selectedProduct=null, selectedColor="Black", selectedQtys={}, cart=JSON.parse(localStorage.getItem('regaliaCart')||'[]'), fav=JSON.parse(localStorage.getItem('regaliaFav')||'[]'), filterCat="All", searchQ="", currentBulk=null, saleSec=8073, viewing=8, productLikes=JSON.parse(localStorage.getItem('regaliaProductLikes')||'{}'), productSold=JSON.parse(localStorage.getItem('regaliaProductSold')||'{}'), regaliaLikes=JSON.parse(localStorage.getItem('regaliaLikes')||'{}'), colorQtyMemory=JSON.parse(localStorage.getItem('colorQtyMemory')||'{}');
+let visible=8, selectedProduct=null, selectedColor="Black", selectedQtys={}, cart=JSON.parse(localStorage.getItem('regaliaCart')||'[]'), fav=JSON.parse(localStorage.getItem('regaliaFav')||'[]'), filterCat="All", searchQ="", currentBulk=null, saleSec=8073, viewing=0, productLikes=JSON.parse(localStorage.getItem('regaliaProductLikes')||'{}'), productSold=JSON.parse(localStorage.getItem('regaliaProductSold')||'{}'), regaliaLikes=JSON.parse(localStorage.getItem('regaliaLikes')||'{}'), colorQtyMemory=JSON.parse(localStorage.getItem('colorQtyMemory')||'{}');
 function mo(q){ if(q>=501) return bulkTiers[4]; if(q>=201) return bulkTiers[3]; if(q>=101) return bulkTiers[2]; if(q>=51) return bulkTiers[1]; if(q>=25) return bulkTiers[0]; return null; }
 function Wd(q){ if(q<25) return {need:25-q,next:bulkTiers[0]}; for(let i=0;i<bulkTiers.length-1;i++){ if(q>=bulkTiers[i].min && q<bulkTiers[i+1].min) return {need:bulkTiers[i+1].min-q,next:bulkTiers[i+1]} } return null; }
 function calcBulkProgress(total){
@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('seasonBadge').textContent=getCurrentSeason().toUpperCase()+' • '+(isLight?'LIGHT':'DARK');
   setTimeout(()=>{ spawnSeasonParticles(currentSeason, 3); }, 2000);
   setInterval(()=>{ spawnSeasonParticles(currentSeason, Math.random()>0.5?2:3); }, 300000);
-  setInterval(()=>{ viewing=Math.max(3,viewing+(Math.random()>0.5?1:-1)); const vn=document.getElementById('viewingNow'); if(vn) vn.textContent=viewing+' viewing now'; }, 8000);
+  setInterval(()=>{ viewing=0; const vn=document.getElementById('viewingNow'); if(vn) vn.textContent=viewing+' viewing now'; }, 8000);
   // Sale timer
   setInterval(()=>{ saleSec--; if(saleSec<0) saleSec=0; const h=Math.floor(saleSec/3600).toString().padStart(2,'0'); const m=Math.floor((saleSec%3600)/60).toString().padStart(2,'0'); const s=(saleSec%60).toString().padStart(2,'0'); const el=document.getElementById('modalTimer'); if(el) el.textContent=`${h}:${m}:${s}`; },1000);
 });
