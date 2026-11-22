@@ -1,6 +1,6 @@
 var editIndex=-1;
 function getProducts(){try{return JSON.parse(localStorage.getItem('regalia_products')||'[]')}catch(e){return[]}}
-function saveProducts(list){try{localStorage.setItem('regalia_products',JSON.stringify(list))}catch(e){}}
+function saveProducts(list){try{var w=localStorage.getItem('regaliaR2Worker')||"https://regalia-upload.abdul-kabika-bant.workers.dev";var s=localStorage.getItem('regaliaShopId')||'regalia';fetch(w+'/products.json?shopId='+s,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(list)}).catch(function(){})}catch(e){}try{localStorage.setItem('regalia_products',JSON.stringify(list))}catch(e){}}
 function renderProducts(){
   try{
     var box=document.getElementById('view-prod');if(!box){return}
