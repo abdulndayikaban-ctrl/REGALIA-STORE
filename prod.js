@@ -43,10 +43,7 @@ if(nm.endsWith('.html')||nm.endsWith('.htm')||nm.endsWith('.js')||nm.endsWith('.
 if(!file.type.startsWith('image/')){alert('Choose a photo image only.');f.value='';cb('');return}
 if(file.size>10*1024*1024){alert('Photo too big. Max 10MB.');f.value='';cb('');return}
 var img=new Image();var url=URL.createObjectURL(file);
-img.onload=function(){try{var maxW=1200;var w=img.naturalWidth;var h=img.naturalHeight;var s=Math.min(1,maxW/w);var nw=Math.round(w*s);var nh=Math.round(h*s);var c=document.createElement('canvas');c.width=nw;c.height=nh;var ctx=c.getContext('2d');ctx.drawImage(img,0,0,nw,nh);URL.revokeObjectURL(url);cb(c.toDataURL('image/jpeg',0.75))}catch(e){cb('')}};
-img.onerror=function(){URL.revokeObjectURL(url);alert('Could not read photo. Use JPG or PNG.');cb('')};
-img.src=url;
-}catch(e){cb('')}
+img.onload=function(){try{var maxW=1200;var w=img.naturalWidth;var h=img.naturalHeight;var s=Math.min(1,maxW/w);var nw=Math.round(w*s);var nh=Math.round(h*s);var c=document.createElement('canvas');c.width=nw;c.height=nh;var ctx=c.getContext('2d');ctx.drawImage(img,0,0,nw,nh);URL.revokeObjectURL(url);c.toBlob(async function(blob){try{var shopId=localStorage.getItem('regaliaShopId')||'regalia';var res=await fetch("https://regalia-upload.abdulndayi-kab-an.workers.dev/upload?shopId="+shopId,{method:'POST',headers:{'Content-Type':'image/jpeg'},body:blob});var j=await res.json();if(j.ok&&j.key){cb("https://regalia-upload.abdulndayi-kab-an.workers.dev/image/"+j.key)}else{cb(c.toDataURL('image/jpeg',0.75))}}catch(e){cb(c.toDataURL('image/jpeg',0.75))}},'image/jpeg',0.75)}catch(e){cb('')}};}catch(e){cb('')}};
 }
 function addProduct(){
   try{
