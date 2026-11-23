@@ -1,7 +1,8 @@
 var editIndex=-1;
-function getProducts(){try{return JSON.parse(localStorage.getItem('regalia_products')||'[]')}catch(e){return[]}}
-function saveProducts(list){try{var w="https://regalia-upload.abdulndayi-kab-an.workers.dev";var s=localStorage.getItem('regaliaShopId')||'regalia';fetch(w+'/products.json?shopId='+s,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(list)}).catch(function(){})}catch(e){}try{localStorage.setItem('regalia_products',JSON.stringify(list))}catch(e){}}
-function renderProducts(){
+var _R2Products=[];function getProducts(){return _R2Products}
+function saveProducts(list){_R2Products=list;var k=sessionStorage.getItem('regaliaKey')||prompt('Enter admin key');if(k){sessionStorage.setItem('regaliaKey',k)}return fetch("https://regalia-upload.abdulndayi-kab-an.workers.dev/products.json?shopId="+(localStorage.getItem('regaliaShopId')||'regalia'),{method:'POST',headers:{'Content-Type':'application/json','x-regalia-key':k||''},body:JSON.stringify(list)})}
+function loadProductsFromR2(){fetch("https://regalia-upload.abdulndayi-kab-an.workers.dev/products.json?shopId="+(localStorage.getItem('regaliaShopId')||'regalia')).then(function(r){return r.json()}).then(function(d){_R2Products=Array.isArray(d)?d:(d.products||[]);renderProducts()}).catch(function(){renderProducts()})}
+function renderProducts(){if(!window._R2Loaded){window._R2Loaded=true;loadProductsFromR2();return}
   try{
     var box=document.getElementById('view-prod');if(!box){return}
     var list=getProducts();
