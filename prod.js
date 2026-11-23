@@ -65,7 +65,7 @@ function addProduct(){
 }
 window.editProduct = function(i){
   try{
-    var list=getProducts();var p=list[i];if(!p){return};editIndex=i;renderProducts();
+    var list=getProducts();var p=list[i];if(!p){for(var k=0;k<list.length;k++){if(String(list[k].id)===String(i)){p=list[k];i=k;break;}}}if(!p){return};editIndex=i;renderProducts();
     setTimeout(function(){
       document.getElementById('prodName').value=p.name;document.getElementById('prodPrice').value=p.price;
       if(document.getElementById('prodCat')){document.getElementById('prodCat').value=p.cat||'Cap'}
