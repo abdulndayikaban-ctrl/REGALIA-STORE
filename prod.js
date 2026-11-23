@@ -63,7 +63,7 @@ function addProduct(){
     });
   }catch(e){alert('SAVE failed: '+e.message)}
 }
-function editProduct(i){
+window.editProduct = function(i){
   try{
     var list=getProducts();var p=list[i];if(!p){return};editIndex=i;renderProducts();
     setTimeout(function(){
