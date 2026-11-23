@@ -54,7 +54,7 @@ function addProduct(){
     var pr=document.getElementById('prodPrice');var cat=document.getElementById('prodCat');var st=document.getElementById('prodStock');var ds=document.getElementById('prodDesc');
     readPhoto(function(photo){
       var list=getProducts();
-      var cleanName=n.value.trim().replace(/[<>"']/g,'');var cleanDesc=(ds?ds.value:'').replace(/[<>"']/g,'');var item={name:cleanName,price:Number(pr?pr.value||0:0),cat:cat?cat.value:'Cap',stock:st?parseInt(st.value||'0'):0,desc:cleanDesc,photo:photo,status:'Live',live:true,featured:false,sold:0,likes:0,visitors:0,viewing:0}
+      var cleanName=n.value.trim().replace(/[<>"']/g,'');var cleanDesc=(ds?ds.value:'').replace(/[<>"']/g,'');var item={id:'p'+Date.now()+Math.floor(Math.random()*1000),name:cleanName,price:Number(pr?pr.value||0:0),cat:cat?cat.value:'Cap',stock:st?parseInt(st.value||'0'):0,desc:cleanDesc,photo:photo,status:'Live',live:true,featured:false,sold:0,likes:0,visitors:0,viewing:0}
       if(editIndex>=0){var old=list[editIndex];if(!photo&&old.photo){item.photo=old.photo}item.featured=old.featured||false;item.sold=old.sold||0;item.likes=old.likes||0;item.visitors=old.visitors||0;item.viewing=0;list[editIndex]=item;editIndex=-1}else{list.push(item)}
       saveProducts(list);
       try{playDing()}catch(e){}
