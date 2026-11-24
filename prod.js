@@ -21,13 +21,13 @@ function renderProducts(){if(!window._R2Loaded){window._R2Loaded=true;loadProduc
     box.innerHTML=html;
     if(q){document.getElementById('prodSearch').focus();document.getElementById('prodSearch').setSelectionRange(q.length,q.length)}
     var listEl=document.getElementById('prodList');
-    var shown=list.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>=0});
+       var shown=list.filter(function(p){return !q||(p.name||'').toLowerCase().indexOf(q)>=0});
     if(shown.length===0){listEl.innerHTML='<p style="color:#9ba8b6">No products found. Add your first real product.</p>';return}
     shown.forEach(function(p){
       var realIdx=list.indexOf(p);
       var d=document.createElement('div');
       d.style.cssText='background:#141922;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:12px';
-      var photo=p.photo?'<img src="'+p.photo+'" style="width:70px;height:70px;object-fit:cover;border-radius:10px">':'<div style="width:70px;height:70px;background:#d4af37;color:#0b0d12;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px">'+(p.name.charAt(0)||'R')+'</div>';
+            var photo=p.photo?'<img src="'+p.photo+'" style="width:70px;height:70px;object-fit:cover;border-radius:10px">':'<div style="width:70px;height:70px;background:#d4af37;color:#0b0d12;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px">'+((p.name||'R').charAt(0)||'R')+'</div>';
       var stockTxt=p.stock!==undefined?('Stock: '+p.stock+(p.stock<=3?' - Only '+p.stock+' left':' - In stock')):'';
       var liveTxt=(p.status||(p.live===false?'Draft':'Live'))+(p.featured?' ★ Featured':'');
       d.innerHTML=photo+'<div style="flex:1"><b style="color:#f3f5f8">'+p.name+'</b> <span style="color:#d4af37">R'+p.price+'</span> <span style="background:#d4af37;color:#0b0d12;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:800">'+liveTxt+'</span><br><span style="color:#9ba8b6">'+(p.cat||'Cap')+' - '+(p.desc||'')+'</span><br><span style="color:#9ba8b6;font-size:13px">'+stockTxt+'</span><br><button onclick="toggleLive('+realIdx+')" style="background:transparent;color:#f3f5f8;border:1px solid #333;border-radius:999px;padding:6px 12px;margin-top:8px">Change Status</button> <button onclick="toggleFeatured('+realIdx+')" style="background:transparent;color:#f3f5f8;border:1px solid #333;border-radius:999px;padding:6px 12px;margin-top:8px">★ Feature</button> <button onclick="editProduct('+realIdx+')" style="background:transparent;color:#f3f5f8;border:1px solid #333;border-radius:999px;padding:6px 12px;margin-top:8px">Edit</button> <button onclick="buyProduct('+realIdx+')" style="background:#d4af37;color:#0b0d12;border:0;border-radius:999px;padding:6px 12px;margin-top:8px;font-weight:800">Buy on WhatsApp</button> <button onclick="deleteProduct('+realIdx+')" style="background:transparent;color:#f3f5f8;border:1px solid #333;border-radius:999px;padding:6px 12px;margin-top:8px">Delete</button></div>';
@@ -78,7 +78,6 @@ window.editProduct = function(i){
 function cancelEdit(){editIndex=-1;renderProducts()}
 function toggleLive(i){try{var list=getProducts();var order=['Live','Draft','Out of Stock','Hidden','Archived'];var cur=list[i].status||(list[i].live===false?'Draft':'Live');var n=order.indexOf(cur);list[i].status=order[(n+1)%order.length];list[i].live=(list[i].status==='Live');saveProducts(list);renderProducts()}catch(e){}}function toggleFeatured(i){try{var list=getProducts();list[i].featured=!list[i].featured;saveProducts(list);renderProducts()}catch(e){}}
 function buyProduct(i){
-  function toggleFeatured(i){try{var list=getProducts();list[i].featured=!list[i].featured;saveProducts(list);renderProducts()}catch(e){}}
   try{
     var list=getProducts();var p=list[i];var whats=localStorage.getItem('regalia_whats')||'';
     var msg='Hi, I want to buy '+p.name+' R'+p.price+' from '+(localStorage.getItem('regalia_shop')||'BAFYZON STYLE');
@@ -87,5 +86,5 @@ function buyProduct(i){
 }
 function deleteProduct(i){try{if(!confirm('Delete this product?')){return};var list=getProducts();list.splice(i,1);saveProducts(list);renderProducts()}catch(e){}}
 function saveProduct(){addProduct()}
-window.addProduct=addProduct;window.saveProduct=saveProduct;window.renderProducts=renderProducts;window.editProduct=editProduct;window.deleteProduct=deleteProduct;window.toggleLive=toggleLive;window.buyProduct=buyProduct;window.cancelEdit=cancelEdit;
-try{var _oldShowView2=showView;showView=function(v){_oldShowView2(v);if(v==='prod'){renderProducts()}}}catch(e){};renderProducts();setTimeout(renderProducts,300);
+window.addProduct=addProduct;window.saveProduct=saveProduct;window.renderProducts=renderProducts;window.editProduct=editProduct;window.deleteProduct=deleteProduct;window.toggleLive=toggleLive;window.toggleFeatured=toggleFeatured;window.buyProduct=buyProduct;window.cancelEdit=cancelEdit;
+function _installProdShowView(){try{if(typeof showView==='function'&&!showView._prodWrapped){var _old=showView;var _nw=function(v){_old(v);if(v==='prod'){renderProducts()}};_nw._prodWrapped=true;showView=_nw;return true}}catch(e){}return false}if(!_installProdShowView()){setTimeout(_installProdShowView,500)};renderProducts();setTimeout(renderProducts,300);
